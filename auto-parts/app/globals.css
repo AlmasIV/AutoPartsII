@@ -1,0 +1,55 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 18px;
+    --hovered-marble: rgb(255, 255, 255);
+    --main-nav-bar-bg: rgb(33, 177, 117);
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Navigation styles. */
+#main-nav-bar {
+
+    & > ul {
+        display: flex;
+        list-style-type: none;
+        background-color: var(--main-nav-bar-bg);
+        justify-content: flex-start;
+        font-size: 1.4rem;
+    }
+
+    & > ul > li {
+        padding: 0.75rem;
+    }
+}
+
+.underline-link-animation {
+    position: relative;
+    transition: color 0.3s ease-in-out;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        height: 3px;
+        background-color: var(--hovered-marble);
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &:hover {
+        color: var(--hovered-marble);
+    }
+
+    &:hover::before {
+        transform: scaleX(1);
+    }
+}
