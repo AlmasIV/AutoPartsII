@@ -1,7 +1,5 @@
 import { revalidateTag } from "next/cache.js";
 
-//process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-
 export default async function Catalog(){
     const autoParts = await getAutoParts();
     return (

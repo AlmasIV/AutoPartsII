@@ -1,5 +1,6 @@
 import "./globals.css";
 import { NavBar } from "./components/Index.js";
+import Link from "next/link.js";
 
 export const metadata = {
   title: "Auto-Parts",
@@ -11,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <NavBar />
-        {children}
+        <div>{children}</div>
       </body>
     </html>
   );

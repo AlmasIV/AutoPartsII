@@ -1,0 +1,14 @@
+#main-nav-bar {
+
+    & > ul {
+        display: flex;
+        list-style-type: none;
+        background-color: var(--main-green-bg);
+        justify-content: flex-start;
+        font-size: 1.4rem;
+    }
+
+    & > ul > li {
+        padding: 0.75rem;
+    }
+}
