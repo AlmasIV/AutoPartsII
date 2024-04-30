@@ -7,11 +7,25 @@ export default function Modal({ children, openTitle, closeTitle }){
     const modalRef = useRef(null);
     return (
         <Fragment>
-            <dialog ref={modalRef} id={styles["primary-modal"]}>
+            <dialog
+                ref={modalRef}
+                id={styles["primary-modal"]}
+            >
                 {children}
-                <button type="button" className="secondary-btn width-full margin-top-05rem" onClick={() => modalRef.current.close()}>{closeTitle}</button>
+                <button
+                    type="button"
+                    className="secondary-btn width-full margin-top-05rem"
+                    onClick={() => modalRef.current.close()}
+                >
+                    {closeTitle}
+                </button>
             </dialog>
-            <button onClick={() => modalRef.current.showModal()}>{openTitle}</button>
+            <button
+                className="primary-btn"
+                onClick={() => modalRef.current.showModal()}
+            >
+                {openTitle}
+            </button>
         </Fragment>
     );
 }
