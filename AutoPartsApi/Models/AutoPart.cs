@@ -24,12 +24,12 @@ public class AutoPart {
     [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInRub { get; set; }
 
-    [Range(0, 9999_9999.99)]
+    [Required(), Range(0, 9999_9999.99)]
     [JsonPropertyName("priceInKzt")]
     [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInKzt { get; set; }
 
-    [Range(0, ushort.MaxValue)]
+    [Required(), Range(1, ushort.MaxValue)]
     [JsonPropertyName("amount")]
     public ushort Amount { get; set; }
 }

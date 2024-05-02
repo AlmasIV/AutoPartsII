@@ -1,9 +1,11 @@
 import { Fragment } from "react";
 import styles from "./auto-part-form.module.css";
 
-import inputConfigs from "./configuration/auto-part-form-configuration.json";
+import { Input } from "../Index.js";
 
-export default function AutoPartForm({ formTitle, buttonTitle, onSubmit }) {
+import { autoPartConfigs } from "../configurations/configs.js";
+
+export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPart = null }) {
     return (
         <Fragment>
             <h2
@@ -16,21 +18,23 @@ export default function AutoPartForm({ formTitle, buttonTitle, onSubmit }) {
                 method="dialog"
             >
                 {
-                    inputConfigs.map((inputConfig) => (
-                        <label key={inputConfig.labelName}>
-                            {inputConfig.labelName}
-                            <input
-                                name={inputConfig.name}
-                                type={inputConfig.type}
-                                required={inputConfig?.required || null}
-                                minLength={inputConfig?.minLength || null}
-                                autoFocus={inputConfig?.autoFocus || null}
-                                min={inputConfig?.min || null}
-                                max={inputConfig?.max || null}
-                                step={inputConfig?.step || null}
-                            />
-                        </label>
-                    ))
+                    autoPartConfigs.map(
+                        (autoPartConfig) => (
+                            autoPart === null ? (
+                                autoPartConfig.name !== "id" && 
+                                <Input
+                                    key={autoPartConfig.labelName}
+                                    config={autoPartConfig}
+                                />
+                            ) : (
+                                <Input
+                                    key={autoPartConfig.labelName}
+                                    config={autoPartConfig}
+                                    autoPart={autoPart}
+                                />
+                            )
+                        )
+                    )
                 }
                 <button
                     type="submit"

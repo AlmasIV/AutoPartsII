@@ -1,5 +1,11 @@
 [
     {
+        "labelName": "ID",
+        "name": "id",
+        "type": "number",
+        "readOnly": true
+    },
+    {
         "labelName": "Name",
         "name": "name",
         "type": "text",

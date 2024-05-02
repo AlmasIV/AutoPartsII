@@ -1,9 +1,9 @@
-import { revalidateTag } from "next/cache.js";
+import { TableOfAutoParts } from "../Index.js";
 
 export default async function Catalog(){
     const autoParts = await getAutoParts();
     return (
-        <h1>{autoParts}</h1>
+        <TableOfAutoParts autoPartCollection={autoParts} />
     );
 }
 
