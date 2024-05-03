@@ -34,7 +34,7 @@ export default function TableOfAutoParts({ autoPartCollection }){
                                     <td
                                         key={config.labelName}
                                     >
-                                        {autoPart[config.name] ?? "Unknown"}
+                                        {autoPart[config.name]}
                                     </td>
                                 ))
                             }
