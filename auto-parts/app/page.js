@@ -12,7 +12,7 @@ export default function HomePage(){
                 <AutoPartForm
                     formTitle="Create a new auto-part"
                     buttonTitle="Create"
-                    onSubmit={onCreate}
+                    onCreate={onCreate}
                 />
             </Modal>
             <Catalog />
