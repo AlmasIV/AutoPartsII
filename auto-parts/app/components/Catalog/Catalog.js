@@ -5,7 +5,6 @@ export default async function Catalog(){
     //revalidatePath("collection");
     revalidateTag("collection");
     const autoParts = await getAutoParts();
-    console.log(autoParts.length);
     return (
         <TableOfAutoParts autoPartCollection={autoParts} />
     );
