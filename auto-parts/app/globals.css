@@ -5,13 +5,19 @@
 
 html {
     font-size: 18px;
-    --hovered-marble: rgb(255, 255, 255);
+    --hovered-white: rgb(255, 255, 255);
     --main-green-bg: rgb(33, 177, 117);
+    --even-table: rgb(200, 200, 200);
 }
 
 a {
     text-decoration: none;
     color: black;
+}
+
+main {
+    width: 98%;
+    margin: 2rem auto;
 }
 
 .underline-link-animation {
@@ -24,13 +30,13 @@ a {
         top: 100%;
         width: 100%;
         height: 3px;
-        background-color: var(--hovered-marble);
+        background-color: var(--hovered-white);
         transform: scaleX(0);
         transition: transform 0.3s ease-in-out;
     }
 
     &:hover {
-        color: var(--hovered-marble);
+        color: var(--hovered-white);
     }
 
     &:hover::before {

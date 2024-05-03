@@ -1,0 +1,17 @@
+#auto-parts-table {
+    border-collapse: collapse;
+    width: 100%;
+
+    & td, & th {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    & tbody tr:nth-child(even) {
+        background-color: var(--even-table);
+    }
+
+    & thead {
+        background-color: var(--main-green-bg);
+    }
+}

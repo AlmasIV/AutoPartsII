@@ -6,7 +6,7 @@ export default async function onCreate(event){
     event.preventDefault();
     const autoPart = {};
     let prop;
-    const formElements = event.target.parentElement.elements;
+    const formElements = event.target.elements;
     for(let autoPartConfig of autoPartConfigs){
         if(formElements[autoPartConfig.name]){
             if(autoPartConfig.type === "number"){
@@ -19,7 +19,7 @@ export default async function onCreate(event){
         }
     }
 
-    event.target.parentElement.reset();
+    event.target.reset();
 
     return (await submitAutoPart(autoPart));
 }
@@ -37,5 +37,6 @@ async function submitAutoPart(autoPart){
     if(result.ok){
         return true;
     }
+    
     return false;
 }

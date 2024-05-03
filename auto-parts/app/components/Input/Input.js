@@ -14,7 +14,6 @@ export default function Input({ config, autoPart=null }) {
                 min={config?.min || null}
                 max={config?.max || null}
                 step={config?.step || null}
-                value={autoPart?.[config.name].value || null}
             />
         </label>
     );

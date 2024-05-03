@@ -1,8 +1,6 @@
 import { Fragment } from "react";
 import styles from "./auto-part-form.module.css";
-
 import { Input } from "../Index.js";
-
 import { autoPartConfigs } from "../configurations/configs.js";
 
 export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPart = null }) {
@@ -16,6 +14,7 @@ export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPar
             <form 
                 id={styles["auto-part-form"]}
                 method="dialog"
+                onSubmit={onSubmit}
             >
                 {
                     autoPartConfigs.map(
@@ -39,7 +38,6 @@ export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPar
                 <button
                     type="submit"
                     className="primary-btn margin-top-2rem"
-                    onClick={onSubmit}
                 >
                     {buttonTitle}
                 </button>

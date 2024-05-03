@@ -3,7 +3,8 @@
         "labelName": "ID",
         "name": "id",
         "type": "number",
-        "readOnly": true
+        "readOnly": true,
+        "inTable": true
     },
     {
         "labelName": "Name",
@@ -11,19 +12,22 @@
         "type": "text",
         "required": true,
         "minLength": 3,
-        "autoFocus": true
+        "autoFocus": true,
+        "inTable": true
     },
     {
         "labelName": "Applicability",
         "name": "applicability",
         "type": "text",
         "required": true,
-        "minLength": 3
+        "minLength": 3,
+        "inTable": true
     },
     {
         "labelName": "Company",
         "name": "company",
-        "type": "text"
+        "type": "text",
+        "inTable": true
     },
     {
         "labelName": "Price In Rubles",
@@ -31,7 +35,8 @@
         "type": "number",
         "min": 0,
         "max": 99999999.99,
-        "step": 0.01
+        "step": 0.01,
+        "inTable": true
     },
     {
         "labelName": "Price In Tenge",
@@ -40,7 +45,8 @@
         "min": 100,
         "max": 99999999.99,
         "step": 0.01,
-        "required": true
+        "required": true,
+        "inTable": true
     },
     {
         "labelName": "Amount",
@@ -48,6 +54,7 @@
         "type": "number",
         "min": 1,
         "max": 65535,
-        "required": true
+        "required": true,
+        "inTable": true
     }
 ]

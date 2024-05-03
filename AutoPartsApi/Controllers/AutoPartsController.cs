@@ -16,7 +16,7 @@ public class AutoPartController : ControllerBase {
     [HttpGet]
     [Route("all")]
     public async Task<IEnumerable<AutoPart>> GetAll(){
-        return await _AppDbContext.AutoParts.AsNoTracking().ToArrayAsync();
+        return await _AppDbContext.AutoParts.Select(x => x).ToArrayAsync();
     }
 
     [HttpPost]
