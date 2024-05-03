@@ -12,6 +12,6 @@
     }
 
     & thead {
-        background-color: var(--main-green-bg);
+        background-color: var(--main-green);
     }
 }

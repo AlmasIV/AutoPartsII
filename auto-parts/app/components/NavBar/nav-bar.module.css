@@ -3,7 +3,7 @@
     & > ul {
         display: flex;
         list-style-type: none;
-        background-color: var(--main-green-bg);
+        background-color: var(--main-green);
         justify-content: flex-start;
         font-size: 1.4rem;
     }
