@@ -6,8 +6,11 @@
 html {
     font-size: 18px;
     --hovered-white: rgb(255, 255, 255);
-    --main-green-bg: rgb(33, 177, 117);
+    --main-green: rgb(33, 177, 117);
     --even-table: rgb(200, 200, 200);
+    --info: rgb(18, 175, 223);
+    --failure: rgb(255, 0, 0);
+    --warning: rgb(241, 245, 2);
 }
 
 a {
@@ -57,17 +60,17 @@ main {
     color: white;
 
     &:hover {
-        background-color: var(--main-green-bg);
+        background-color: var(--main-green);
     }
 }
 
 .secondary-btn {
     box-sizing: border-box;
-    border: 0.1rem solid var(--main-green-bg);
+    border: 0.1rem solid var(--main-green);
     background-color: white;
 
     &:hover {
-        background-color: var(--main-green-bg);
+        background-color: var(--main-green);
     }
 }
 
@@ -78,6 +81,10 @@ main {
 
 .margin-top-05rem {
     margin-top: 0.5rem;
+}
+
+.margin-bottom-05rem {
+    margin-bottom: 0.5rem;
 }
 
 .width-full {
