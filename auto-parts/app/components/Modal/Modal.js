@@ -21,7 +21,7 @@ export default function Modal({ children, openTitle, closeTitle }){
                 </button>
             </dialog>
             <button
-                className="primary-btn"
+                className="primary-btn width-full margin-bottom-05rem"
                 onClick={() => modalRef.current.showModal()}
             >
                 {openTitle}
