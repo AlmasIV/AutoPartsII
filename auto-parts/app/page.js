@@ -5,7 +5,6 @@ import styles from "./page.module.css";
 export default function HomePage(){
     return (
         <main>
-            <Catalog />
             <Modal
                 openTitle="Create"
                 closeTitle="Close"
@@ -16,6 +15,7 @@ export default function HomePage(){
                     onSubmit={onCreate}
                 />
             </Modal>
+            <Catalog />
         </main>
     ); 
 }
