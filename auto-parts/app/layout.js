@@ -1,6 +1,8 @@
 import "./globals.css";
-import { NavBar } from "./components/Index.js";
-import Link from "next/link.js";
+import { Inter } from "next/font/google";
+import { NavBar, NotificationBox } from "./components/Index.js";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Auto-Parts",
@@ -12,9 +14,11 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
     >
-      <body>
-        <NavBar />
-        {children}
+      <body className={inter.className}>
+        <NotificationBox>
+          <NavBar />
+          {children}
+        </NotificationBox>
       </body>
     </html>
   );

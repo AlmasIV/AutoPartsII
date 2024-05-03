@@ -1,9 +1,13 @@
-import { Fragment } from "react";
+"use client";
+
+import { Fragment, useContext } from "react";
 import styles from "./auto-part-form.module.css";
 import { Input } from "../Index.js";
 import { autoPartConfigs } from "../configurations/configs.js";
+import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
-export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPart = null }) {
+export default function AutoPartForm({ formTitle, buttonTitle, onCreate, autoPart = null }) {
+    const globalNotification = useContext(NotificationBoxContext);
     return (
         <Fragment>
             <h2
@@ -14,7 +18,10 @@ export default function AutoPartForm({ formTitle, buttonTitle, onSubmit, autoPar
             <form 
                 id={styles["auto-part-form"]}
                 method="dialog"
-                onSubmit={onSubmit}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onCreate(e, globalNotification);
+                }}
             >
                 {
                     autoPartConfigs.map(

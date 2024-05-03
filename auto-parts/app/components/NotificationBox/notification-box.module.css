@@ -1,0 +1,6 @@
+#notification-box {
+    position: sticky;
+    bottom: 2rem;
+    left: 2rem;
+    width: 20vw;
+}

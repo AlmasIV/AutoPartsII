@@ -1,0 +1,42 @@
+.notification {
+    position: relative;
+    width: 100%;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 1rem 2rem;
+    margin-bottom: 0.5rem;
+    animation-name: fade-out;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+}
+
+.info {
+    background-color: var(--info);
+}
+
+.failure {
+    background-color: var(--failure);
+    color: white;
+}
+
+.success {
+    background-color: var(--main-green);
+}
+
+.warning {
+    background-color: var(--warning);
+}
+
+@keyframes fade-out {
+    0% {
+        display: block;
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}

@@ -2,8 +2,7 @@
 
 import { autoPartConfigs } from "../../configurations/configs.js";
 
-export default async function onCreate(event){
-    event.preventDefault();
+export default async function onCreate(event, globalNotification){
     const autoPart = {};
     let prop;
     const formElements = event.target.elements;
@@ -21,10 +20,10 @@ export default async function onCreate(event){
 
     event.target.reset();
 
-    return (await submitAutoPart(autoPart));
+    await submitAutoPart(autoPart, globalNotification);
 }
 
-async function submitAutoPart(autoPart){
+async function submitAutoPart(autoPart, globalNotification){
     const result = await fetch("https://localhost:7019/auto-parts/create", {
         method: "POST",
         cache: "no-cache",
@@ -35,8 +34,9 @@ async function submitAutoPart(autoPart){
     });
 
     if(result.ok){
-        return true;
+        globalNotification.setNotifications([{ message: `Successfully created: ${autoPart.name}.`, level: "success" }, ...globalNotification.notifications]);
+        return;
     }
     
-    return false;
+    globalNotification.setNotifications([{ message: `Failed to create: ${autoPart.name}.`, level: "failure" }, ...globalNotification.notifications]);
 }
