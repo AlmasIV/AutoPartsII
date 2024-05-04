@@ -1,9 +1,10 @@
+//"use client";
+
 import { TableOfAutoParts } from "../Index.js";
-import { revalidateTag } from "next/cache.js";
 
 export default async function Catalog(){
     //revalidatePath("collection");
-    revalidateTag("collection");
+    //revalidateTag("collection");
     const autoParts = await getAutoParts();
     return (
         <TableOfAutoParts autoPartCollection={autoParts} />
@@ -11,7 +12,7 @@ export default async function Catalog(){
 }
 
 async function getAutoParts(){
-    const result = await fetch("https://localhost:7019/auto-parts/all", { next: { tags: ["collection"] }});
+    const result = await fetch("https://localhost:7019/auto-parts/all", { cache: "no-cache" });
 
     if(!result.ok){
         throw new Error("Failed to fetch all auto parts.");
