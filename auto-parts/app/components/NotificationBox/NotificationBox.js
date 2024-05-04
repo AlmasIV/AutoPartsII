@@ -5,7 +5,11 @@ import { NotificationBoxContext } from "./NotificationBoxContext.js";
 import styles from "./notification-box.module.css";
 import { Notification } from "../Index.js";
 
-export default function NotificationBox({ children }){
+export default function NotificationBox(
+    {
+        children
+    }
+){
     const [notifications, setNotifications] = useState([]);
     return (
         <NotificationBoxContext.Provider

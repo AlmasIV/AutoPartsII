@@ -6,7 +6,11 @@ import onSelect from "./event-handlers/onSelect.js";
 import { useEffect, useState, useContext } from "react";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
-export default function TableOfAutoParts({ autoPartCollection }){
+export default function TableOfAutoParts(
+    {
+        autoPartCollection
+    }
+){
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);
     const globalNotification = useContext(NotificationBoxContext);
 

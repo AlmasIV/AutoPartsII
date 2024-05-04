@@ -6,7 +6,14 @@ import { Input, Button } from "../Index.js";
 import { autoPartConfigs } from "../configurations/configs.js";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
-export default function AutoPartForm({ formTitle, buttonTitle, onCreate, autoPart = null }) {
+export default function AutoPartForm(
+    {
+        formTitle,
+        buttonTitle,
+        onCreate,
+        autoPart = null
+    }
+) {
     const globalNotification = useContext(NotificationBoxContext);
     return (
         <Fragment>

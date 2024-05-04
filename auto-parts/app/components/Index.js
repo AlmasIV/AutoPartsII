@@ -6,5 +6,18 @@ import TableOfAutoParts from "./TableOfAutoParts/TableOfAutoParts.js";
 import Input from "./Input/Input.js";
 import Notification from "./Notification/Notification.js";
 import NotificationBox from "./NotificationBox/NotificationBox.js";
+import ShoppingCart from "./ShoppingCart/ShoppingCart.js";
+import Button from "./Button/Button.js";
 
-export { NavBar, Catalog, AutoPartForm, Modal, TableOfAutoParts, Input, Notification, NotificationBox }
+export {
+    NavBar,
+    Catalog,
+    AutoPartForm,
+    Modal,
+    TableOfAutoParts,
+    Input,
+    Notification,
+    NotificationBox,
+    ShoppingCart,
+    Button
+}

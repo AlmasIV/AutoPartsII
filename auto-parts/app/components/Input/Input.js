@@ -1,6 +1,11 @@
 import styles from "./input.module.css";
 
-export default function Input({ config, autoPart=null }) {
+export default function Input(
+    {
+        config,
+        autoPart=null
+    }
+) {
     return (
         <label className={styles["input-label"]}>
             {config.labelName}
