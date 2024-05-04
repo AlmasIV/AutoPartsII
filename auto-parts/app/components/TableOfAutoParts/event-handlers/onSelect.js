@@ -19,13 +19,31 @@ function toggleSelection(element, globalNotification){
         element.classList.remove("selected");
         localStorage.removeItem(autoPart.id + "ap");
 
-        globalNotification.setNotifications([{ message: `Removed from shopping cart: ${autoPart.name}.`, level: "warning", key: generateGUID() }, ...globalNotification.notifications]);
+        globalNotification.setNotifications(
+            [
+                {
+                    message: `Removed from shopping cart: ${autoPart.name}.`,
+                    level: "warning",
+                    key: generateGUID()
+                },
+                ...globalNotification.notifications
+            ]
+        );
     }
     else{
         element.classList.add("selected");
         localStorage.setItem(autoPart.id + "ap", JSON.stringify(autoPart));
 
-        globalNotification.setNotifications([{ message: `Added to shopping cart: ${autoPart.name}.`, level: "info", key: generateGUID() }, ...globalNotification.notifications]);
+        globalNotification.setNotifications(
+            [
+                {
+                    message: `Added to shopping cart: ${autoPart.name}.`,
+                    level: "info",
+                    key: generateGUID()
+                },
+                ...globalNotification.notifications
+            ]
+        );
     }
 }
 

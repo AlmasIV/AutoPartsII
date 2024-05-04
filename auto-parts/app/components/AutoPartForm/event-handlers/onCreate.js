@@ -35,9 +35,27 @@ async function submitAutoPart(autoPart, globalNotification){
     });
 
     if(result.ok){
-        globalNotification.setNotifications([{ message: `Successfully created: ${autoPart.name}.`, level: "success", key: generateGUID() }, ...globalNotification.notifications]);
+        globalNotification.setNotifications(
+            [
+                {
+                    message: `Successfully created: ${autoPart.name}.`,
+                    level: "success",
+                    key: generateGUID() 
+                },
+                ...globalNotification.notifications
+            ]
+        );
         return;
     }
     
-    globalNotification.setNotifications([{ message: `Failed to create: ${autoPart.name}.`, level: "failure", key: generateGUID() }, ...globalNotification.notifications]);
+    globalNotification.setNotifications(
+        [
+            {
+                message: `Failed to create: ${autoPart.name}.`,
+                level: "failure",
+                key: generateGUID()
+            },
+            ...globalNotification.notifications
+        ]
+    );
 }
