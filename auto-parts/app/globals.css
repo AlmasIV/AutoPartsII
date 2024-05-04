@@ -96,3 +96,7 @@ main {
     background-color: var(--selected-item)!important;
     color: white;
 }
+
+.text-center {
+    text-align: center;
+}
