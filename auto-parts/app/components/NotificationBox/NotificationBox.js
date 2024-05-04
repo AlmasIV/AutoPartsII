@@ -7,7 +7,6 @@ import { Notification } from "../Index.js";
 
 export default function NotificationBox({ children }){
     const [notifications, setNotifications] = useState([]);
-    console.log(notifications.join());
     return (
         <NotificationBoxContext.Provider
             value={{ notifications, setNotifications }}
@@ -20,7 +19,7 @@ export default function NotificationBox({ children }){
                     notifications.map((notification, index) => {
                         return (
                             <Notification
-                                key={index}
+                                key={notification.key}
                                 message={notification.message}
                                 level={notification.level}
                                 onAnimationEnd={() => {
