@@ -35,6 +35,7 @@ export default function TableOfAutoParts({ autoPartCollection }){
                                     <th
                                         key={autoPartConfig.labelName}
                                         scope="col"
+                                        className="text-center"
                                     >
                                         {autoPartConfig.labelName}
                                     </th>
@@ -59,6 +60,7 @@ export default function TableOfAutoParts({ autoPartCollection }){
                                 tableConfigs.map((config) => (
                                     <td
                                         key={config.labelName}
+                                        className="text-center"
                                     >
                                         {autoPart[config.name]}
                                     </td>
