@@ -14,4 +14,12 @@
     & thead {
         background-color: var(--main-green);
     }
+
+    & tbody tr {
+        transition: 0.3s;
+    }
+
+    & tbody tr:hover {
+        background-color: var(--info);
+    }
 }
