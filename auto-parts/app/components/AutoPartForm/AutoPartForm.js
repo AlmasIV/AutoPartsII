@@ -2,7 +2,7 @@
 
 import { Fragment, useContext } from "react";
 import styles from "./auto-part-form.module.css";
-import { Input } from "../Index.js";
+import { Input, Button } from "../Index.js";
 import { autoPartConfigs } from "../configurations/configs.js";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
@@ -11,7 +11,7 @@ export default function AutoPartForm({ formTitle, buttonTitle, onCreate, autoPar
     return (
         <Fragment>
             <h2
-                id={styles["form-title"]}
+                className="text-center"
             >
                 {formTitle}
             </h2>
@@ -42,12 +42,13 @@ export default function AutoPartForm({ formTitle, buttonTitle, onCreate, autoPar
                         )
                     )
                 }
-                <button
+                
+                <Button
                     type="submit"
+                    title={buttonTitle}
                     className="primary-btn margin-top-2rem"
-                >
-                    {buttonTitle}
-                </button>
+                />
+                
             </form>
         </Fragment>
     );
