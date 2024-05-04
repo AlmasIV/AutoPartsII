@@ -6,6 +6,7 @@
 html {
     font-size: 18px;
     --hovered-white: rgb(255, 255, 255);
+    --selected-item: rgb(30, 150, 200);
     --main-green: rgb(33, 177, 117);
     --even-table: rgb(200, 200, 200);
     --info: rgb(18, 175, 223);
@@ -89,4 +90,9 @@ main {
 
 .width-full {
     width: 100%;
+}
+
+.selected {
+    background-color: var(--selected-item)!important;
+    color: white;
 }
