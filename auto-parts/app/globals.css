@@ -5,9 +5,10 @@
 
 html {
     font-size: 18px;
-    --hovered-white: rgb(255, 255, 255);
-    --selected-item: rgb(30, 150, 200);
+    --main-lightish: rgb(255, 255, 255);
+    --main-darkish: rgb(0, 0, 0);
     --main-green: rgb(33, 177, 117);
+    --selected-item: rgb(30, 150, 200);
     --even-table: rgb(200, 200, 200);
     --info: rgb(18, 175, 223);
     --failure: rgb(255, 0, 0);
@@ -16,7 +17,7 @@ html {
 
 a {
     text-decoration: none;
-    color: black;
+    color: var(--main-darkish);
 }
 
 main {
@@ -34,13 +35,13 @@ main {
         top: 100%;
         width: 100%;
         height: 3px;
-        background-color: var(--hovered-white);
+        background-color: var(--main-lightish);
         transform: scaleX(0);
         transition: transform 0.3s ease-in-out;
     }
 
     &:hover {
-        color: var(--hovered-white);
+        color: var(--main-lightish);
     }
 
     &:hover::before {
@@ -49,16 +50,15 @@ main {
 }
 
 .primary-btn,
-.secondary-btn {
+.secondary-btn,
+.informational-btn {
     font-size: 1rem;
     padding: 0.5rem 2rem;
     transition: 0.3s;
-}
-
-.primary-btn {
+    box-sizing: border-box;
     border: none;
-    background-color: black;
-    color: white;
+    background-color: var(--main-darkish);
+    color: var(--main-lightish);
 
     &:hover {
         background-color: var(--main-green);
@@ -66,12 +66,15 @@ main {
 }
 
 .secondary-btn {
-    box-sizing: border-box;
+    color: var(--main-darkish);
     border: 0.1rem solid var(--main-green);
-    background-color: white;
+    background-color: var(--main-lightish);
+}
 
+.informational-btn {
     &:hover {
-        background-color: var(--main-green);
+        background-color: var(--info);
+        color: var(--main-darkish);
     }
 }
 
@@ -92,9 +95,21 @@ main {
     width: 100%;
 }
 
+.width-half {
+    width: 50%;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
 .selected {
     background-color: var(--selected-item)!important;
-    color: white;
+    color: var(--main-lightish);
 }
 
 .text-center {

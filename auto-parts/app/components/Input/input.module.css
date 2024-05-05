@@ -6,10 +6,10 @@
     & input {
         width: 100%;
         box-sizing: border-box;
-        color: black;
+        color: var(--main-darkish);
         font-size: 1rem;
         padding: 0.2rem;
-        border: solid black 0.1rem;
+        border: solid var(--main-darkish) 0.1rem;
         border-radius: 0.3rem;
         margin-top: 0.2rem;
         outline-color: var(--main-green);

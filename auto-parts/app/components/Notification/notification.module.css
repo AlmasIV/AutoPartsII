@@ -15,7 +15,7 @@
 
 .failure {
     background-color: var(--failure);
-    color: white;
+    color: var(--main-lightish);
 }
 
 .success {
