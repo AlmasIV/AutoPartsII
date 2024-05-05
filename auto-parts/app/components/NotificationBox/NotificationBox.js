@@ -20,7 +20,7 @@ export default function NotificationBox(
                 id={styles["notification-box"]}
             >
                 {
-                    notifications.map((notification, index) => {
+                    notifications.map((notification) => {
                         return (
                             <Notification
                                 key={notification.key}
