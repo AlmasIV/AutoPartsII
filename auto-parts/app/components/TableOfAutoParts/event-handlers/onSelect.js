@@ -4,12 +4,10 @@ import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
 export default function onSelect(event, globalNotification){
-
     let target = event.target;
     if(target.tagName === "TD"){
         target = target.parentElement;
     }
-
     toggleSelection(target, globalNotification);
 }
 
@@ -18,7 +16,6 @@ function toggleSelection(element, globalNotification){
     if(element.classList.contains("selected")){
         element.classList.remove("selected");
         localStorage.removeItem(autoPart.id + "ap");
-
         globalNotification.setNotifications(
             [
                 {
@@ -33,7 +30,6 @@ function toggleSelection(element, globalNotification){
     else{
         element.classList.add("selected");
         localStorage.setItem(autoPart.id + "ap", JSON.stringify(autoPart));
-
         globalNotification.setNotifications(
             [
                 {
@@ -55,6 +51,5 @@ function parseRowToObject(row){
     for(i; i < availableItems.length; i ++){
         result[availableItems[i].name] = dataCells[i].textContent;
     }
-
     return result;
 }
