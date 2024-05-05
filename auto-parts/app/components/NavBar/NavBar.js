@@ -3,7 +3,9 @@ import styles from "./nav-bar.module.css";
 
 export default function NavBar(){
     return (
-        <nav id={styles["main-nav-bar"]}>
+        <nav
+            id={styles["main-nav-bar"]}
+        >
             <ul>
                 <li>
                     <Link
