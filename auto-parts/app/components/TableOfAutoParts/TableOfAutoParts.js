@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState, useContext } from "react";
 import { autoPartConfigs } from "../configurations/configs.js";
 import styles from "./table-of-auto-parts.module.css";
 import onSelect from "./event-handlers/onSelect.js";
-import { useEffect, useState, useContext } from "react";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
 export default function TableOfAutoParts(
