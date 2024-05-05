@@ -8,8 +8,8 @@ html {
     --main-lightish: rgb(255, 255, 255);
     --main-darkish: rgb(0, 0, 0);
     --main-green: rgb(33, 177, 117);
+    --main-gray: rgb(200, 200, 200);
     --selected-item: rgb(30, 150, 200);
-    --even-table: rgb(200, 200, 200);
     --info: rgb(18, 175, 223);
     --failure: rgb(255, 0, 0);
     --warning: rgb(241, 245, 2);
