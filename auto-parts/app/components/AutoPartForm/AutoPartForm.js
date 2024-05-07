@@ -1,16 +1,15 @@
 "use client";
 
 import { Fragment, useContext } from "react";
-import styles from "./auto-part-form.module.css";
-import { Input, Button } from "../Index.js";
+import { Input, Button, Form } from "../Index.js";
 import { autoPartConfigs } from "../configurations/configs.js";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
 
 export default function AutoPartForm(
     {
         formTitle,
-        buttonTitle,
-        onCreate,
+        submitButtonTitle,
+        onSubmit,
         autoPart = null
     }
 ) {
@@ -22,12 +21,12 @@ export default function AutoPartForm(
             >
                 {formTitle}
             </h2>
-            <form 
-                id={styles["auto-part-form"]}
+            <Form 
+                formType="flex-column-form"
                 method="dialog"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    onCreate(e, globalNotification);
+                    onSubmit(e, globalNotification);
                 }}
             >
                 {
@@ -49,14 +48,12 @@ export default function AutoPartForm(
                         )
                     )
                 }
-                
                 <Button
                     type="submit"
-                    title={buttonTitle}
+                    title={submitButtonTitle}
                     className="primary-btn margin-top-2rem"
                 />
-                
-            </form>
+            </Form>
         </Fragment>
     );
 }
