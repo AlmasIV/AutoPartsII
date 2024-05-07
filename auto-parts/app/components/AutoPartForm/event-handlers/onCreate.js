@@ -1,5 +1,3 @@
-"use client";
-
 import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
@@ -18,9 +16,7 @@ export default async function onCreate(event, globalNotification){
             autoPart[autoPartConfig.name] = prop;
         }
     }
-
     event.target.reset();
-
     await submitAutoPart(autoPart, globalNotification);
 }
 
@@ -33,7 +29,6 @@ async function submitAutoPart(autoPart, globalNotification){
         },
         body: JSON.stringify(autoPart)
     });
-
     if(result.ok){
         globalNotification.setNotifications(
             [
@@ -47,7 +42,6 @@ async function submitAutoPart(autoPart, globalNotification){
         );
         return;
     }
-    
     globalNotification.setNotifications(
         [
             {
