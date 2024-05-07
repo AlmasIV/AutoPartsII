@@ -15,7 +15,7 @@
     }
 
     & tbody tr {
-        transition: 0.3s;
+        transition: var(--global-transition);
     }
 
     & tbody tr:hover {
