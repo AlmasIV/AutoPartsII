@@ -3,19 +3,21 @@
 import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
-export default function onSelect(event, globalNotification){
+export default function onSelect(event, selectedState, globalNotification){
     let target = event.target;
     if(target.tagName === "TD"){
         target = target.parentElement;
     }
-    toggleSelection(target, globalNotification);
+    toggleSelection(target, selectedState, globalNotification);
 }
 
-function toggleSelection(element, globalNotification){
+function toggleSelection(element, selectedState, globalNotification){
     const autoPart = parseRowToObject(element);
     if(element.classList.contains("selected")){
-        element.classList.remove("selected");
         localStorage.removeItem(autoPart.id + "ap");
+        selectedState.setSelectedAutoParts(
+            [...selectedState.selectedAutoParts.filter((ap) => ap.id !== autoPart.id)]
+        );
         globalNotification.setNotifications(
             [
                 {
@@ -28,8 +30,11 @@ function toggleSelection(element, globalNotification){
         );
     }
     else{
-        element.classList.add("selected");
         localStorage.setItem(autoPart.id + "ap", JSON.stringify(autoPart));
+        // autoPart contains number data types. And selectedAutoParts might not.
+        selectedState.setSelectedAutoParts(
+            [...selectedState.selectedAutoParts, autoPart]
+        );
         globalNotification.setNotifications(
             [
                 {
