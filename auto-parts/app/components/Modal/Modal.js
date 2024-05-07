@@ -4,27 +4,45 @@ import { Fragment, useRef } from "react";
 import styles from "./modal.module.css";
 import { Button } from "../Index.js";
 
-export default function Modal({ children, openTitle, closeTitle }){
+export default function Modal(
+    {
+        children,
+        openButtonTitle,
+        closeButtonTitle,
+        openButtonClass,
+        closeButtonClass,
+        dialogType,
+        dialogClass="",
+        onOpenButtonClick=null,
+        onCloseButtonClick=null
+    }
+){
     const modalRef = useRef(null);
     return (
         <Fragment>
             <dialog
                 ref={modalRef}
-                id={styles["primary-modal"]}
+                className={styles[dialogType] + " " + dialogClass}
             >
                 {children}
                 <Button
+                    title={closeButtonTitle}
+                    className={closeButtonClass}
                     type="button"
-                    title={closeTitle}
-                    className="secondary-btn width-full margin-top-05rem"
-                    onClick={() => modalRef.current.close()}
+                    onClick={() => {
+                        modalRef.current.close();
+                        onCloseButtonClick && onCloseButtonClick();
+                    }}
                 />
             </dialog>
             <Button
+                title={openButtonTitle}
+                className={openButtonClass}
                 type="button"
-                title={openTitle}
-                className="primary-btn width-full margin-bottom-05rem"
-                onClick={() => modalRef.current.showModal()}
+                onClick={() => {
+                    modalRef.current.showModal();
+                    onOpenButtonClick && onOpenButtonClick();
+                }}
             />
         </Fragment>
     );
