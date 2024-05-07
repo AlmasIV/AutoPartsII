@@ -3,7 +3,7 @@ import styles from "./input.module.css";
 export default function Input(
     {
         config,
-        autoPart=null
+        autoPart=null // Implement
     }
 ) {
     return (
