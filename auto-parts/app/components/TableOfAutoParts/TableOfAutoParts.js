@@ -8,11 +8,13 @@ import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContex
 
 export default function TableOfAutoParts(
     {
-        autoPartCollection
+        autoPartCollection,
+        selectedAutoParts,
+        setSelectedAutoParts
     }
 ){
-    const [selectedAutoParts, setSelectedAutoParts] = useState([]);
     const globalNotification = useContext(NotificationBoxContext);
+    
 
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
 
@@ -23,7 +25,7 @@ export default function TableOfAutoParts(
         for(i; i < localStorage.length; i ++){
             ap = localStorage.key(i);
             if(ap.includes("ap")){
-                selected.push(ap);
+                selected.push(JSON.parse(localStorage.getItem(ap)));
             }
         }
         setSelectedAutoParts([...selected]);
@@ -56,9 +58,9 @@ export default function TableOfAutoParts(
                             key={autoPart.id}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onSelect(e, globalNotification);
+                                onSelect(e, { selectedAutoParts, setSelectedAutoParts }, globalNotification);
                             }}
-                            className={selectedAutoParts.includes(autoPart.id + "ap") ? "selected" : ""}
+                            className={selectedAutoParts.some(ap => Number(ap.id) === autoPart.id) ? "selected" : ""}
                         >
                             {
                                 tableConfigs.map((config) => (
@@ -70,7 +72,6 @@ export default function TableOfAutoParts(
                                     </td>
                                 ))
                             }
-
                         </tr>
                     ))
                 }
