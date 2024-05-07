@@ -1,10 +1,12 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 html {
     font-size: 18px;
+    --global-transition: 0.3s;
     --main-lightish: rgb(255, 255, 255);
     --main-darkish: rgb(0, 0, 0);
     --main-green: rgb(33, 177, 117);
@@ -27,7 +29,7 @@ main {
 
 .underline-link-animation {
     position: relative;
-    transition: color 0.3s ease-in-out;
+    transition: color var(--global-transition) ease-in-out;
 
     &::before {
         content: '';
@@ -37,7 +39,7 @@ main {
         height: 3px;
         background-color: var(--main-lightish);
         transform: scaleX(0);
-        transition: transform 0.3s ease-in-out;
+        transition: transform var(--global-transition) ease-in-out;
     }
 
     &:hover {
@@ -54,8 +56,7 @@ main {
 .informational-btn {
     font-size: 1rem;
     padding: 0.5rem 2rem;
-    transition: 0.3s;
-    box-sizing: border-box;
+    transition: var(--global-transition);
     border: none;
     background-color: var(--main-darkish);
     color: var(--main-lightish);
@@ -114,4 +115,8 @@ main {
 
 .text-center {
     text-align: center;
+}
+
+.opacity-08{
+    opacity: 0.8;
 }
