@@ -1,0 +1,7 @@
+.flex-column-form {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+    justify-content: space-between;
+}
+

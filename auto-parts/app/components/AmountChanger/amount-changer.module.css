@@ -1,0 +1,60 @@
+.container {
+    position: relative;
+    width: 6vw;
+    height: 6vh;
+    border: 0.125rem solid var(--main-darkish);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 1rem;
+    transition: var(--global-transition);
+    overflow: hidden;
+
+    &:hover {
+        width: 8.5vw;
+    }
+
+    &:hover .controller {
+        opacity: 1;
+    }
+
+    & div {
+        flex-grow: 1;
+        text-align: center;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        line-height: 6vh;
+        user-select: none;
+    }
+
+    .controller {
+        opacity: 0;
+        transition: var(--global-transition);
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .amount-box {
+        color: var(--info);
+    }
+
+    .prev {
+        color: var(--danger);
+
+        &:hover {
+            color: var(--main-lightish);
+            background-color: var(--danger);
+        }
+    }
+
+    .next {
+        color: var(--main-green);
+
+        &:hover {
+            color: var(--main-darkish);
+            background-color: var(--main-green);
+        }
+    }
+}

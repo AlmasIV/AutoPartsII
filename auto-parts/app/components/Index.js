@@ -8,6 +8,9 @@ import Notification from "./Notification/Notification.js";
 import NotificationBox from "./NotificationBox/NotificationBox.js";
 import ShoppingCart from "./ShoppingCart/ShoppingCart.js";
 import Button from "./Button/Button.js";
+import Form from "./Form/Form.js";
+import ProductBox from "./ProductBox/ProductBox.js";
+import AmountChanger from "./AmountChanger/AmountChanger.js";
 
 export {
     NavBar,
@@ -19,5 +22,8 @@ export {
     Notification,
     NotificationBox,
     ShoppingCart,
-    Button
+    Button,
+    Form,
+    ProductBox,
+    AmountChanger
 }
