@@ -13,7 +13,7 @@ html {
     --main-gray: rgb(200, 200, 200);
     --selected-item: rgb(30, 150, 200);
     --info: rgb(18, 175, 223);
-    --failure: rgb(255, 0, 0);
+    --danger: rgb(255, 0, 0);
     --warning: rgb(241, 245, 2);
 }
 
@@ -53,14 +53,15 @@ main {
 
 .primary-btn,
 .secondary-btn,
-.informational-btn {
+.informational-btn,
+.danger-btn {
     font-size: 1rem;
     padding: 0.5rem 2rem;
     transition: var(--global-transition);
     border: none;
     background-color: var(--main-darkish);
     color: var(--main-lightish);
-
+    user-select: none;
     &:hover {
         background-color: var(--main-green);
     }
@@ -76,6 +77,17 @@ main {
     &:hover {
         background-color: var(--info);
         color: var(--main-darkish);
+    }
+}
+
+.danger-btn {
+    color: var(--main-darkish);
+    border: 0.1rem solid var(--danger);
+    background-color: var(--main-lightish);
+
+    &:hover {
+        color: var(--main-lightish);
+        background-color: var(--danger);
     }
 }
 
