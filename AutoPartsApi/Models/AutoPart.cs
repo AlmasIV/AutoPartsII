@@ -49,4 +49,9 @@ public class AutoPart {
         JsonPropertyName("amount")
     ]
     public ushort Amount { get; set; }
+
+    [
+        JsonIgnore()
+    ]
+    public List<Order>? Orders { get; set; }
 }
