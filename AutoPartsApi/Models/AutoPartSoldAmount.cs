@@ -5,25 +5,17 @@ using System.Text.Json.Serialization;
 namespace AutoPartsApi.Models;
 
 public class AutoPartSoldAmount {
-    [
-        JsonPropertyName("id")
-    ]
+    [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [
-        JsonPropertyName("autoPartId")
-    ]
+    [JsonPropertyName("autoPartId")]
     public int AutoPartId { get; set; }
 
-    [
-        JsonIgnore,
-        Required()
-    ]
+    [Required()]
+    [JsonIgnore()]
     public AutoPart AutoPart { get; set; } = null!;
 
-    [
-        JsonPropertyName("soldAmount"),
-        Range(1, int.MaxValue)
-    ]
+    [Range(1, int.MaxValue)]
+    [JsonPropertyName("soldAmount")]
     public int SoldAmount { get; set; }
 }

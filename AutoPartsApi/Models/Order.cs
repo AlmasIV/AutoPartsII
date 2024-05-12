@@ -5,35 +5,25 @@ using System.Text.Json.Serialization;
 namespace AutoPartsApi.Models;
 
 public class Order {
-    [
-        JsonPropertyName("id")
-    ]
+    [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [
-        Required(),
-        JsonPropertyName("autoParts")
-    ]
+    [Required()]
+    [JsonPropertyName("autoParts")]
     public List<AutoPart> AutoParts { get; set; } = null!;
 
-    [
-        Required(),
-        Column(TypeName = "decimal(10, 2)"),
-        JsonPropertyName("totalPriceInKzt"),
-        Range(100, 9999_9999.99)
-    ]
+    [Required()]
+    [Range(100, 9999_9999.99)]
+    [Column(TypeName = "decimal(10, 2)")]
+    [JsonPropertyName("totalPriceInKzt")]
     public decimal TotalPriceInKzt { get; set; }
 
-    [
-        Required(),
-        JsonIgnore()
-    ]
+    [Required()]
+    [JsonIgnore()]
     public List<AutoPartSoldAmount> AutoPartsSoldAmounts { get; set; } = null!;
 
-    [
-        JsonPropertyName("createdOn"),
-        Column(TypeName = "datetime2(0)"),
-        Required()
-    ]
+    [Required()]
+    [Column(TypeName = "datetime2(0)")]
+    [JsonPropertyName("createdOn")]
     public DateTime CreatedOn { get; set; }
 }
