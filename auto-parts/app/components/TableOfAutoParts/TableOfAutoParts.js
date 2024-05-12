@@ -54,7 +54,6 @@ export default function TableOfAutoParts(
                                         key={config.labelName}
                                         className="text-center"
                                     >
-                                        {/* {autoPart[config.name]} */}
                                         {
                                             config.name === "priceInRub" ? RUBFormatter.format(autoPart[config.name]) : config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : autoPart[config.name]
                                         }
