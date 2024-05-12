@@ -14,7 +14,7 @@
 }
 
 .failure {
-    background-color: var(--failure);
+    background-color: var(--danger);
     color: var(--main-lightish);
 }
 
