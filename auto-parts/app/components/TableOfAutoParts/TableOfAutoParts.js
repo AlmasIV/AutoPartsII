@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { autoPartConfigs } from "../configurations/configs.js";
 import styles from "./table-of-auto-parts.module.css";
 import onSelect from "./event-handlers/onSelect.js";
 import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
+import { KZTFormatter, RUBFormatter } from "../NumberFormatters/formatters.js";
 
 export default function TableOfAutoParts(
     {
@@ -14,22 +15,7 @@ export default function TableOfAutoParts(
     }
 ){
     const globalNotification = useContext(NotificationBoxContext);
-    
-
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
-
-    useEffect(() => {
-        const selected = [];
-        let i = 0;
-        let ap = null;
-        for(i; i < localStorage.length; i ++){
-            ap = localStorage.key(i);
-            if(ap.includes("ap")){
-                selected.push(JSON.parse(localStorage.getItem(ap)));
-            }
-        }
-        setSelectedAutoParts([...selected]);
-    }, []);
     return (
         <table id={styles["auto-parts-table"]}>
             <thead>
@@ -68,7 +54,10 @@ export default function TableOfAutoParts(
                                         key={config.labelName}
                                         className="text-center"
                                     >
-                                        {autoPart[config.name]}
+                                        {/* {autoPart[config.name]} */}
+                                        {
+                                            config.name === "priceInRub" ? RUBFormatter.format(autoPart[config.name]) : config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : autoPart[config.name]
+                                        }
                                     </td>
                                 ))
                             }
