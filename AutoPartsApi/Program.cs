@@ -26,32 +26,6 @@ public class Program
             });
         });
 
-        // builder.Services.AddDbContext<IdentityDbContext>(options => {
-        //     options.UseSqlServer(builder.Configuration.GetConnectionString("Identity") ?? throw new NullReferenceException("Identity connection string wasn't found."), sqlOptions => {
-        //         sqlOptions.EnableRetryOnFailure();
-        //         sqlOptions.MigrationsAssembly("AutoPartsApi");
-        //     });
-        // });
-        // builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-        //     options.Password.RequiredLength = 12;
-        //     options.Password.RequireDigit = true;
-        //     options.Password.RequiredUniqueChars = 2;
-        //     options.Password.RequireLowercase = true;
-        //     optio"auto-parts"ns.Password.RequireNonAlphanumeric = true;
-        //     options.Password.RequireUppercase = true;
-
-        //     options.User.RequireUniqueEmail = true;
-        // }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
-
-        // builder.Services.Configure<SecurityStampValidatorOptions>(options => {
-        //     options.ValidationInterval = TimeSpan.FromMinutes(2);
-        // });
-
-        // builder.Services.AddAuthentication();
-        // builder.Services.AddAuthorization();
-
-        //builder.Services.AddDbContext<
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -62,6 +36,10 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
+        }
+        else {
+            app.UseExceptionHandler("/error");
         }
 
         app.UseHttpsRedirection();
@@ -69,7 +47,6 @@ public class Program
         app.UseCors();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 
