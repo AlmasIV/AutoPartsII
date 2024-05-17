@@ -4,6 +4,7 @@
 
     & td, & th {
         padding: 1rem;
+        user-select: none;
     }
 
     & tbody tr:nth-child(even) {
