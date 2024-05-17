@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
-public class AutoPart {
+public class AutoPart : IEquatable<AutoPart> {
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
@@ -38,4 +38,29 @@ public class AutoPart {
 
     [JsonIgnore()]
     public List<Order>? Orders { get; set; }
+
+    public bool Equals(AutoPart? other){
+        if(other is null){
+            return false;
+        }
+
+        return (
+            Id == other.Id &&
+            Name == other.Name &&
+            Applicability == other.Applicability &&
+            Company == other.Company &&
+            PriceInRub == other.PriceInRub &&
+            PriceInKzt == other.PriceInKzt
+        );
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as AutoPart);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Applicability, Company, PriceInRub, PriceInKzt);
+    }
 }
