@@ -2,20 +2,7 @@ import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
 export default async function onCreate(event, globalNotification){
-    const autoPart = {};
-    let prop;
-    const formElements = event.target.elements;
-    for(let autoPartConfig of autoPartConfigs){
-        if(formElements[autoPartConfig.name]){
-            if(autoPartConfig.type === "number"){
-                prop = Number(formElements[autoPartConfig.name].value);
-            }
-            else{
-                prop = formElements[autoPartConfig.name].value;
-            }
-            autoPart[autoPartConfig.name] = prop;
-        }
-    }
+    const autoPart = parseAutoPartFromForm(event);
     event.target.reset();
     await submitAutoPart(autoPart, globalNotification);
 }
@@ -40,16 +27,35 @@ async function submitAutoPart(autoPart, globalNotification){
                 ...globalNotification.notifications
             ]
         );
-        return;
     }
-    globalNotification.setNotifications(
-        [
-            {
-                message: `Failed to create: ${autoPart.name}.`,
-                level: "failure",
-                key: generateGUID()
-            },
-            ...globalNotification.notifications
-        ]
-    );
+    else{
+        globalNotification.setNotifications(
+            [
+                {
+                    message: `Failed to create: ${autoPart.name}.`,
+                    level: "danger",
+                    key: generateGUID()
+                },
+                ...globalNotification.notifications
+            ]
+        );
+    }
+}
+
+export function parseAutoPartFromForm(event){
+    const autoPart = {};
+    let prop;
+    const formElements = event.target.elements;
+    for(let autoPartConfig of autoPartConfigs){
+        if(formElements[autoPartConfig.name]){
+            if(autoPartConfig.type === "number"){
+                prop = Number(formElements[autoPartConfig.name].value);
+            }
+            else{
+                prop = formElements[autoPartConfig.name].value;
+            }
+            autoPart[autoPartConfig.name] = prop;
+        }
+    }
+    return autoPart;
 }
