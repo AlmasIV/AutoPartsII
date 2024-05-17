@@ -1,15 +1,9 @@
 "use client";
 
-import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
-import { currencyToNumber } from "../../NumberFormatters/formatters.js";
 
-export default function onSelect(event, selectedState, globalNotification) {
-    let target = event.target;
-    if (target.tagName === "TD") {
-        target = target.parentElement;
-    }
-    toggleSelection(target, selectedState, globalNotification);
+export default function onSelect(selectedState, globalNotification, autoPart) {
+    toggleSelection(autoPart, selectedState, globalNotification);
 }
 
 // Also used in the ProductBox.
@@ -37,7 +31,7 @@ export function setAutoPart(autoPart){
 export function selectAutoPart(autoPart, selectedState, globalNotification) {
     autoPart = {
         ...autoPart,
-        amount: Number(autoPart.amount) - 1,
+        amount: autoPart.amount - 1,
         selectedAmount: 1
     };
     setAutoPart(autoPart);
@@ -57,32 +51,11 @@ export function selectAutoPart(autoPart, selectedState, globalNotification) {
     );
 }
 
-function toggleSelection(element, selectedState, globalNotification) {
-    const autoPart = parseRowToObject(element);
-    if (element.classList.contains("selected")) {
+function toggleSelection(autoPart, selectedState, globalNotification) {
+    if (localStorage.getItem(autoPart.id + "ap")) {
         disselectAutoPart(autoPart, selectedState, globalNotification);
     }
     else {
         selectAutoPart(autoPart, selectedState, globalNotification);
     }
-}
-
-function parseRowToObject(row) {
-    const result = {};
-    const availableItems = autoPartConfigs.filter((config) => config["inTable"]);
-    const dataCells = row.querySelectorAll("td");
-    let i = 0;
-    let tdName = "";
-    let tdContent = "";
-    for (i; i < availableItems.length; i++) {
-        tdName = availableItems[i].name;
-        if(tdName === "priceInKzt" || tdName === "priceInRub"){
-            tdContent = currencyToNumber(dataCells[i].textContent);
-        }
-        else {
-            tdContent = dataCells[i].textContent;
-        }
-        result[tdName] = tdContent;
-    }
-    return result;
 }

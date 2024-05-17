@@ -10,13 +10,15 @@ import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContex
 export default function ShoppingCart(
     {
         selectedAutoParts,
-        setSelectedAutoParts
+        setSelectedAutoParts,
+        autoParts,
+        setAutoParts
     }
 ){
     const globalNotification = useContext(NotificationBoxContext);
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
     useEffect(() => {
-        setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => accumulator + ap.selectedAmount * Number(ap.priceInKzt), 0));
+        setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => accumulator + ap.selectedAmount * ap.priceInKzt, 0));
     }, [selectedAutoParts]);
     return selectedAutoParts.length > 0 ? (
         <Form
@@ -24,7 +26,7 @@ export default function ShoppingCart(
             method="dialog"
             onSubmit={(e) => {
                 e.preventDefault();
-                onSell(globalNotification, setSelectedAutoParts);
+                onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts });
             }}
         >
             {

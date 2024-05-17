@@ -1,36 +1,20 @@
-import { autoPartConfigs } from "../../configurations/configs.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
-export default async function onSell(globalNotification, setSelectedAutoParts){
+export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState){
     const orderSummary = {
         totalPriceInKzt: 0,
         orderedParts: []
     };
-    let tempAutoPart = null, tempProp = null;
-    Object.keys(localStorage)
-        .filter((keyItem) => keyItem.includes("ap"))
-        .map((keyItem) => JSON.parse(localStorage.getItem(keyItem)))
-        .forEach((ap) => {
-            tempAutoPart = {};
-            autoPartConfigs.forEach((apconfig) => {
-                if(apconfig["inTable"]){
-                    if(apconfig["type"] === "number"){
-                        tempProp = Number(ap[apconfig["name"]]);
-                    }
-                    else{
-                        tempProp = ap[apconfig["name"]];
-                    }
-                    tempAutoPart[apconfig["name"]] = tempProp;
-                }
-            });
-            tempAutoPart.amount = ap.selectedAmount;
-            orderSummary.orderedParts.push(tempAutoPart);
-            orderSummary.totalPriceInKzt += tempAutoPart.amount * tempAutoPart.priceInKzt;
-        });
-    await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts);
+    selectedAutoParts.forEach((ap) => {
+        const { selectedAmount, ...autoPart } = ap;
+        orderSummary.totalPriceInKzt += selectedAmount * autoPart.priceInKzt;
+        autoPart.amount = selectedAmount;
+        orderSummary.orderedParts.push(autoPart);
+    });
+    await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState);
 }
 
-async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts){
+async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState){
     const result = await fetch("https://localhost:7019/auto-parts/order", {
         method: "POST",
         cache: "no-cache",
@@ -50,9 +34,23 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
                 ...globalNotification.notifications
             ]
         );
+        const soldParts = autoPartsState.autoParts.filter((ap) => orderSummary.orderedParts.some((op) => op.id === ap.id));
         orderSummary.orderedParts.forEach((autoPart) => {
             localStorage.removeItem(autoPart.id + "ap");
+            soldParts.find((ap) => ap.id === autoPart.id).amount -= autoPart.amount;
         });
+        let tempOp = null;
+        const updatedAutoParts = [];
+        autoPartsState.autoParts.forEach((ap) => {
+            tempOp = soldParts.find((op) => op.id === ap.id);
+            if(tempOp){
+                updatedAutoParts.push(tempOp);
+            }
+            else{
+                updatedAutoParts.push(ap);
+            }
+        });
+        autoPartsState.setAutoParts(updatedAutoParts);
         setSelectedAutoParts([]);
     }
     else{

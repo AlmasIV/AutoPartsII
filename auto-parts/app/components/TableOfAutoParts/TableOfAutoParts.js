@@ -44,7 +44,7 @@ export default function TableOfAutoParts(
                             key={autoPart.id}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onSelect(e, { selectedAutoParts, setSelectedAutoParts }, globalNotification);
+                                onSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
                             }}
                             className={selectedAutoParts.some(ap => Number(ap.id) === autoPart.id) ? "selected" : ""}
                         >
