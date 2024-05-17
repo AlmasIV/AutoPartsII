@@ -13,7 +13,7 @@
     background-color: var(--info);
 }
 
-.failure {
+.danger {
     background-color: var(--danger);
     color: var(--main-lightish);
 }
