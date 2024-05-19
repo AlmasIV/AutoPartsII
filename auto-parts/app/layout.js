@@ -20,10 +20,10 @@ export default function RootLayout(
     >
       <body className={inter.className}>
         <NotificationBox>
-          <NavBar />
-          <main>
-            {children}
-          </main>
+            <NavBar />
+            <main>
+              {children}
+            </main>
         </NotificationBox>
       </body>
     </html>
