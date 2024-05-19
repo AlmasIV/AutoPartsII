@@ -13,6 +13,7 @@ html {
     --main-gray: rgb(200, 200, 200);
     --selected-item: rgb(30, 150, 200);
     --info: rgb(18, 175, 223);
+    --info-05: rgba(18, 175, 223, 0.5);
     --danger: rgb(255, 0, 0);
     --warning: rgb(241, 245, 2);
 }
