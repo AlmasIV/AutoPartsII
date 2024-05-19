@@ -15,23 +15,23 @@ public class AutoPartController : ControllerBase {
         _appDbContext = appDbContext;
     }
 
-    [HttpGet]
+    [HttpGet()]
     [Route("all")]
     public async Task<IEnumerable<AutoPart>> GetAll(){
         return await _appDbContext.AutoParts.Select(x => x).ToArrayAsync();
     }
 
-    [HttpPost]
+    [HttpPost()]
     [Route("create")]
-    public async Task Post([FromBody] AutoPart autoPart){
+    public async Task Create([FromBody] AutoPart autoPart){
         await _appDbContext.AutoParts.AddAsync(autoPart);
         await _appDbContext.SaveChangesAsync();
     }
 
-    [HttpPost]
-    [Route("order")]
+    [HttpPost()]
+    [Route("sell")]
     [TypeFilter(typeof(OrderSummaryValidationAttribute))]
-    public async Task<IActionResult> Post([FromBody]OrderSummary orderSummary){
+    public async Task<IActionResult> Sell([FromBody]OrderSummary orderSummary){
         Order order = new Order(){
             TotalPriceInKzt = orderSummary.TotalPriceInKzt,
             AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
@@ -59,5 +59,12 @@ public class AutoPartController : ControllerBase {
         await _appDbContext.SaveChangesAsync();
 
         return new OkResult();
+    }
+
+    [HttpGet()]
+    [Route("orders/all")]
+    public async Task<IEnumerable<Order>> GetOrders(){
+        Console.WriteLine("HELLO");
+        return await _appDbContext.Orders.Select(o => o).ToArrayAsync();
     }
 }
