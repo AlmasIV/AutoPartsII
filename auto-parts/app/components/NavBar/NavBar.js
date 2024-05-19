@@ -17,7 +17,7 @@ export default function NavBar(){
                 </li>
                 <li>
                     <Link
-                        href=""
+                        href="/history"
                         className="underline-link-animation"
                     >
                         History
