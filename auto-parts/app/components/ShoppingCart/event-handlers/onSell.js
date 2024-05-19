@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache.js";
 import generateGUID from "../../GUID Tool/GUID.js";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState){
@@ -15,7 +16,7 @@ export default async function onSell(globalNotification, selectedAutoParts, setS
 }
 
 async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState){
-    const result = await fetch("https://localhost:7019/auto-parts/order", {
+    const result = await fetch("https://localhost:7019/auto-parts/sell", {
         method: "POST",
         cache: "no-cache",
         headers: {
