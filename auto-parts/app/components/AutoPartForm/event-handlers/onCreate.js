@@ -1,5 +1,5 @@
-import { autoPartConfigs } from "../../configurations/configs.js";
-import generateGUID from "../../GUID Tool/GUID.js";
+import autoPartConfigs from "@/configurations/auto-part-configuration.json";
+import generateGUID from "@/app/tools/GUID/GUID.js";
 
 export default async function onCreate(event, globalNotification){
     const autoPart = parseAutoPartFromForm(event);

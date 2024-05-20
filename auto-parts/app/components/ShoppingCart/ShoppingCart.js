@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import styles from "./shopping-cart.module.css";
-import { Form, ProductBox, Button } from "../Index.js";
-import { KZTFormatter } from "../NumberFormatters/formatters.js";
-import onSell from "./event-handlers/onSell.js";
-import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
+import styles from "@/app/components/ShoppingCart/shopping-cart.module.css";
+import { Form, ProductBox, Button } from "@/app/components/Index.js";
+import { KZTFormatter } from "@/app/tools/NumberFormatters/formatters.js";
+import onSell from "@/app/components/ShoppingCart/event-handlers/onSell.js";
+import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 
 export default function ShoppingCart(
     {

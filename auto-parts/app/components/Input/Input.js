@@ -1,4 +1,4 @@
-import styles from "./input.module.css";
+import styles from "@/app/components/Input/input.module.css";
 
 export default function Input(
     {

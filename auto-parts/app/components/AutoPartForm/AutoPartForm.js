@@ -1,9 +1,9 @@
 "use client";
 
 import { Fragment, useContext } from "react";
-import { Input, Button, Form } from "../Index.js";
-import { autoPartConfigs } from "../configurations/configs.js";
-import { NotificationBoxContext } from "../NotificationBox/NotificationBoxContext.js";
+import { Input, Button, Form } from "@/app/components/Index.js";
+import autoPartConfigs from "@/configurations/auto-part-configuration.json";
+import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 
 export default function AutoPartForm(
     {

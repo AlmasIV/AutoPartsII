@@ -1,5 +1,5 @@
 import { revalidateTag } from "next/cache.js";
-import generateGUID from "../../GUID Tool/GUID.js";
+import generateGUID from "@/app/tools/GUID/GUID.js";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState){
     const orderSummary = {

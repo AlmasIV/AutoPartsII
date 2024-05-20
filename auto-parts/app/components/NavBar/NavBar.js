@@ -1,5 +1,5 @@
 import Link from "next/link.js";
-import styles from "./nav-bar.module.css";
+import styles from "@/app/components/NavBar/nav-bar.module.css";
 
 export default function NavBar(){
     return (

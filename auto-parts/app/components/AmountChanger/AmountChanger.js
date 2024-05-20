@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import styles from "./amount-changer.module.css";
-import { setAutoPart } from "../TableOfAutoParts/event-handlers/onSelect.js";
-
+import styles from "@/app/components/AmountChanger/amount-changer.module.css";
+import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 
 export default function AmountChanger(
     {
