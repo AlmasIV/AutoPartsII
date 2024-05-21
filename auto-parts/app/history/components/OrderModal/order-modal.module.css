@@ -1,0 +1,30 @@
+.order-details {
+    width: 90vw;
+    height: 80vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    padding: 1rem;
+}
+
+.order-box {
+    padding: 0.5rem;
+    transition: var(--global-transition);
+    border-bottom: 0.2rem solid var(--info);
+    margin-bottom: 1rem;
+
+    &:hover {
+        background-color: var(--secondary-gray);
+        border-bottom-color: var(--main-green);
+    }
+}
+
+.order-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90%;
+    overflow: auto;
+}
