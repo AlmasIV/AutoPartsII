@@ -64,7 +64,32 @@ public class AutoPartController : ControllerBase {
     [HttpGet()]
     [Route("orders/all")]
     public async Task<IEnumerable<Order>> GetOrders(){
-        Console.WriteLine("HELLO");
-        return await _appDbContext.Orders.Select(o => o).ToArrayAsync();
+        return await _appDbContext.Orders
+            .OrderByDescending(o => o.CreatedOn)
+            .Select(o => o)
+            .ToArrayAsync();
+    }
+
+    [HttpGet()]
+    [Route("orders/{id:int}")]
+    public async Task<Object> GetOrder(int id){
+        var result = await _appDbContext.Orders
+            .Where(order => order.Id == id)
+            .Include(order => order.AutoPartsSoldAmounts)
+                .ThenInclude(sa => sa.AutoPart)
+            .Select(o => new {
+                id = o.Id,
+                totalPriceInKzt = o.TotalPriceInKzt,
+                soldParts = o.AutoPartsSoldAmounts.Select(sa => new {
+                    soldPart = sa.AutoPart,
+                    soldAmount = sa.SoldAmount
+                }).ToArray()
+            })
+            .SingleOrDefaultAsync();
+
+        if(result is null){
+            return BadRequest();
+        }
+        return result;
     }
 }
