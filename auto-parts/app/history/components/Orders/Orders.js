@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "@/app/history/components/Orders/orders.module.css";
 import { OrderModal, ErrorBox } from "@/app/history/components/Index.js";
 
 export default function Orders() {
@@ -52,9 +51,7 @@ export default function Orders() {
             ) : isLoading ? (
                 <div>Loading...</div>
             ) : orders.length > 0 ? (
-                <div
-                    className={styles["orders-container"]}
-                >
+                <div>
                     {
                         orders.map((o) => {
                             return (
