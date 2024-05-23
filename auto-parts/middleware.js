@@ -14,5 +14,5 @@ export function middleware(request) {
 }
 
 export const config = {
-    matcher: ["/history", "/"]
+    matcher: ["/", "/history"]
 };
