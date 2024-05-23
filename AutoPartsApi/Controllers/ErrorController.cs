@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoPartsApi.Controllers;
 
@@ -13,5 +14,5 @@ public class ErrorController : ControllerBase {
     [ApiExplorerSettings(IgnoreApi = true)]
     public IActionResult HandleError(){
         return Problem();
-    }
 }
+    }

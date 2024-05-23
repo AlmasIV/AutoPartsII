@@ -1,14 +1,17 @@
+using AutoPartsApi.DTOs;
+using AutoPartsApi.Models;
+using AutoPartsApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using AutoPartsApi.Models;
-using AutoPartsApi.DTOs;
-using AutoPartsApi.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AutoPartsApi.Controllers;
 
 [ApiController()]
 [Route("auto-parts")]
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class AutoPartController : ControllerBase {
     private readonly AppDbContext _appDbContext;
     public AutoPartController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory){

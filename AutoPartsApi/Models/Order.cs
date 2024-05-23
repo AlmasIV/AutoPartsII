@@ -1,6 +1,6 @@
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
 
@@ -23,7 +23,7 @@ public class Order {
     public List<AutoPartSoldAmount> AutoPartsSoldAmounts { get; set; } = null!;
 
     [Required()]
-    [Column(TypeName = "datetime2(0)")]
     [JsonPropertyName("createdOn")]
+    [Column(TypeName = "datetime2(0)")]
     public DateTime CreatedOn { get; set; }
 }

@@ -1,6 +1,11 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using AutoPartsApi.Services;
 
 namespace AutoPartsApi;
 
@@ -14,20 +19,62 @@ public class Program
 
         builder.Services.AddControllers();
 
-        builder.Services.AddCors(options => {
-            options.AddDefaultPolicy(policy => {
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
                 policy.WithOrigins("https://localhost:3000/", "http://localhost:3000/", "https://localhost:3000", "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             });
         });
 
-        builder.Services.AddDbContext<AppDbContext>(options => {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions => {
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions =>
+            {
                 sqlOptions.EnableRetryOnFailure();
             });
         });
 
+        builder.Services.AddDbContext<IdentityDbContext>(options =>
+        {
+            options.UseSqlServer(
+                builder.Configuration["ConnectionStrings:Identity"],
+                options => options.MigrationsAssembly("AutoPartsApi")
+            );
+        });
+
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+        {
+            options.Password.RequiredLength = 8;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.SignIn.RequireConfirmedAccount = false;
+            options.User.RequireUniqueEmail = true;
+        }).AddEntityFrameworkStores<IdentityDbContext>();
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["AuthenticationOptions:Audience"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+        builder.Services.AddAuthorization();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddScoped<IJwtToken, JwtToken>();
 
         var app = builder.Build();
 
@@ -38,13 +85,16 @@ public class Program
             app.UseSwaggerUI();
             app.UseDeveloperExceptionPage();
         }
-        else {
+        else
+        {
             app.UseExceptionHandler("/error");
         }
 
         app.UseHttpsRedirection();
 
         app.UseCors();
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 

@@ -1,6 +1,6 @@
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
 public class AutoPart : IEquatable<AutoPart> {
@@ -21,14 +21,14 @@ public class AutoPart : IEquatable<AutoPart> {
     public string? Company { get; set; }
 
     [Range(0, 9999_9999.99)]
-    [Column(TypeName = "decimal(10, 2)")]
     [JsonPropertyName("priceInRub")]
+    [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInRub { get; set; }
 
     [Required()]
     [Range(0, 9999_9999.99)]
-    [Column(TypeName = "decimal(10, 2)")]
     [JsonPropertyName("priceInKzt")]
+    [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInKzt { get; set; }
 
     [Required()]
