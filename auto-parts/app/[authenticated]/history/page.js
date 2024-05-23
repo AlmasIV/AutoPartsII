@@ -1,6 +1,6 @@
 "use client";
 
-import { Orders } from "@/app/[authenticated]/history/components/Index.js";
+import { Orders } from "@/app/components/Index.js";
 
 export default function History(){
     
