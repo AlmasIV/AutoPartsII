@@ -1,4 +1,5 @@
-import { NavBar, NotificationBox } from "@/app/components/Index.js";
+import { NavBar } from "@/app/components/Index.js";
+import { Fragment } from "react";
 
 export default function AuthenticatedLayout(
     {
@@ -6,11 +7,11 @@ export default function AuthenticatedLayout(
     }
 ){
     return (
-        <NotificationBox>
+        <Fragment>
             <NavBar />
             <main>
               {children}
             </main>
-        </NotificationBox>
+        </Fragment>
     );
 }
