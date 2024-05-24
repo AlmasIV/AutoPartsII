@@ -9,10 +9,10 @@ export default function NavBar(){
             <ul>
                 <li>
                     <Link
-                        href="/"
+                        href="/home"
                         className="underline-link-animation"
                     >
-                        Catalog
+                        Home
                     </Link>
                 </li>
                 <li>

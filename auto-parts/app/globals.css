@@ -130,6 +130,10 @@ main {
     text-align: center;
 }
 
+.text-left {
+    text-align: left;
+}
+
 .opacity-08{
     opacity: 0.8;
 }

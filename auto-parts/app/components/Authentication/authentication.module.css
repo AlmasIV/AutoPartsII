@@ -1,0 +1,60 @@
+.authentication-box {
+    position: absolute;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    & .log-in,
+    & .sign-up {
+        flex-grow: 1;
+        transition: var(--global-transition);
+        animation-name: gradient;
+        animation-duration: calc(var(--global-transition) * 100);
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-play-state: paused;
+    }
+
+    & .log-in:not(:hover),
+    & .sign-up:not(:hover){
+        filter: grayscale(1);
+    }
+
+    & .log-in {
+        background: linear-gradient(-45deg, var(--main-lightish), var(--info), var(--main-green));
+        background-size: 400% 400%;
+
+        &:hover {
+            flex-grow: 2;
+            animation-play-state: running;
+        }
+    }
+
+    & .sign-up {
+        background: linear-gradient(-45deg, var(--main-lightish), var(--selected-item), var(--main-green));
+        background-size: 400% 400%;
+
+        &:hover {
+            flex-grow: 2;
+            animation-play-state: running;
+        }
+    }
+
+    & .log-in-btn,
+    & .sign-up-btn {
+        position: relative;
+        top: 45%;
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

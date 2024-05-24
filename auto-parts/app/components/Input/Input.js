@@ -7,7 +7,7 @@ export default function Input(
     }
 ) {
     return (
-        <label className={styles["input-label"]}>
+        <label className={styles["input-label"] + " " + "text-left"}>
             {config.labelName}
             <input
                 name={config.name}
