@@ -1,22 +1,54 @@
 "use client";
 
-import { Input, Form, Modal } from "@/app/components/Index.js";
+import { Input, Form, Modal, Button } from "@/app/components/Index.js";
+import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import styles from "@/app/components/Authentication/authentication.module.css";
 import userConfigs from "@/configurations/user-configuration.json";
+import { useState, useContext } from "react";
+import generateGUID from "@/tools/GUID/GUID.js";
+import onSignUpSubmit from "./event-handlers/onSignUpSubmit.js";
 
 export default function Authentication() {
+    const globalNotification = useContext(NotificationBoxContext);
+    const [isSending, setIsSending] = useState(false);
+    const [error, setError] = useState(null);
+
+    async function onLogInSubmit(event) {
+        if (!isSending) {
+            event.preventDefault();
+            setIsSending(true);
+            try {
+                //await signUp();
+            }
+            catch (error) {
+                globalNotification.setNotifications(
+                    [
+                        {
+                            message: error.message,
+                            level: "danger",
+                            key: generateGUID()
+                        },
+                        ...globalNotification.notifications
+                    ]
+                );
+            }
+            finally {
+                setIsSending(false);
+            }
+        }
+    }
     return (
         <div
             className={styles["authentication-box"] + " " + "text-center"}
         >
             <div
-                className={styles["log-in"]}
+                className={styles["sign-up"]}
             >
                 <Modal
                     openButtonTitle="Sign Up"
                     closeButtonTitle="Close"
-                    openButtonClass={"width-half primary-btn" + " " + styles["log-in-btn"]}
-                    closeButtonClass="width-full primary-btn margin-top-2rem margin-bottom-05rem"
+                    openButtonClass={"width-half primary-btn" + " " + styles["sign-up-btn"]}
+                    closeButtonClass="width-full secondary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
                     dialogClass=""
                     onOpenButtonClick={null}
@@ -30,7 +62,16 @@ export default function Authentication() {
                     <Form
                         formType="flex-column-form"
                         method="POST"
-                        onSubmit={() => console.log("SUBMITTIN")}
+                        onSubmit={async (event) => {
+                            event.preventDefault();
+                            await onSignUpSubmit(
+                                new FormData(event.target),
+                                isSending,
+                                setIsSending,
+                                setError,
+                                globalNotification
+                            );
+                        }}
                     >
                         {
                             userConfigs.map((config) => {
@@ -42,17 +83,24 @@ export default function Authentication() {
                                 );
                             })
                         }
+                        <Button
+                            title="Sign Up"
+                            className="width-full primary-btn margin-top-2rem"
+                            type="submit"
+                            onClick={null}
+                            isDisabled={isSending}
+                        />
                     </Form>
                 </Modal>
             </div>
             <div
-                className={styles["sign-up"]}
+                className={styles["log-in"]}
             >
                 <Modal
                     openButtonTitle="Log In"
                     closeButtonTitle="Close"
                     openButtonClass={"width-half primary-btn" + " " + styles["log-in-btn"]}
-                    closeButtonClass="width-full primary-btn margin-top-2rem margin-bottom-05rem"
+                    closeButtonClass="width-full primary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
                     dialogClass=""
                     onOpenButtonClick={null}
@@ -66,7 +114,7 @@ export default function Authentication() {
                     <Form
                         formType="flex-column-form"
                         method="POST"
-                        onSubmit={() => console.log("SUBMITTIN")}
+                        onSubmit={null}
                     >
                         {
                             userConfigs.map((config) => {
@@ -80,6 +128,12 @@ export default function Authentication() {
                                 }
                             })
                         }
+                        <Button
+                            title="Log In"
+                            className="width-full primary-btn margin-top-2rem"
+                            type="submit"
+                            onClick={null}
+                        />
                     </Form>
                 </Modal>
             </div>

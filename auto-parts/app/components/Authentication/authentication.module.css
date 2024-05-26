@@ -21,7 +21,7 @@
     }
 
     & .log-in {
-        background: linear-gradient(-45deg, var(--main-lightish), var(--info), var(--main-green));
+        background: linear-gradient(-135deg, var(--main-lightish), var(--info), var(--main-green));
         background-size: 400% 400%;
 
         &:hover {
@@ -31,7 +31,7 @@
     }
 
     & .sign-up {
-        background: linear-gradient(-45deg, var(--main-lightish), var(--selected-item), var(--main-green));
+        background: linear-gradient(135deg, var(--main-lightish), var(--selected-item), var(--main-green));
         background-size: 400% 400%;
 
         &:hover {

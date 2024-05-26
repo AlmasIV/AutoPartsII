@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsApi.DTOs;
 
-public class RegisterModel {
+public class LogInModel {
     [Required()]
     [EmailAddress()]
     public string Email { get; set; } = null!;
@@ -10,9 +10,4 @@ public class RegisterModel {
     [Required()]
     [MinLength(8)]
     public string Password { get; set; } = null!;
-
-    [Required()]
-    [MinLength(8)]
-    [Compare("Password")]
-    public string PasswordConfirmation { get; set; } = null!;
 }

@@ -21,7 +21,7 @@ public class JwtToken : IJwtToken {
             issuer: _configuration["AuthenticationOptions:Issuer"],
             audience: _configuration["AuthenticationOptions:Audience"],
             claims: claims,
-            expires: DateTime.Now.Add(TimeSpan.FromMinutes(2)),
+            expires: DateTime.Now.Add(TimeSpan.FromHours(2)),
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthenticationOptions:Key"]!)), SecurityAlgorithms.HmacSha256)
         ));
     }
