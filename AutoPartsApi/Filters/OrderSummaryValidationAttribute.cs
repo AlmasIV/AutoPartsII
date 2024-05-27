@@ -13,6 +13,7 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
         _appDbContext = appDbContext;
     }
 
+    // Requesting users must respect the API's various errors. Need to implement it.
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next){
         OrderSummary? orderSummary = context.ActionArguments["orderSummary"] as OrderSummary;
         
