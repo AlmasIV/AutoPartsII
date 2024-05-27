@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-
 namespace AutoPartsApi.Controllers;
 
 [Route("user")]
@@ -15,12 +13,12 @@ public class UserController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly IJwtToken _jwtToken;
-    public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtToken jwtToken)
+    private readonly IJwtTokenManager _jwtTokenManager;
+    public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtTokenManager jwtTokenManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _jwtToken = jwtToken;
+        _jwtTokenManager = jwtTokenManager;
     }
 
     [HttpPost()]
@@ -54,7 +52,7 @@ public class UserController : ControllerBase
             return BadRequest(problemDetails);
         }
 
-        Response.Cookies.Append("jwt", _jwtToken.GenerateToken(user), new CookieOptions()
+        Response.Cookies.Append("jwt", _jwtTokenManager.GenerateToken(user), new CookieOptions()
         {
             HttpOnly = true,
             Secure = true,
@@ -71,7 +69,7 @@ public class UserController : ControllerBase
     {
         IdentityUser? user = await _userManager.FindByEmailAsync(logInModel.Email);
 
-        if (user is null || !await _userManager.CheckPasswordAsync(user, logInModel.Password))
+        if (user is null || !(await _userManager.CheckPasswordAsync(user, logInModel.Password)))
         {
             return BadRequest(new ProblemDetails()
             {
@@ -82,7 +80,7 @@ public class UserController : ControllerBase
                 Type = null
             });
         }
-        Response.Cookies.Append("jwt", _jwtToken.GenerateToken(user), new CookieOptions()
+        Response.Cookies.Append("jwt", _jwtTokenManager.GenerateToken(user), new CookieOptions()
         {
             HttpOnly = true,
             Secure = true,
