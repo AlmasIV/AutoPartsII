@@ -76,7 +76,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddScoped<IJwtToken, JwtToken>();
+        builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 
         var app = builder.Build();
 

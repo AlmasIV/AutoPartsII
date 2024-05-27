@@ -6,9 +6,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace AutoPartsApi.Services;
 
-public class JwtToken : IJwtToken {
+public class JwtTokenManager : IJwtTokenManager {
     private readonly IConfiguration _configuration;
-    public JwtToken(IConfiguration configuration){
+    public JwtTokenManager(IConfiguration configuration){
         _configuration = configuration;
     }
 
