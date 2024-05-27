@@ -71,7 +71,7 @@ public class UserController : ControllerBase
     {
         IdentityUser? user = await _userManager.FindByEmailAsync(logInModel.Email);
 
-        if (user is null)
+        if (user is null || !await _userManager.CheckPasswordAsync(user, logInModel.Password))
         {
             return BadRequest(new ProblemDetails()
             {
@@ -82,30 +82,14 @@ public class UserController : ControllerBase
                 Type = null
             });
         }
-
-        SignInResult result = await _signInManager.PasswordSignInAsync(logInModel.Email, logInModel.Password, false, false);
-
-        if (result.Succeeded)
+        Response.Cookies.Append("jwt", _jwtToken.GenerateToken(user), new CookieOptions()
         {
-            Response.Cookies.Append("jwt", _jwtToken.GenerateToken(user), new CookieOptions()
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                MaxAge = TimeSpan.FromHours(2)
-            });
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            MaxAge = TimeSpan.FromHours(2)
+        });
 
-            return Ok();
-        }
-        else {
-            return BadRequest(new ProblemDetails()
-            {
-                Title = "User log in failed.",
-                Status = StatusCodes.Status400BadRequest,
-                Detail = "User log in failed.",
-                Instance = HttpContext.Request.Path,
-                Type = null
-            });
-        }
+        return Ok();
     }
 }

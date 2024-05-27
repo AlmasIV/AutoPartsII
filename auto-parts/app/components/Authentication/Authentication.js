@@ -5,38 +5,13 @@ import { NotificationBoxContext } from "@/app/components/NotificationBox/Notific
 import styles from "@/app/components/Authentication/authentication.module.css";
 import userConfigs from "@/configurations/user-configuration.json";
 import { useState, useContext } from "react";
-import generateGUID from "@/tools/GUID/GUID.js";
 import onSignUpSubmit from "./event-handlers/onSignUpSubmit.js";
+import onLogInSubmit from "./event-handlers/onLogInSubmit.js";
 
 export default function Authentication() {
     const globalNotification = useContext(NotificationBoxContext);
     const [isSending, setIsSending] = useState(false);
     const [error, setError] = useState(null);
-
-    async function onLogInSubmit(event) {
-        if (!isSending) {
-            event.preventDefault();
-            setIsSending(true);
-            try {
-                //await signUp();
-            }
-            catch (error) {
-                globalNotification.setNotifications(
-                    [
-                        {
-                            message: error.message,
-                            level: "danger",
-                            key: generateGUID()
-                        },
-                        ...globalNotification.notifications
-                    ]
-                );
-            }
-            finally {
-                setIsSending(false);
-            }
-        }
-    }
     return (
         <div
             className={styles["authentication-box"] + " " + "text-center"}
@@ -114,7 +89,16 @@ export default function Authentication() {
                     <Form
                         formType="flex-column-form"
                         method="POST"
-                        onSubmit={null}
+                        onSubmit={async (event) => {
+                            event.preventDefault();
+                            await onLogInSubmit(
+                                new FormData(event.target),
+                                isSending,
+                                setIsSending,
+                                setError,
+                                globalNotification
+                            );
+                        }}
                     >
                         {
                             userConfigs.map((config) => {
