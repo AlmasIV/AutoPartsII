@@ -11,7 +11,7 @@ namespace AutoPartsApi.Controllers;
 
 [ApiController()]
 [Route("auto-parts")]
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class AutoPartController : ControllerBase {
     private readonly AppDbContext _appDbContext;
     public AutoPartController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory){
@@ -39,7 +39,7 @@ public class AutoPartController : ControllerBase {
             TotalPriceInKzt = orderSummary.TotalPriceInKzt,
             AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
         };
-
+        // I could union this and the previou initialization.
         foreach(AutoPart autoPart in orderSummary.OrderedParts){
             order.AutoPartsSoldAmounts.Add(new AutoPartSoldAmount(){
                 AutoPartId = autoPart.Id,
@@ -51,7 +51,7 @@ public class AutoPartController : ControllerBase {
             .Where(ap => orderSummary.OrderedParts.Select(op => op.Id).Contains(ap.Id))
             .Select(ap => ap)
             .ToArrayAsync();
-
+        // Again you could join the Linq and foreach calls.
         foreach(AutoPart autoPart in parts){
             autoPart.Amount -= orderSummary.OrderedParts
                 .Where(ap => ap.Id == autoPart.Id)
@@ -61,7 +61,7 @@ public class AutoPartController : ControllerBase {
         await _appDbContext.Orders.AddAsync(order);
         await _appDbContext.SaveChangesAsync();
 
-        return new OkResult();
+        return Ok();
     }
 
     [HttpGet()]
@@ -91,7 +91,13 @@ public class AutoPartController : ControllerBase {
             .SingleOrDefaultAsync();
 
         if(result is null){
-            return BadRequest();
+            return BadRequest(new ProblemDetails(){
+                Type = null,
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Not found.",
+                Detail = "The requested resource wasn't found. Possibly removed from the database.",
+                Instance = null
+            });
         }
         return result;
     }
