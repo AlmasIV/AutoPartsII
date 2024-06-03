@@ -1,11 +1,11 @@
 "use client";
 
+import { useState, useContext } from "react";
 import { Input, Form, Modal, Button } from "@/app/components/Index.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import styles from "./authentication.module.css";
 import userConfigs from "@/configurations/user-configuration.json";
-import { useState, useContext } from "react";
 import onAuthenticationSubmit from "./event-handlers/onAuthenticationSubmit.js";
+import styles from "./authentication.module.css";
 
 export default function Authentication() {
     const globalNotification = useContext(NotificationBoxContext);
@@ -14,7 +14,7 @@ export default function Authentication() {
     const [logInError, setLogInError] = useState(null);
     return (
         <div
-            className={styles["authentication-box"] + " " + "text-center"}
+            className={`${styles["authentication-box"]} text-center`}
         >
             <div
                 className={styles["sign-up"]}
@@ -22,7 +22,7 @@ export default function Authentication() {
                 <Modal
                     openButtonTitle="Sign Up"
                     closeButtonTitle="Close"
-                    openButtonClass={"width-half primary-btn" + " " + styles["sign-up-btn"]}
+                    openButtonClass={`width-half primary-btn ${styles["sign-up-btn"]}`}
                     closeButtonClass="width-full secondary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
                     dialogClass=""
@@ -89,7 +89,7 @@ export default function Authentication() {
                 <Modal
                     openButtonTitle="Log In"
                     closeButtonTitle="Close"
-                    openButtonClass={"width-half primary-btn" + " " + styles["log-in-btn"]}
+                    openButtonClass={`width-half primary-btn ${styles["log-in-btn"]}`}
                     closeButtonClass="width-full primary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
                     dialogClass=""
