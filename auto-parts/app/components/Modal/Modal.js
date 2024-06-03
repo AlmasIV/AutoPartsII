@@ -1,8 +1,8 @@
 "use client";
 
 import { Fragment, useRef } from "react";
-import styles from "@/app/components/Modal/modal.module.css";
 import { Button } from "@/app/components/Index.js";
+import styles from "./modal.module.css";
 
 export default function Modal(
     {

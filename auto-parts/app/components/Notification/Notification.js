@@ -1,4 +1,4 @@
-import styles from "@/app/components/Notification/notification.module.css";
+import styles from "./notification.module.css";
 
 export default function Notification(
     {

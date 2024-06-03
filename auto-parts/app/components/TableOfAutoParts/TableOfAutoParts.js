@@ -2,10 +2,10 @@
 
 import { useContext } from "react";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
-import styles from "@/app/components/TableOfAutoParts/table-of-auto-parts.module.css";
-import onSelect from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { KZTFormatter, RUBFormatter } from "@/tools/NumberFormatters/formatters.js";
+import onSelect from "./event-handlers/onSelect.js";
+import styles from "./table-of-auto-parts.module.css";
 
 export default function TableOfAutoParts(
     {

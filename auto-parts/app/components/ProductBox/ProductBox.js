@@ -2,11 +2,11 @@
 
 import { useContext } from "react";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
-import styles from "@/app/components/ProductBox/product-box.module.css";
 import { AmountChanger, Button } from "@/app/components/Index.js";
 import { disselectAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { KZTFormatter, RUBFormatter } from "@/tools/NumberFormatters/formatters.js";
+import styles from "./product-box.module.css";
 
 export default function ProductBox(
     {

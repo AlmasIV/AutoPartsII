@@ -1,7 +1,7 @@
 
 import { KZTFormatter } from "@/tools/NumberFormatters/formatters.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json"
-import styles from "@/app/components/OrderDetails/order-details.module.css"
+import styles from "./order-details.module.css"
 
 export default function OrderDetails(
     {

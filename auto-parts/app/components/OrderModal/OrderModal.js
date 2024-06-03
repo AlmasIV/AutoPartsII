@@ -1,10 +1,10 @@
 "use client";
 
 import { Fragment, useRef, useState } from "react";
-import styles from "@/app/components/OrderModal/order-modal.module.css";
 import { LocalDataFormatter } from "@/tools/DateFormatters/LocalDateFormatter.js";
 import { ErrorBox, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
+import styles from "./order-modal.module.css";
 
 export default function OrderModal(
     {
