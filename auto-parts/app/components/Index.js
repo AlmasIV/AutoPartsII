@@ -15,6 +15,7 @@ import OrderModal from "./OrderModal/OrderModal.js";
 import ErrorBox from "./ErrorBox/ErrorBox.js";
 import OrderDetails from "./OrderDetails/OrderDetails.js";
 import Authentication from "./Authentication/Authentication.js";
+import Loading from "./Loading/Loading.js";
 
 export {
     NavBar,
@@ -33,5 +34,6 @@ export {
     OrderModal,
     ErrorBox,
     OrderDetails,
-    Authentication
+    Authentication,
+    Loading
 }

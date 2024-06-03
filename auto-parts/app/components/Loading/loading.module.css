@@ -1,0 +1,23 @@
+.loading-spinner {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 0.5rem solid var(--secondary-gray);
+    border-top: 0.5rem solid var(--main-green);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-name: spin;
+    animation-duration: calc(var(--global-transition) * 10);
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
