@@ -54,7 +54,8 @@ public class Program
             options.User.RequireUniqueEmail = true;
         }).AddEntityFrameworkStores<IdentityDbContext>();
 
-        builder.Services.AddAuthentication(options => {
+        builder.Services.AddAuthentication(options =>
+        {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
@@ -68,6 +69,17 @@ public class Program
                     ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
                     ValidateIssuerSigningKey = true
+                };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Headers.ContainsKey("authorize"))
+                        {
+                            context.Token = context.Request.Headers["authorize"];
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

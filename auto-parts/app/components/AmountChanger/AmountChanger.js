@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/components/AmountChanger/amount-changer.module.css";
+import styles from "./amount-changer.module.css";
 import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 
 export default function AmountChanger(
@@ -15,7 +15,7 @@ export default function AmountChanger(
             className={styles["container"]}
         >
             <div
-                className={styles["prev"] + " " + styles["controller"]}
+                className={`${styles["prev"]} ${styles["controller"]}`}
                 onClick={() => {
                     if(selectedAutoPart.selectedAmount > 1){
                         const autoPart = {
@@ -36,7 +36,7 @@ export default function AmountChanger(
                 {selectedAutoPart.selectedAmount}
             </div>
             <div
-                className={styles["next"] + " " + styles["controller"]}
+                className={`${styles["next"]} ${styles["controller"]}`}
                 onClick={() => {
                     if(selectedAutoPart.amount > 0){
                         const autoPart = {

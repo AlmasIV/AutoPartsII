@@ -14,7 +14,8 @@ export default function Modal(
         dialogType,
         dialogClass="",
         onOpenButtonClick=null,
-        onCloseButtonClick=null
+        onCloseButtonClick=null,
+        isDisabled=false
     }
 ){
     const modalRef = useRef(null);
@@ -22,13 +23,14 @@ export default function Modal(
         <Fragment>
             <dialog
                 ref={modalRef}
-                className={styles[dialogType] + " " + dialogClass}
+                className={`${styles[dialogType]} ${dialogClass}`}
             >
                 {children}
                 <Button
                     title={closeButtonTitle}
                     className={closeButtonClass}
                     type="button"
+                    isDisabled={isDisabled}
                     onClick={() => {
                         modalRef.current.close();
                         onCloseButtonClick && onCloseButtonClick();
@@ -39,6 +41,7 @@ export default function Modal(
                 title={openButtonTitle}
                 className={openButtonClass}
                 type="button"
+                isDisabled={isDisabled}
                 onClick={() => {
                     modalRef.current.showModal();
                     onOpenButtonClick && onOpenButtonClick();

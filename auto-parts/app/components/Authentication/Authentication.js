@@ -2,16 +2,16 @@
 
 import { Input, Form, Modal, Button } from "@/app/components/Index.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import styles from "@/app/components/Authentication/authentication.module.css";
+import styles from "./authentication.module.css";
 import userConfigs from "@/configurations/user-configuration.json";
 import { useState, useContext } from "react";
-import onSignUpSubmit from "./event-handlers/onSignUpSubmit.js";
-import onLogInSubmit from "./event-handlers/onLogInSubmit.js";
+import onAuthenticationSubmit from "./event-handlers/onAuthenticationSubmit.js";
 
 export default function Authentication() {
     const globalNotification = useContext(NotificationBoxContext);
     const [isSending, setIsSending] = useState(false);
-    const [error, setError] = useState(null);
+    const [signUpError, setSignUpError] = useState(null);
+    const [logInError, setLogInError] = useState(null);
     return (
         <div
             className={styles["authentication-box"] + " " + "text-center"}
@@ -34,17 +34,32 @@ export default function Authentication() {
                     >
                         Sign Up
                     </h2>
+                    {
+                        signUpError && 
+                        <p
+                            className="color-danger margin-top-05rem"
+                        >
+                            {signUpError}
+                        </p>
+                    }
                     <Form
                         formType="flex-column-form"
                         method="POST"
                         onSubmit={async (event) => {
                             event.preventDefault();
-                            await onSignUpSubmit(
-                                new FormData(event.target),
+                            const formData = new FormData(event.target);
+                            const credentials = {
+                                email: formData.get("email"),
+                                password: formData.get("password"),
+                                passwordConfirmation: formData.get("passswordConfirmation")
+                            };
+                            await onAuthenticationSubmit(
+                                credentials,
                                 isSending,
                                 setIsSending,
-                                setError,
-                                globalNotification
+                                setSignUpError,
+                                globalNotification,
+                                "sign-up"
                             );
                         }}
                     >
@@ -86,17 +101,31 @@ export default function Authentication() {
                     >
                         Log In
                     </h2>
+                    {
+                        logInError && 
+                        <p
+                            className="color-danger margin-top-05rem"
+                        >
+                            {logInError}
+                        </p>
+                    }
                     <Form
                         formType="flex-column-form"
                         method="POST"
                         onSubmit={async (event) => {
                             event.preventDefault();
-                            await onLogInSubmit(
-                                new FormData(event.target),
+                            const formData = new FormData(event.target);
+                            const credentials = {
+                                email: formData.get("email"),
+                                password: formData.get("password")
+                            };
+                            await onAuthenticationSubmit(
+                                credentials,
                                 isSending,
                                 setIsSending,
-                                setError,
-                                globalNotification
+                                setLogInError,
+                                globalNotification,
+                                "log-in"
                             );
                         }}
                     >

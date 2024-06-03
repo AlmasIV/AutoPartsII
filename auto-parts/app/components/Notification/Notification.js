@@ -8,7 +8,9 @@ export default function Notification(
     }
 ){
     return (
-        <div className={styles["notification"] + " " + styles[level] + " " + "text-center"} onAnimationEnd={onAnimationEnd}>
+        <div
+            className={`${styles["notification"]} ${styles[level]} text-center`} onAnimationEnd={onAnimationEnd}
+        >
             {message}
         </div>
     );

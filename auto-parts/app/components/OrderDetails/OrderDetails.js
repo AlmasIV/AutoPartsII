@@ -30,7 +30,7 @@ export default function OrderDetails(
                         return (
                             <div
                                 key={sp.soldPart.id}
-                                className={styles["auto-part-detail"] + " " + "margin-top-05rem"}
+                                className={`${styles["auto-part-detail"]} margin-top-05rem`}
                             >
                                 {
                                     autoPartConfigs.map((apc) => {

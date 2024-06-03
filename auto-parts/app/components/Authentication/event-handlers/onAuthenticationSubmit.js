@@ -2,25 +2,24 @@
 
 import generateGUID from "@/tools/GUID/GUID.js";
 
-export default async function onLogInSubmit(
-    formData,
+export default async function onAuthenticationSubmit(
+    bodyObject,
     isSending,
     setIsSending,
     setError,
-    globalNotification
-){
+    globalNotification,
+    url
+) {
     if(!isSending){
+        setIsSending(true);
+        setError(null);
         try {
-            setIsSending(true);
-            const response = await fetch("/api/log-in", {
+            const response = await fetch(`/api/${url}`, {
                 method: "POST",
-                header: {
+                headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    email: formData.get("email"),
-                    password: formData.get("password")
-                })
+                body: JSON.stringify(bodyObject)
             });
             const responseObj = await response.json();
             if(!response.ok){
@@ -50,7 +49,7 @@ export default async function onLogInSubmit(
                 window.location.href = response.headers.get("Location");
             }
         }
-        catch (error){
+        catch(error){
             setError("Something went wrong.");
             globalNotification.setNotifications(
                 [
@@ -65,6 +64,7 @@ export default async function onLogInSubmit(
         }
         finally {
             setIsSending(false);
+            setTimeout(() => setError(null), 7000)
         }
     }
 }
