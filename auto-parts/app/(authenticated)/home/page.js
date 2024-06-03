@@ -1,13 +1,13 @@
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
-import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart } from "@/app/components/Index.js";
+import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);
     const [autoParts, setAutoParts] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -15,17 +15,18 @@ export default function HomePage() {
             setIsLoading(true);
             setError(null); // Clear any previous errors
             try {
-                const result = await fetch("https://localhost:7019/auto-parts/all", {
-                    method: "GET",
-                    credentials: "include"
+                const result = await fetch("/api/authenticated/auto-parts/fetch-all", {
+                    method: "GET"
                 });
+                const response = await result.json();
                 if (!result.ok) {
-                    throw new Error("Failed to fetch all auto parts.");
+                    setError(new Error(response.message))
                 }
-                const fetchedAutoParts = await result.json();
-                setAutoParts(fetchedAutoParts);
+                else {
+                    setAutoParts(response.data);
+                }
             } catch (error) {
-                setError(error.message);
+                setError(new Error("Something went wrong."));
             } finally {
                 setIsLoading(false);
             }
@@ -51,9 +52,13 @@ export default function HomePage() {
             <Modal
                 openButtonTitle="Create"
                 closeButtonTitle="Close"
-                dialogType="form-modal"
-                openButtonClass="primary-btn width-half float-right margin-bottom-05rem"
+                openButtonClass={`${(error || isLoading) ? "disabled-btn" : "primary-btn"} width-half float-right margin-bottom-05rem`}
                 closeButtonClass="secondary-btn width-full margin-top-05rem"
+                dialogType="form-modal"
+                dialogClass={null}
+                onOpenButtonClick={null}
+                onCloseButtonClick={null}
+                isDisabled={error || isLoading}
             >
                 <AutoPartForm
                     formTitle="Create a new auto-part"
@@ -64,9 +69,14 @@ export default function HomePage() {
             <Modal
                 openButtonTitle="Shopping Cart"
                 closeButtonTitle="Exit"
-                dialogType="shopping-cart-modal"
-                openButtonClass="informational-btn width-half margin-bottom-05rem"
+                openButtonClass={`${(error || isLoading) ? "disabled-btn" : "informational-btn"} width-half margin-bottom-05rem`}
                 closeButtonClass="secondary-btn width-full margin-top-05rem"
+                dialogType="shopping-cart-modal"
+                dialogClass={null}
+                onOpenButtonClick={null}
+                onCloseButtonClick={null}
+                isDisabled={error || isLoading}
+
             >
                 <ShoppingCart
                     selectedAutoParts={selectedAutoParts}
@@ -76,9 +86,24 @@ export default function HomePage() {
                 />
             </Modal>
             <div>
-                {isLoading && <p>Loading auto parts...</p>}
-                {error && <p>Error: {error}</p>}
-                {autoParts.length > 0 && <TableOfAutoParts autoPartCollection={autoParts} selectedAutoParts={selectedAutoParts} setSelectedAutoParts={setSelectedAutoParts} />}
+                {
+                    isLoading ? <Loading /> : error ? 
+                    <ErrorBox
+                        error={error}
+                        errorBoxClassName="margin-top-2rem"
+                    /> : autoParts.length > 0 ? 
+                    (<TableOfAutoParts
+                        autoPartCollection={autoParts}
+                        selectedAutoParts={selectedAutoParts}
+                        setSelectedAutoParts={setSelectedAutoParts}
+                    />) : (
+                        <p
+                            className="text-center margin-top-2rem"
+                        >
+                            You don't have any data.
+                        </p>
+                    )
+                }
             </div>
         </Fragment>
     );
