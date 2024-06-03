@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "./amount-changer.module.css";
 import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
+import styles from "./amount-changer.module.css";
 
 export default function AmountChanger(
     {

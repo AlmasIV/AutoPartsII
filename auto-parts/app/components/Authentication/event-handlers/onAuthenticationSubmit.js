@@ -64,7 +64,7 @@ export default async function onAuthenticationSubmit(
         }
         finally {
             setIsSending(false);
-            setTimeout(() => setError(null), 7000)
+            setTimeout(() => setError(null), 7000);
         }
     }
 }
