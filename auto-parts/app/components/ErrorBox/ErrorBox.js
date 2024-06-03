@@ -1,4 +1,4 @@
-import styles from "@/app/components/ErrorBox/error-box.module.css";
+import styles from "./error-box.module.css";
 
 export default function ErrorBox(
     {
