@@ -4,8 +4,7 @@ import * as jose from "jose";
 export async function middleware(request) {
     const token = request.cookies.get("jwt");
     if (!token && request.nextUrl.pathname !== "/") {
-        const signUpPage = new URL("/", process.env.BASE_URL);
-        return NextResponse.redirect(signUpPage.toString());
+        return NextResponse.redirect(new URL("/", process.env.BASE_URL));
     }
     else if (token) {
         try {
@@ -26,5 +25,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ["/home", "/history", "/"]
+    matcher: ["/home", "/history", "/", "/api/authenticated/:path*"]
 };
