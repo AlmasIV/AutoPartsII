@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { OrderModal, ErrorBox } from "@/app/components/Index.js";
+import { OrderModal, ErrorBox, Loading } from "@/app/components/Index.js";
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -23,7 +23,7 @@ export default function Orders() {
                 }
                 const fetchedOrders = await result.json();
                 if (!ignore) {
-                    setOrders(fetchedOrders);
+                    setOrders(fetchedOrders.data);
                 }
             }
             catch (error) {
@@ -53,7 +53,7 @@ export default function Orders() {
                     error={error}
                 />
             ) : isLoading ? (
-                <div>Loading...</div>
+                <Loading />
             ) : orders.length > 0 ? (
                 <div>
                     {

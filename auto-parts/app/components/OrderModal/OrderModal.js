@@ -29,7 +29,7 @@ export default function OrderModal(
                 }
                 else {
                     const details = await result.json();
-                    setDetails(details);
+                    setDetails(details.data);
                 }
             }
             catch(error) {
