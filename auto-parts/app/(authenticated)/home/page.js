@@ -15,9 +15,13 @@ export default function HomePage() {
             setIsLoading(true);
             setError(null); // Clear any previous errors
             try {
-                const result = await fetch("/api/authenticated/auto-parts/fetch-all", {
+                const result = await fetch("/api/authenticated/auto-parts/all", {
                     method: "GET"
                 });
+                if(result.redirected){
+                    window.location.href = result.url;
+                    return;
+                }
                 const response = await result.json();
                 if (!result.ok) {
                     setError(new Error(response.message))

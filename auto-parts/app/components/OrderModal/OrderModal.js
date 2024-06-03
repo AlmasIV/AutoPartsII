@@ -2,7 +2,7 @@
 
 import { Fragment, useRef, useState } from "react";
 import { LocalDataFormatter } from "@/tools/DateFormatters/LocalDateFormatter.js";
-import { ErrorBox, OrderDetails } from "@/app/components/Index.js";
+import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
 
@@ -19,15 +19,21 @@ export default function OrderModal(
         if(!details){
             try {
                 setIsLoading(true);
-                const result = await fetch(`https://localhost:7019/auto-parts/orders/${order.id}`);
-                if(!result.ok){
-                    throw new Error("Couldn't make the request.");
+                const result = await fetch(`/api/authenticated/orders/${order.id}`);
+                if(result.redirected){
+                    window.location.href = result.url;
+                    return;
                 }
-                const details = await result.json();
-                setDetails(details);
+                if(!result.ok){
+                    setError(new Error("Something went wrong."));
+                }
+                else {
+                    const details = await result.json();
+                    setDetails(details);
+                }
             }
             catch(error) {
-                setError(error);
+                setError(new Error("Something went wrong."));
             }
             finally {
                 setIsLoading(false);
@@ -53,7 +59,7 @@ export default function OrderModal(
                             <ErrorBox
                                 error={error}
                             />
-                        ) : isLoading ? (<p>Loading...</p>) : (
+                        ) : isLoading ? (<Loading />) : (
                             <OrderDetails
                                 details={details}
                             />

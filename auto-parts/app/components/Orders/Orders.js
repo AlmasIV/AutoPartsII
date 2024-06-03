@@ -13,9 +13,13 @@ export default function Orders() {
         async function fetchOrders() {
             setIsLoading(true);
             try {
-                const result = await fetch("https://localhost:7019/auto-parts/orders/all");
+                const result = await fetch("/api/authenticated/orders/all");
+                if(result.redirected){
+                    window.location.href = result.url;
+                    return;
+                }
                 if (!result.ok) {
-                    throw new Error("Failed to fetch the data. The server might be down.");
+                    setError(new Error("Something went wrong."));
                 }
                 const fetchedOrders = await result.json();
                 if (!ignore) {
@@ -23,7 +27,7 @@ export default function Orders() {
                 }
             }
             catch (error) {
-                setError(error);
+                setError(new Error("Something went wrong."));
             }
             finally {
                 setIsLoading(false);
