@@ -2,10 +2,18 @@
 
 import { NextResponse } from "next/server.js";
 
-export default async function getProtected(url, request){
+export default async function getProtected(url, request, cacheTag){
     try {
         const token = request.cookies.get("jwt");
+        const options = cacheTag ? {
+            next: {
+                tags: [cacheTag]
+            }
+        } : {
+            cache: "no-cache"
+        };
         const result = await fetch(url, {
+            ...options,
             method: "GET",
             headers: {
                 "authorize": token.value
