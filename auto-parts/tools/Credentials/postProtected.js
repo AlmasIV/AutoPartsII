@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server.js";
 
-export async function postProtected(url, request){
+export async function postProtected(url, request, isReturn){
     try {
         const bodyData = await request.json();
         const token = request.cookies.get("jwt");
@@ -18,8 +18,10 @@ export async function postProtected(url, request){
             throw new Error();
         }
         else {
+            const result = isReturn ? { data: await response.json() } : {};
             return NextResponse.json({
-                message: "Success."
+                message: "Success.",
+                ...result
             }, {
                 status: 200,
                 statusText: "OK"
