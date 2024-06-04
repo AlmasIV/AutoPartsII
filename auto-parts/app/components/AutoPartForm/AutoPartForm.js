@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { Input, Button, Form } from "@/app/components/Index.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
@@ -10,10 +10,18 @@ export default function AutoPartForm(
         formTitle,
         submitButtonTitle,
         onSubmit,
-        autoPart = null
+        autoPartsState,
+        autoPart = null,
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    async function handleOnSubmit(event){
+        event.preventDefault();
+        setIsSubmitting(true);
+        await onSubmit(event, globalNotification, autoPartsState);
+        setIsSubmitting(false);
+    }
     return (
         <Fragment>
             <h2
@@ -24,10 +32,7 @@ export default function AutoPartForm(
             <Form 
                 formType="flex-column-form"
                 method="dialog"
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    onSubmit(e, globalNotification);
-                }}
+                onSubmit={handleOnSubmit}
             >
                 {
                     autoPartConfigs.map(
@@ -51,7 +56,7 @@ export default function AutoPartForm(
                 <Button
                     type="submit"
                     title={submitButtonTitle}
-                    className="primary-btn margin-top-2rem"
+                    className={`${isSubmitting ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
                 />
             </Form>
         </Fragment>
