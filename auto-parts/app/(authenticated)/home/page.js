@@ -15,9 +15,7 @@ export default function HomePage() {
             setIsLoading(true);
             setError(null); // Clear any previous errors
             try {
-                const result = await fetch("/api/authenticated/auto-parts/all", {
-                    method: "GET"
-                });
+                const result = await fetch("/api/authenticated/auto-parts/all");
                 if(result.redirected){
                     window.location.href = result.url;
                     return;
@@ -68,6 +66,8 @@ export default function HomePage() {
                     formTitle="Create a new auto-part"
                     submitButtonTitle="Create"
                     onSubmit={onCreate}
+                    autoPartsState={{ autoParts, setAutoParts }}
+                    autoPart={null}
                 />
             </Modal>
             <Modal
@@ -80,7 +80,6 @@ export default function HomePage() {
                 onOpenButtonClick={null}
                 onCloseButtonClick={null}
                 isDisabled={error || isLoading}
-
             >
                 <ShoppingCart
                     selectedAutoParts={selectedAutoParts}
