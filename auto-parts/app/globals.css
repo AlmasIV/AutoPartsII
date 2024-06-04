@@ -71,8 +71,9 @@ main {
 
 .disabled-btn {
     cursor: not-allowed;
+    background-color: var(--main-gray);
     &:hover {
-        background-color: var(--main-darkish);
+        background-color: var(--main-gray);
     }
 }
 
