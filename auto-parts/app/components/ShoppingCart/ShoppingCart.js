@@ -14,20 +14,24 @@ export default function ShoppingCart(
         autoParts,
         setAutoParts
     }
-){
+) {
     const globalNotification = useContext(NotificationBoxContext);
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     useEffect(() => {
         setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => accumulator + ap.selectedAmount * ap.priceInKzt, 0));
     }, [selectedAutoParts]);
+    async function handleOnSubmit(event) {
+        event.preventDefault();
+        setIsSubmitting(true);
+        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts });
+        setIsSubmitting(false);
+    }
     return selectedAutoParts.length > 0 ? (
         <Form
             formType="flex-column-form"
             method="dialog"
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts });
-            }}
+            onSubmit={handleOnSubmit}
         >
             {
                 selectedAutoParts.map((ap) => {
@@ -50,7 +54,7 @@ export default function ShoppingCart(
             <Button
                 type="submit"
                 title="Sell"
-                className="primary-btn margin-top-05rem"
+                className={`${isSubmitting ? "disabled-btn" : "primary-btn"} margin-top-05rem`}
             />
         </Form>
     ) : (
