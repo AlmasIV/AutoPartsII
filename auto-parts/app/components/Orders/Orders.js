@@ -19,7 +19,7 @@ export default function Orders() {
                     return;
                 }
                 if (!result.ok) {
-                    setError(new Error("Something went wrong."));
+                    throw new Error("Something went wrong.");
                 }
                 const fetchedOrders = await result.json();
                 if (!ignore) {
