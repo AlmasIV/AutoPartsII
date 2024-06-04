@@ -1,13 +1,13 @@
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import generateGUID from "@/tools/GUID/GUID.js";
 
-export default async function onCreate(event, globalNotification) {
+export default async function onCreate(event, globalNotification, autoPartsState) {
     const autoPart = parseAutoPartFromForm(event);
     event.target.reset();
-    await submitAutoPart(autoPart, globalNotification);
+    await submitAutoPart(autoPart, globalNotification, autoPartsState);
 }
 
-async function submitAutoPart(autoPart, globalNotification) {
+async function submitAutoPart(autoPart, globalNotification, autoPartsState) {
     try {
         const result = await fetch("/api/authenticated/auto-parts/create", {
             method: "POST",
@@ -33,6 +33,12 @@ async function submitAutoPart(autoPart, globalNotification) {
                     ...globalNotification.notifications
                 ]
             );
+            autoPartsState.setAutoParts(
+                [
+                    ...autoPartsState.autoParts,
+                    response.data
+                ]
+            )
         }
         else {
             globalNotification.setNotifications(
