@@ -26,9 +26,10 @@ public class AutoPartController : ControllerBase {
 
     [HttpPost()]
     [Route("create")]
-    public async Task Create([FromBody] AutoPart autoPart){
+    public async Task<IActionResult> Create([FromBody] AutoPart autoPart){
         await _appDbContext.AutoParts.AddAsync(autoPart);
         await _appDbContext.SaveChangesAsync();
+        return Ok(autoPart);
     }
 
     [HttpPost()]
@@ -39,7 +40,6 @@ public class AutoPartController : ControllerBase {
             TotalPriceInKzt = orderSummary.TotalPriceInKzt,
             AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
         };
-        // I could union this and the previou initialization.
         foreach(AutoPart autoPart in orderSummary.OrderedParts){
             order.AutoPartsSoldAmounts.Add(new AutoPartSoldAmount(){
                 AutoPartId = autoPart.Id,
@@ -51,7 +51,6 @@ public class AutoPartController : ControllerBase {
             .Where(ap => orderSummary.OrderedParts.Select(op => op.Id).Contains(ap.Id))
             .Select(ap => ap)
             .ToArrayAsync();
-        // Again you could join the Linq and foreach calls.
         foreach(AutoPart autoPart in parts){
             autoPart.Amount -= orderSummary.OrderedParts
                 .Where(ap => ap.Id == autoPart.Id)
