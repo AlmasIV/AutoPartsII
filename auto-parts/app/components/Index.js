@@ -16,6 +16,7 @@ import ErrorBox from "./ErrorBox/ErrorBox.js";
 import OrderDetails from "./OrderDetails/OrderDetails.js";
 import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
+import AccountSettings from "./AccountSettings/AccountSettings.js";
 
 export {
     NavBar,
@@ -35,5 +36,6 @@ export {
     ErrorBox,
     OrderDetails,
     Authentication,
-    Loading
+    Loading,
+    AccountSettings
 }
