@@ -1,5 +1,3 @@
-import styles from "./error-box.module.css";
-
 export default function ErrorBox(
     {
         error,
@@ -8,7 +6,7 @@ export default function ErrorBox(
 ) {
     return (
         <div
-            className={`${styles["error-box"]} text-center ${errorBoxClassName}`}
+            className={`color-danger text-center ${errorBoxClassName}`}
         >
             <h3>
                 Error
