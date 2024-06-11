@@ -12,6 +12,8 @@ export default function Authentication() {
     const [isSending, setIsSending] = useState(false);
     const [signUpError, setSignUpError] = useState(null);
     const [logInError, setLogInError] = useState(null);
+    const [signUpValidationErrors, setSignUpValidationErrors] = useState(new Set());
+    const [logInValidationErrors, setLogInValidationErrors] = useState(new Set());
     return (
         <div
             className={`${styles["authentication-box"]} text-center`}
@@ -69,16 +71,21 @@ export default function Authentication() {
                                     <Input
                                         key={config.name}
                                         config={config}
+                                        validationErrorsState={
+                                            {
+                                                validationErrors: signUpValidationErrors,
+                                                setValidationErrors: setSignUpValidationErrors
+                                            }}
                                     />
                                 );
                             })
                         }
                         <Button
                             title="Sign Up"
-                            className="width-full primary-btn margin-top-2rem"
+                            className={`${(isSending || signUpValidationErrors.size > 0) ? "disabled-btn" : "primary-btn"} width-full margin-top-2rem`}
                             type="submit"
                             onClick={null}
-                            isDisabled={isSending}
+                            isDisabled={isSending || signUpValidationErrors.size > 0}
                         />
                     </Form>
                 </Modal>
@@ -136,6 +143,10 @@ export default function Authentication() {
                                         <Input
                                             key={config.name}
                                             config={config}
+                                            validationErrorsState={{
+                                                validationErrors: logInValidationErrors,
+                                                setValidationErrors: setLogInValidationErrors
+                                            }}
                                         />
                                     );
                                 }
@@ -143,9 +154,10 @@ export default function Authentication() {
                         }
                         <Button
                             title="Log In"
-                            className="width-full primary-btn margin-top-2rem"
+                            className={`${(isSending || logInValidationErrors.size > 0) ? "disabled-btn" : "primary-btn"} width-full margin-top-2rem`}
                             type="submit"
                             onClick={null}
+                            isDisabled={isSending || logInValidationErrors.size > 0}
                         />
                     </Form>
                 </Modal>

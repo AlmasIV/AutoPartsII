@@ -11,11 +11,12 @@ export default function AutoPartForm(
         submitButtonTitle,
         onSubmit,
         autoPartsState,
-        autoPart = null,
+        autoPart = null
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [validationErrors, setValidationErrors] = useState(new Set());
     async function handleOnSubmit(event){
         event.preventDefault();
         setIsSubmitting(true);
@@ -42,21 +43,24 @@ export default function AutoPartForm(
                                 <Input
                                     key={autoPartConfig.labelName}
                                     config={autoPartConfig}
+                                    validationErrorsState={{validationErrors, setValidationErrors}}
                                 />
                             ) : (
                                 <Input
                                     key={autoPartConfig.labelName}
                                     config={autoPartConfig}
-                                    autoPart={autoPart}
+                                    validationErrorsState={{validationErrors, setValidationErrors}}
                                 />
                             )
                         )
                     )
                 }
                 <Button
-                    type="submit"
                     title={submitButtonTitle}
-                    className={`${isSubmitting ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
+                    className={`${(isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
+                    type="submit"
+                    onClick={null}
+                    isDisabled={isSubmitting || validationErrors.size > 0}
                 />
             </Form>
         </Fragment>
