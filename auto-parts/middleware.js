@@ -25,5 +25,12 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ["/home", "/history", "/", "/api/authenticated/:path*"]
+    matcher: 
+        [
+            "/home",
+            "/history",
+            "/",
+            "/api/authenticated/:path*",
+            "/settings"
+        ]
 };
