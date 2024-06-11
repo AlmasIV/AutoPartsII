@@ -25,7 +25,7 @@ export default function NavBar(){
                 </li>
                 <li>
                     <Link
-                        href=""
+                        href="/settings"
                         className="underline-link-animation"
                     >
                         Settings
