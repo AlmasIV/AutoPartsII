@@ -15,7 +15,7 @@ html {
     --selected-item: rgb(30, 150, 200);
     --info: rgb(18, 175, 223);
     --danger: rgb(255, 0, 0);
-    --warning: rgb(241, 245, 2);
+    --warning: rgb(216, 121, 43);
 }
 
 a {
@@ -149,4 +149,12 @@ main {
 
 .color-danger {
     color: var(--danger);
+}
+
+.color-warning {
+    color: var(--warning);
+}
+
+.small-text {
+    font-size: 0.9rem;
 }
