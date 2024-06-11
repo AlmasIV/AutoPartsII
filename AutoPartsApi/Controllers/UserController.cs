@@ -1,14 +1,15 @@
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Services;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AutoPartsApi.Controllers;
 
 [Route("user")]
 [ApiController()]
-[AllowAnonymous()]
 public class UserController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
@@ -23,6 +24,7 @@ public class UserController : ControllerBase
 
     [HttpPost()]
     [Route("sign-up")]
+    [AllowAnonymous()]
     public async Task<IActionResult> SignUp([FromBody] SignUpModel signUpModel)
     {
         IdentityUser user = new IdentityUser()
@@ -65,6 +67,7 @@ public class UserController : ControllerBase
 
     [HttpPost()]
     [Route("log-in")]
+    [AllowAnonymous()]
     public async Task<IActionResult> LogIn([FromBody] LogInModel logInModel)
     {
         IdentityUser? user = await _userManager.FindByEmailAsync(logInModel.Email);
@@ -89,5 +92,18 @@ public class UserController : ControllerBase
         });
 
         return Ok();
+    }
+
+    [HttpGet()]
+    [Route("info")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public IActionResult UserInfo(){
+        string currentEmail = User.Claims.Single(cu => cu.Type == ClaimTypes.Email).Value;
+        IdentityUser currentUser = _userManager.Users
+            .Single(u => u.Email == currentEmail);
+        return Ok(new UserModel(){
+            Email = currentUser.Email!,
+            UserName = currentUser.UserName!
+        });
     }
 }

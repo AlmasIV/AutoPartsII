@@ -15,7 +15,7 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 
     // Requesting users must respect the API's various errors. Need to implement it.
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next){
-        OrderSummary? orderSummary = context.ActionArguments["orderSummary"] as OrderSummary;
+        OrderSummaryModel? orderSummary = context.ActionArguments["orderSummary"] as OrderSummaryModel;
         
         if(orderSummary is null){
             context.Result = new ObjectResult(
