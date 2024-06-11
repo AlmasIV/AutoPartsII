@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsApi.DTOs;
 
-public class OrderSummary {
+public class OrderSummaryModel {
     [Required()]
     [MinLength(1)]
     public AutoPart[] OrderedParts { get; set; } = null!;
