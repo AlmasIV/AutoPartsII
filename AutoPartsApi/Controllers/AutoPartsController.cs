@@ -35,7 +35,7 @@ public class AutoPartController : ControllerBase {
     [HttpPost()]
     [Route("sell")]
     [TypeFilter(typeof(OrderSummaryValidationAttribute))]
-    public async Task<IActionResult> Sell([FromBody]OrderSummary orderSummary){
+    public async Task<IActionResult> Sell([FromBody]OrderSummaryModel orderSummary){
         Order order = new Order(){
             TotalPriceInKzt = orderSummary.TotalPriceInKzt,
             AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
