@@ -3,7 +3,6 @@ import generateGUID from "@/tools/GUID/GUID.js";
 
 export default async function onCreate(event, globalNotification, autoPartsState) {
     const autoPart = parseAutoPartFromForm(event);
-    event.target.reset();
     await submitAutoPart(autoPart, globalNotification, autoPartsState);
 }
 
