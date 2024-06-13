@@ -1,6 +1,6 @@
 import isEmail from "validator/lib/isEmail.js";
 
-export default function credentialsAssertion(credentials, isLogIn){
+export default function credentialsAssertion(credentials, isLogIn = false){
     const email = credentials.email;
     const password = credentials.password;
     const passwordConfirmation = credentials.passwordConfirmation;
