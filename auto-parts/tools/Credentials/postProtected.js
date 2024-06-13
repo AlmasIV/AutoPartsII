@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server.js";
 
-export async function postProtected(url, request, isReturn){
+export async function postProtected(url, request, isReturn = false){
     try {
         const bodyData = await request.json();
         const token = request.cookies.get("jwt");
@@ -15,7 +15,12 @@ export async function postProtected(url, request, isReturn){
             body: JSON.stringify(bodyData)
         });
         if(!response.ok){
-            throw new Error();
+            return NextResponse.json({
+                message: "Couldn't post the data."
+            }, {
+                status: 500,
+                statusText: "Internal Server Error"
+            });
         }
         else {
             const result = isReturn ? { data: await response.json() } : {};
