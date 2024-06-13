@@ -24,7 +24,11 @@ export default function AmountChanger(
                             selectedAmount: selectedAutoPart.selectedAmount - 1
                         };
                         setAutoPart(autoPart);
-                        setSelectedAutoParts([...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)]);
+                        setSelectedAutoParts(
+                            [
+                                ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+                            ]
+                        );
                     }
                 }}
             >
@@ -45,7 +49,11 @@ export default function AmountChanger(
                             selectedAmount: selectedAutoPart.selectedAmount + 1
                         }
                         setAutoPart(autoPart);
-                        setSelectedAutoParts([...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)]);
+                        setSelectedAutoParts(
+                            [
+                                ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+                            ]
+                        );
                     }
                 }}
             >
