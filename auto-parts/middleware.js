@@ -17,7 +17,7 @@ export async function middleware(request) {
             }
         }
         catch(error){
-            const response = NextResponse.redirect("/");
+            const response = NextResponse.redirect(new URL("/", process.env.BASE_URL));
             response.cookies.delete("jwt");
             return response;
         }
