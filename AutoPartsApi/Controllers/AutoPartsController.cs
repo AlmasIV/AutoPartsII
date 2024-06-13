@@ -24,6 +24,17 @@ public class AutoPartController : ControllerBase {
         return await _appDbContext.AutoParts.Select(x => x).ToArrayAsync();
     }
 
+    [HttpGet()]
+    [Route("all/{page:int}")]
+    public async Task<IEnumerable<AutoPart>> GetPage(int page){
+        int contentCount = 100;
+        return await _appDbContext.AutoParts
+            .Select(ap => ap)
+            .Skip(page * contentCount - contentCount)
+            .Take(contentCount)
+            .ToArrayAsync();
+    }
+
     [HttpPost()]
     [Route("create")]
     public async Task<IActionResult> Create([FromBody] AutoPart autoPart){
