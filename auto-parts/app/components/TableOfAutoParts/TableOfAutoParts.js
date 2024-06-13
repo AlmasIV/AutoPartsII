@@ -17,7 +17,9 @@ export default function TableOfAutoParts(
     const globalNotification = useContext(NotificationBoxContext);
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
     return (
-        <table id={styles["auto-parts-table"]}>
+        <table
+            id={styles["auto-parts-table"]}
+        >
             <thead>
                 <tr>
                     {
