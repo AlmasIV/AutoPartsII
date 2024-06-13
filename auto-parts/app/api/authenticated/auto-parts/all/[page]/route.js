@@ -6,7 +6,7 @@ import { NextResponse } from "next/server.js";
 export async function GET(request, { params }){
     const page = Number(params.page);
     if(Number.isInteger(page) && page > 0){
-        return await getProtected(`https://localhost:7019/auto-parts/all/${page}`, request);
+        return await getProtected(`https://localhost:7019/auto-parts/${page}`, request);
     }
     else {
         return NextResponse.json({

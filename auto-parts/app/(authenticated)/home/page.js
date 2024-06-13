@@ -14,8 +14,10 @@ export default function HomePage() {
         const fetchData = async () => {
             setIsLoading(true);
             setError(null);
+            let pageNumber = Number(localStorage.getItem("pageNum"));
+            pageNumber = (Number.isInteger(pageNumber) && pageNumber > 0) ? pageNumber : 1;
             try {
-                const result = await fetch("/api/authenticated/auto-parts/all");
+                const result = await fetch(`/api/authenticated/auto-parts/all/${pageNumber}`);
                 if(result.redirected){
                     window.location.href = result.url;
                     return;

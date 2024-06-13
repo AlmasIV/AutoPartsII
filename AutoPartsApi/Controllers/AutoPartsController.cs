@@ -25,7 +25,7 @@ public class AutoPartController : ControllerBase {
     }
 
     [HttpGet()]
-    [Route("all/{page:int}")]
+    [Route("{page:int}")]
     public async Task<IEnumerable<AutoPart>> GetPage(int page){
         int contentCount = 100;
         return await _appDbContext.AutoParts
