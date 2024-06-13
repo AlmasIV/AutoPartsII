@@ -4,6 +4,10 @@
     height: 100%;
     width: 100%;
 
+    @media screen and (max-width: 1080px){
+        flex-direction: column;
+    }
+
     & .log-in,
     & .sign-up {
         flex-grow: 1;
@@ -13,35 +17,39 @@
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         animation-play-state: paused;
+
+        @media screen and (hover: hover){
+            &:hover {
+                flex-grow: 2;
+                animation-play-state: running;
+            }
+        }
+
+        @media screen and (hover: none){
+            & {
+                animation-play-state: running;
+            }
+        }
     }
 
-    & .log-in:not(:hover),
-    & .sign-up:not(:hover){
-        filter: grayscale(1);
+    @media screen and (hover: hover){
+        & .log-in:not(:hover),
+        & .sign-up:not(:hover){
+            filter: grayscale(1);
+        }
     }
 
     & .log-in {
         background: linear-gradient(-135deg, var(--main-lightish), var(--info), var(--main-green));
         background-size: 400% 400%;
-
-        &:hover {
-            flex-grow: 2;
-            animation-play-state: running;
-        }
     }
 
     & .sign-up {
         background: linear-gradient(135deg, var(--main-lightish), var(--selected-item), var(--main-green));
         background-size: 400% 400%;
-
-        &:hover {
-            flex-grow: 2;
-            animation-play-state: running;
-        }
     }
 
-    & .log-in-btn,
-    & .sign-up-btn {
+    & .modal-wrapper {
         position: relative;
         top: 45%;
     }

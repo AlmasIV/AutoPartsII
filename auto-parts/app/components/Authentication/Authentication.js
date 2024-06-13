@@ -24,12 +24,10 @@ export default function Authentication() {
                 <Modal
                     openButtonTitle="Sign Up"
                     closeButtonTitle="Close"
-                    openButtonClass={`width-half primary-btn ${styles["sign-up-btn"]}`}
+                    openButtonClass="width-half primary-btn"
                     closeButtonClass="width-full secondary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
-                    dialogClass=""
-                    onOpenButtonClick={null}
-                    onCloseButtonClick={null}
+                    containerClass={`${styles["modal-wrapper"]}`}
                 >
                     <h2
                         className="margin-top-05rem"
@@ -75,7 +73,8 @@ export default function Authentication() {
                                             {
                                                 validationErrors: signUpValidationErrors,
                                                 setValidationErrors: setSignUpValidationErrors
-                                            }}
+                                            }
+                                        }
                                     />
                                 );
                             })
@@ -84,7 +83,6 @@ export default function Authentication() {
                             title="Sign Up"
                             className={`${(isSending || signUpValidationErrors.size > 0) ? "disabled-btn" : "primary-btn"} width-full margin-top-2rem`}
                             type="submit"
-                            onClick={null}
                             isDisabled={isSending || signUpValidationErrors.size > 0}
                         />
                     </Form>
@@ -96,12 +94,10 @@ export default function Authentication() {
                 <Modal
                     openButtonTitle="Log In"
                     closeButtonTitle="Close"
-                    openButtonClass={`width-half primary-btn ${styles["log-in-btn"]}`}
+                    openButtonClass="width-half primary-btn"
                     closeButtonClass="width-full primary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
-                    dialogClass=""
-                    onOpenButtonClick={null}
-                    onCloseButtonClick={null}
+                    containerClass={`${styles["modal-wrapper"]}`}
                 >
                     <h2
                         className="margin-top-05rem"
@@ -156,7 +152,6 @@ export default function Authentication() {
                             title="Log In"
                             className={`${(isSending || logInValidationErrors.size > 0) ? "disabled-btn" : "primary-btn"} width-full margin-top-2rem`}
                             type="submit"
-                            onClick={null}
                             isDisabled={isSending || logInValidationErrors.size > 0}
                         />
                     </Form>
