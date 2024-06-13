@@ -72,7 +72,7 @@ export default function Input(
         else {
             validationErrorsState.setValidationErrors(prevErrors => {
                 const updatedErrors = new Set(prevErrors);
-                updatedErrors.delete(config.delete);
+                updatedErrors.delete(config.name);
                 return updatedErrors;
             });
         }
