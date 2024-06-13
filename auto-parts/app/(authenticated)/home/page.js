@@ -96,7 +96,7 @@ export default function HomePage() {
                     /> : autoParts.length > 0 ? 
                     (
                         <div
-                            className=""
+                            className="width-full overflow-auto"
                         >
                             <TableOfAutoParts
                                 autoPartCollection={autoParts}

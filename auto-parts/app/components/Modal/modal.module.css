@@ -17,6 +17,10 @@
 .form-modal {
     width: 35vw;
     min-height: 70vh;
+
+    @media screen and (max-width: 1080px){
+        width: 65vw;
+    }
 }
 
 .shopping-cart-modal {
@@ -26,4 +30,8 @@
 
 .adaptive-modal {
     width: 35vw;
+
+    @media screen and (max-width: 1080px){
+        width: 65vw;
+    }
 }

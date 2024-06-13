@@ -6,6 +6,11 @@
 
 html {
     font-size: 18px;
+
+    @media screen and (max-width: 1080px){
+        font-size: 12px;
+    }
+
     --global-transition: 0.3s;
     --main-lightish: rgb(255, 255, 255);
     --main-darkish: rgb(0, 0, 0);
@@ -72,9 +77,9 @@ main {
     background-color: var(--main-darkish);
     color: var(--main-lightish);
     user-select: none;
-    cursor: pointer;
 
     @media screen and (hover: hover){
+        cursor: pointer;
         &:hover {
             background-color: var(--main-green);
         }
@@ -88,10 +93,10 @@ main {
 }
 
 .disabled-btn {
-    cursor: not-allowed;
     background-color: var(--main-gray);
 
     @media screen and (hover: hover){
+        cursor: not-allowed;
         &:hover {
             background-color: var(--main-gray);
         }
