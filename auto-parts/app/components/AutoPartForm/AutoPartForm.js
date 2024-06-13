@@ -59,7 +59,6 @@ export default function AutoPartForm(
                     title={submitButtonTitle}
                     className={`${(isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
                     type="submit"
-                    onClick={null}
                     isDisabled={isSubmitting || validationErrors.size > 0}
                 />
             </Form>
