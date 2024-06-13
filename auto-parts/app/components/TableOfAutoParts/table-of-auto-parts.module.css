@@ -19,7 +19,9 @@
         transition: var(--global-transition);
     }
 
-    & tbody tr:hover {
-        background-color: var(--info);
+    @media screen and (hover: hover){
+        & tbody tr:hover {
+            background-color: var(--info);
+        }
     }
 }
