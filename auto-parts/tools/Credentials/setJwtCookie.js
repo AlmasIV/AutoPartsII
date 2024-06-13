@@ -5,10 +5,10 @@ import { NextResponse } from "next/server.js";
 export default async function setJwtCookie(cookieHeader){
     if(cookieHeader){
         const response = NextResponse.json({
-            message: "Successfully registered."
+            message: "Successfully authenticated."
         }, {
-            status: 201,
-            statusText: "Created"
+            status: 200,
+            statusText: "OK"
         });
         response.headers.set("Set-Cookie", cookieHeader);
         response.headers.set("Location", `${process.env.BASE_URL}/home`);
