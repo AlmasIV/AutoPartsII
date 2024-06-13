@@ -19,7 +19,6 @@ export default async function getProtected(url, request, cacheTag=null){
                 "authorize": token.value
             }
         });
-        const response = await result.json();
         if(!result.ok){
             return NextResponse.json({
                 message: "Couldn't get the data."
@@ -29,6 +28,7 @@ export default async function getProtected(url, request, cacheTag=null){
             });
         }
         else{
+            const response = await result.json();
             return NextResponse.json({
                 data: response
             }, {
