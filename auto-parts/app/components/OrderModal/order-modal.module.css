@@ -1,6 +1,6 @@
 .order-details {
     width: 90vw;
-    height: 80vh;
+    max-height: 80vh;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -15,9 +15,18 @@
     border-bottom: 0.2rem solid var(--info);
     margin-bottom: 1rem;
 
-    &:hover {
-        background-color: var(--secondary-gray);
-        border-bottom-color: var(--main-green);
+    @media screen and (hover: hover){
+        &:hover {
+            background-color: var(--secondary-gray);
+            border-bottom-color: var(--main-green);
+        }
+    }
+
+    @media screen and (hover: none){
+        &:active {
+            background-color: var(--secondary-gray);
+            border-bottom-color: var(--main-green);
+        }
     }
 }
 
@@ -25,6 +34,5 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90%;
     overflow: auto;
 }
