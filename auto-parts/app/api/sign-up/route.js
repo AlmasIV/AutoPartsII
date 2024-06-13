@@ -6,7 +6,7 @@ import authenticate from "@/tools/Credentials/authenticate.js";
 
 export async function POST(request) {
     const credentials = await request.json();
-    const assertionInfo = credentialsAssertion(credentials, false);
+    const assertionInfo = credentialsAssertion(credentials);
 
     if(!assertionInfo.isValid){
         return NextResponse.json({
