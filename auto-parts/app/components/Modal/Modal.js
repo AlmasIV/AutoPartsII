@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef } from "react";
+import { useRef } from "react";
 import { Button } from "@/app/components/Index.js";
 import styles from "./modal.module.css";
 
@@ -15,12 +15,15 @@ export default function Modal(
         dialogClass="",
         onOpenButtonClick=null,
         onCloseButtonClick=null,
-        isDisabled=false
+        isDisabled=false,
+        containerClass=""
     }
 ){
     const modalRef = useRef(null);
     return (
-        <Fragment>
+        <div
+            className={containerClass}
+        >
             <dialog
                 ref={modalRef}
                 className={`${styles[dialogType]} ${dialogClass}`}
@@ -47,6 +50,6 @@ export default function Modal(
                     onOpenButtonClick && onOpenButtonClick();
                 }}
             />
-        </Fragment>
+        </div>
     );
 }
