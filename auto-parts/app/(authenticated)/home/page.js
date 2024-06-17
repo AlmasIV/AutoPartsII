@@ -142,6 +142,7 @@ export default function HomePage() {
                                         count={totalAutoParts}
                                         selected={selected}
                                         setSelected={setSelected}
+                                        selectorType="pageNum"
                                     />
                                 </Fragment>
                             ) : (

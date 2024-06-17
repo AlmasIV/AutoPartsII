@@ -1,12 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { OrderModal, ErrorBox, Loading } from "@/app/components/Index.js";
+import { Fragment, useEffect, useState } from "react";
+import { OrderModal, ErrorBox, Loading, PageSelector } from "@/app/components/Index.js";
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedPage, setSelectedPage] = useState(1);
+    const [totalOrders, setTotalOrders] = useState(0);
+
+    useEffect(() => {
+        const orderPage = Number(localStorage.getItem("orderPageNum"));
+        if(Number.isInteger(orderPage) && orderPage > 1){
+            setSelectedPage(orderPage);
+        }
+    }, []);
 
     useEffect(() => {
         let ignore = false;
@@ -41,6 +50,27 @@ export default function Orders() {
         };
     }, []);
 
+    useEffect(() => {
+        const fetchCount = async () => {
+            try {
+                const result = await fetch("/api/authenticated/orders/count");
+                if (result.redirected) {
+                    location.href = result.url;
+                }
+                if (!result.ok) {
+                    throw new Error("Couldn't get the total number of orders.");
+                }
+                const totalNum = await result.json();
+                setTotalOrders(totalNum.data);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCount();
+    }, []);
+
     return (
         <div>
             <h2
@@ -55,7 +85,7 @@ export default function Orders() {
             ) : isLoading ? (
                 <Loading />
             ) : orders.length > 0 ? (
-                <div>
+                <Fragment>
                     {
                         orders.map((o) => {
                             return (
@@ -66,7 +96,13 @@ export default function Orders() {
                             );
                         })
                     }
-                </div>
+                    <PageSelector
+                        count={totalOrders}
+                        selected={selectedPage}
+                        setSelected={setSelectedPage}
+                        selectorType="orderPageNum"
+                    />
+                </Fragment>
             ) : (
                 <h3
                     className="text-center"

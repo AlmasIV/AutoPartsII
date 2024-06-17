@@ -7,7 +7,7 @@ export async function POST(request){
     const result = await postProtected("https://localhost:7019/auto-parts/sell", request);
     if(result.ok){
         revalidateTag("all-auto-parts");
-        revalidateTag("all-orders");
+        revalidateTag("orders-count");
     }
     return result;
 }

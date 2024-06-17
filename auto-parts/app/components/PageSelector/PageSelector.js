@@ -9,7 +9,8 @@ export default function PageSelector(
     {
         count,
         selected,
-        setSelected
+        setSelected,
+        selectorType
     }
 ){
     const [totalPages, setTotalPages] = useState(Math.ceil(count / 100));
@@ -23,7 +24,7 @@ export default function PageSelector(
 
     function changePage(page){
         setSelected(page);
-        localStorage.setItem("pageNum", page);
+        localStorage.setItem(selectorType, page);
     }
     return (
         <div

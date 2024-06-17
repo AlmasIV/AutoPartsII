@@ -84,12 +84,23 @@ public class AutoPartController : ControllerBase {
     }
 
     [HttpGet()]
-    [Route("orders/all")]
-    public async Task<IEnumerable<Order>> GetOrders(){
+    [Route("orders/all/{page:int}")]
+    public async Task<IEnumerable<Order>> GetOrders(int page){
+        int contentCount = 100;
         return await _appDbContext.Orders
-            .OrderByDescending(o => o.CreatedOn)
+            .AsNoTracking()
             .Select(o => o)
+            .OrderBy(o => o.CreatedOn)
+            .Skip(page * contentCount - contentCount)
+            .Take(contentCount)
             .ToArrayAsync();
+    }
+
+    [HttpGet()]
+    [Route("orders/count")]
+    public async Task<int> OrdersCount(){
+        return await _appDbContext.Orders
+            .CountAsync();
     }
 
     [HttpGet()]
