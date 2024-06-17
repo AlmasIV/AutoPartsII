@@ -1,4 +1,3 @@
-
 import { KZTFormatter } from "@/tools/NumberFormatters/formatters.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json"
 import styles from "./order-details.module.css"
