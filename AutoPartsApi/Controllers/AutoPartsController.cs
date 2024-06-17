@@ -29,10 +29,19 @@ public class AutoPartController : ControllerBase {
     public async Task<IEnumerable<AutoPart>> GetPage(int page){
         int contentCount = 100;
         return await _appDbContext.AutoParts
+            .AsNoTracking()
             .Select(ap => ap)
+            .OrderBy(ap => ap.Id)
             .Skip(page * contentCount - contentCount)
             .Take(contentCount)
             .ToArrayAsync();
+    }
+
+    [HttpGet()]
+    [Route("count")]
+    public async Task<int> Count(){
+        return await _appDbContext.AutoParts
+            .CountAsync();
     }
 
     [HttpPost()]
