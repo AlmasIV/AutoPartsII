@@ -78,6 +78,10 @@ main {
     color: var(--main-lightish);
     user-select: none;
 
+    @media screen and (max-width: 720px){
+        padding: 0.5rem 1.5rem;
+    }
+
     @media screen and (hover: hover){
         cursor: pointer;
         &:hover {
