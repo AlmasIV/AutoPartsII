@@ -209,6 +209,14 @@ main {
     display: flex;
 }
 
+.space-around-flex {
+    justify-content: space-around;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
 .flex-grow-1 {
     flex-grow: 1;
 }
