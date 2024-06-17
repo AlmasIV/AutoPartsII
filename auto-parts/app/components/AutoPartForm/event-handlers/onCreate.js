@@ -32,12 +32,15 @@ async function submitAutoPart(autoPart, globalNotification, autoPartsState) {
                     ...globalNotification.notifications
                 ]
             );
-            autoPartsState.setAutoParts(
-                [
-                    ...autoPartsState.autoParts,
-                    response.data
-                ]
-            )
+            if(autoPartsState.autoParts.length < 99){
+                autoPartsState.setAutoParts(
+                    [
+                        ...autoPartsState.autoParts,
+                        response.data
+                    ]
+                );
+            }
+            autoPartsState.setTotalAutoParts(total => total + 1);
         }
         else {
             globalNotification.setNotifications(
