@@ -17,6 +17,7 @@ import OrderDetails from "./OrderDetails/OrderDetails.js";
 import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
 import AccountSettings from "./AccountSettings/AccountSettings.js";
+import PageSelector from "./PageSelector/PageSelector.js";
 
 export {
     NavBar,
@@ -37,5 +38,6 @@ export {
     OrderDetails,
     Authentication,
     Loading,
-    AccountSettings
+    AccountSettings,
+    PageSelector
 }

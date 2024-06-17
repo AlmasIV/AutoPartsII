@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
-import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox } from "@/app/components/Index.js";
+import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
 
 export default function HomePage() {
@@ -9,24 +9,32 @@ export default function HomePage() {
     const [autoParts, setAutoParts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [totalAutoParts, setTotalAutoParts] = useState(0);
+    const [selected, setSelected] = useState(1);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const selectedPage = Number(localStorage.getItem("pageNum"));
+        if(Number.isInteger(selectedPage) && selectedPage > 1){
+            setSelected(selectedPage);
+        }
+    }, []);
+
+    useEffect(() => {
+        let isIgnore = false;
+        const fetchPage = async () => {
             setIsLoading(true);
             setError(null);
-            let pageNumber = Number(localStorage.getItem("pageNum"));
-            pageNumber = (Number.isInteger(pageNumber) && pageNumber > 0) ? pageNumber : 1;
             try {
-                const result = await fetch(`/api/authenticated/auto-parts/all/${pageNumber}`);
-                if(result.redirected){
+                const result = await fetch(`/api/authenticated/auto-parts/all/${selected}`);
+                if (result.redirected) {
                     window.location.href = result.url;
                     return;
                 }
                 const response = await result.json();
                 if (!result.ok) {
-                    setError(new Error(response.message))
+                    setError(new Error(response.message));
                 }
-                else {
+                else if(!isIgnore) {
                     setAutoParts(response.data);
                 }
             } catch (error) {
@@ -36,20 +44,43 @@ export default function HomePage() {
             }
         };
 
-        fetchData();
-    }, []);
+        fetchPage();
+
+        return () => { isIgnore = true; }
+    }, [selected]);
 
     useEffect(() => {
-        const selected = [];
+        const selectedParts = [];
         let i = 0;
         let ap = null;
         for (i; i < localStorage.length; i++) {
             ap = localStorage.key(i);
             if (ap.includes("ap")) {
-                selected.push(JSON.parse(localStorage.getItem(ap)));
+                selectedParts.push(JSON.parse(localStorage.getItem(ap)));
             }
         }
-        setSelectedAutoParts([...selected]);
+        setSelectedAutoParts([...selectedParts]);
+    }, []);
+
+    useEffect(() => {
+        const fetchCount = async () => {
+            try {
+                const result = await fetch("/api/authenticated/auto-parts/count");
+                if (result.redirected) {
+                    location.href = result.url;
+                }
+                if (!result.ok) {
+                    throw new Error("Couldn't get the total number of auto-parts.");
+                }
+                const totalNum = await result.json();
+                setTotalAutoParts(totalNum.data);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCount();
     }, []);
     return (
         <Fragment>
@@ -69,7 +100,7 @@ export default function HomePage() {
                         formTitle="Create a new auto-part"
                         submitButtonTitle="Create"
                         onSubmit={onCreate}
-                        autoPartsState={{ autoParts, setAutoParts }}
+                        autoPartsState={{ autoParts, setAutoParts, setTotalAutoParts }}
                     />
                 </Modal>
                 <Modal
@@ -91,28 +122,35 @@ export default function HomePage() {
             </div>
             <Fragment>
                 {
-                    isLoading ? <Loading /> : error ? 
-                    <ErrorBox
-                        error={error}
-                        errorBoxClassName="margin-top-2rem"
-                    /> : autoParts.length > 0 ? 
-                    (
-                        <div
-                            className="width-full overflow-auto"
-                        >
-                            <TableOfAutoParts
-                                autoPartCollection={autoParts}
-                                selectedAutoParts={selectedAutoParts}
-                                setSelectedAutoParts={setSelectedAutoParts}
-                            />
-                        </div>
-                    ) : (
-                        <p
-                            className="text-center margin-top-2rem"
-                        >
-                            You don't have any data.
-                        </p>
-                    )
+                    isLoading ? <Loading /> : error ?
+                        <ErrorBox
+                            error={error}
+                            errorBoxClassName="margin-top-2rem"
+                        /> : autoParts.length > 0 ?
+                            (
+                                <Fragment>
+                                    <div
+                                        className="width-full overflow-auto"
+                                    >
+                                        <TableOfAutoParts
+                                            autoPartCollection={autoParts}
+                                            selectedAutoParts={selectedAutoParts}
+                                            setSelectedAutoParts={setSelectedAutoParts}
+                                        />
+                                    </div>
+                                    <PageSelector
+                                        count={totalAutoParts}
+                                        selected={selected}
+                                        setSelected={setSelected}
+                                    />
+                                </Fragment>
+                            ) : (
+                                <p
+                                    className="text-center margin-top-2rem"
+                                >
+                                    You don't have any data.
+                                </p>
+                            )
                 }
             </Fragment>
         </Fragment>
