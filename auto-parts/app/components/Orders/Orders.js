@@ -18,11 +18,11 @@ export default function Orders() {
     }, []);
 
     useEffect(() => {
-        let ignore = false;
+        let isIgnore = false;
         async function fetchOrders() {
             setIsLoading(true);
             try {
-                const result = await fetch("/api/authenticated/orders/all");
+                const result = await fetch(`/api/authenticated/orders/pages/${selectedPage}`);
                 if(result.redirected){
                     window.location.href = result.url;
                     return;
@@ -31,7 +31,7 @@ export default function Orders() {
                     throw new Error("Something went wrong.");
                 }
                 const fetchedOrders = await result.json();
-                if (!ignore) {
+                if (!isIgnore) {
                     setOrders(fetchedOrders.data);
                 }
             }
@@ -46,9 +46,9 @@ export default function Orders() {
         fetchOrders();
 
         return () => {
-            ignore = true;
+            isIgnore = true;
         };
-    }, []);
+    }, [selectedPage]);
 
     useEffect(() => {
         const fetchCount = async () => {

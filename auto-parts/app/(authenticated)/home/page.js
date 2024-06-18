@@ -25,7 +25,7 @@ export default function HomePage() {
             setIsLoading(true);
             setError(null);
             try {
-                const result = await fetch(`/api/authenticated/auto-parts/all/${selected}`);
+                const result = await fetch(`/api/authenticated/auto-parts/${selected}`);
                 if (result.redirected) {
                     window.location.href = result.url;
                     return;

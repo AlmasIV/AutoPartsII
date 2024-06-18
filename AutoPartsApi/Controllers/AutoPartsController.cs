@@ -19,12 +19,6 @@ public class AutoPartController : ControllerBase {
     }
 
     [HttpGet()]
-    [Route("all")]
-    public async Task<IEnumerable<AutoPart>> GetAll(){
-        return await _appDbContext.AutoParts.Select(x => x).ToArrayAsync();
-    }
-
-    [HttpGet()]
     [Route("{page:int}")]
     public async Task<IEnumerable<AutoPart>> GetPage(int page){
         int contentCount = 100;
@@ -81,54 +75,5 @@ public class AutoPartController : ControllerBase {
         await _appDbContext.SaveChangesAsync();
 
         return Ok();
-    }
-
-    [HttpGet()]
-    [Route("orders/all/{page:int}")]
-    public async Task<IEnumerable<Order>> GetOrders(int page){
-        int contentCount = 100;
-        return await _appDbContext.Orders
-            .AsNoTracking()
-            .Select(o => o)
-            .OrderBy(o => o.CreatedOn)
-            .Skip(page * contentCount - contentCount)
-            .Take(contentCount)
-            .ToArrayAsync();
-    }
-
-    [HttpGet()]
-    [Route("orders/count")]
-    public async Task<int> OrdersCount(){
-        return await _appDbContext.Orders
-            .CountAsync();
-    }
-
-    [HttpGet()]
-    [Route("orders/{id:int}")]
-    public async Task<Object> GetOrder(int id){
-        var result = await _appDbContext.Orders
-            .Where(order => order.Id == id)
-            .Include(order => order.AutoPartsSoldAmounts)
-                .ThenInclude(sa => sa.AutoPart)
-            .Select(o => new {
-                id = o.Id,
-                totalPriceInKzt = o.TotalPriceInKzt,
-                soldParts = o.AutoPartsSoldAmounts.Select(sa => new {
-                    soldPart = sa.AutoPart,
-                    soldAmount = sa.SoldAmount
-                }).ToArray()
-            })
-            .SingleOrDefaultAsync();
-
-        if(result is null){
-            return BadRequest(new ProblemDetails(){
-                Type = null,
-                Status = StatusCodes.Status400BadRequest,
-                Title = "Not found.",
-                Detail = "The requested resource wasn't found. Possibly removed from the database.",
-                Instance = null
-            });
-        }
-        return result;
     }
 }
