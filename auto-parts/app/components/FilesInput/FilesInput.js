@@ -25,12 +25,14 @@ export default function FilesInput(
 				newFiles.push(file);
 			}
 		}
-		setFiles(
-			[
-				...files,
-				...newFiles
-			]
-		);
+		if(newFiles.length > 0){
+			setFiles(
+				[
+					...files,
+					...newFiles
+				]
+			);
+		}
 	}
 	return (
 		<Fragment>
