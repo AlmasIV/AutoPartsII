@@ -18,7 +18,7 @@ import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
 import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
-import ImagesInput from "./ImagesInput/ImagesInput.js";
+import FilesInput from "./FilesInput/FilesInput.js";
 
 export {
     NavBar,
@@ -41,5 +41,5 @@ export {
     Loading,
     AccountSettings,
     PageSelector,
-    ImagesInput
+    FilesInput
 };

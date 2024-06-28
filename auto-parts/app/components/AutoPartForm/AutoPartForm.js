@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useContext, useState } from "react";
-import { Input, Button, Form } from "@/app/components/Index.js";
+import { Input, Button, Form, FilesInput } from "@/app/components/Index.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 
@@ -55,6 +55,7 @@ export default function AutoPartForm(
                         )
                     )
                 }
+                <FilesInput />
                 <Button
                     title={submitButtonTitle}
                     className={`${(isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
