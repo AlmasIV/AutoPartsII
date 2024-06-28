@@ -7,7 +7,7 @@ export default function Form(
         method,
         onSubmit
     }
-){
+) {
     return (
         <form
             className={styles[formType]}

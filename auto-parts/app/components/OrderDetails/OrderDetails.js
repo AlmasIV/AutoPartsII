@@ -1,12 +1,12 @@
 import { KZTFormatter } from "@/tools/NumberFormatters/formatters.js";
-import autoPartConfigs from "@/configurations/auto-part-configuration.json"
-import styles from "./order-details.module.css"
+import autoPartConfigs from "@/configurations/auto-part-configuration.json";
+import styles from "./order-details.module.css";
 
 export default function OrderDetails(
     {
         details
     }
-){
+) {
     return (
         <div>
             <p>
@@ -33,7 +33,7 @@ export default function OrderDetails(
                             >
                                 {
                                     autoPartConfigs.map((apc) => {
-                                        if(sp.soldPart[apc.name]){
+                                        if(sp.soldPart[apc.name]) {
                                             return (
                                                 <p
                                                     key={apc.name}

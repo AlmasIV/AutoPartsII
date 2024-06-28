@@ -15,16 +15,16 @@ export default function OrderModal(
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [details, setDetails] = useState(null);
-    async function fetchDetails(){
-        if(!details){
+    async function fetchDetails() {
+        if(!details) {
             try {
                 setIsLoading(true);
                 const result = await fetch(`/api/authenticated/orders/${order.id}`);
-                if(result.redirected){
+                if(result.redirected) {
                     window.location.href = result.url;
                     return;
                 }
-                if(!result.ok){
+                if(!result.ok) {
                     setError(new Error("Something went wrong."));
                 }
                 else {

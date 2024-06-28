@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { AccountSettings } from "@/app/components/Index.js";
 import styles from "./settings.module.css";
 
-export default function SettingsPage(){
+export default function SettingsPage() {
     return (
         <div
             className={styles["settings-panel"]}

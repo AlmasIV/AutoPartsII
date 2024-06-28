@@ -13,7 +13,7 @@ export default function TableOfAutoParts(
         selectedAutoParts,
         setSelectedAutoParts
     }
-){
+) {
     const globalNotification = useContext(NotificationBoxContext);
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
     return (
@@ -24,7 +24,7 @@ export default function TableOfAutoParts(
                 <tr>
                     {
                         autoPartConfigs.map((autoPartConfig) => {
-                            if(autoPartConfig["inTable"]){
+                            if(autoPartConfig["inTable"]) {
                                 return (
                                     <th
                                         key={autoPartConfig.labelName}

@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server.js";
 
-export async function postProtected(url, request, isReturn = false){
+export async function postProtected(url, request, isReturn = false) {
     try {
         const bodyData = await request.json();
         const token = request.cookies.get("jwt");
@@ -14,7 +14,7 @@ export async function postProtected(url, request, isReturn = false){
             },
             body: JSON.stringify(bodyData)
         });
-        if(!response.ok){
+        if(!response.ok) {
             return NextResponse.json({
                 message: "Couldn't post the data."
             }, {
@@ -33,7 +33,7 @@ export async function postProtected(url, request, isReturn = false){
             });
         }
     }
-    catch(error){
+    catch(error) {
         return NextResponse.json({
             message: "Something went wrong."
         }, {

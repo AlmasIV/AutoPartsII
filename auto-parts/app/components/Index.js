@@ -40,4 +40,4 @@ export {
     Loading,
     AccountSettings,
     PageSelector
-}
+};

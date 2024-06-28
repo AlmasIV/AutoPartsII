@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server.js";
 
-export default async function getProtected(url, request, cacheTag=null){
+export default async function getProtected(url, request, cacheTag = null) {
     try {
         const token = request.cookies.get("jwt");
         const options = cacheTag ? {
@@ -19,7 +19,7 @@ export default async function getProtected(url, request, cacheTag=null){
                 "authorize": token.value
             }
         });
-        if(!result.ok){
+        if(!result.ok) {
             return NextResponse.json({
                 message: "Couldn't get the data."
             }, {
@@ -27,7 +27,7 @@ export default async function getProtected(url, request, cacheTag=null){
                 statusText: "Internal Server Error"
             });
         }
-        else{
+        else {
             const response = await result.json();
             return NextResponse.json({
                 data: response

@@ -12,7 +12,7 @@ export default function Orders() {
 
     useEffect(() => {
         const orderPage = Number(localStorage.getItem("orderPageNum"));
-        if(Number.isInteger(orderPage) && orderPage > 1){
+        if(Number.isInteger(orderPage) && orderPage > 1) {
             setSelectedPage(orderPage);
         }
     }, []);
@@ -23,19 +23,19 @@ export default function Orders() {
             setIsLoading(true);
             try {
                 const result = await fetch(`/api/authenticated/orders/pages/${selectedPage}`);
-                if(result.redirected){
+                if(result.redirected) {
                     window.location.href = result.url;
                     return;
                 }
-                if (!result.ok) {
+                if(!result.ok) {
                     throw new Error("Something went wrong.");
                 }
                 const fetchedOrders = await result.json();
-                if (!isIgnore) {
+                if(!isIgnore) {
                     setOrders(fetchedOrders.data);
                 }
             }
-            catch (error) {
+            catch(error) {
                 setError(new Error("Something went wrong."));
             }
             finally {
@@ -54,16 +54,16 @@ export default function Orders() {
         const fetchCount = async () => {
             try {
                 const result = await fetch("/api/authenticated/orders/count");
-                if (result.redirected) {
+                if(result.redirected) {
                     location.href = result.url;
                 }
-                if (!result.ok) {
+                if(!result.ok) {
                     throw new Error("Couldn't get the total number of orders.");
                 }
                 const totalNum = await result.json();
                 setTotalOrders(totalNum.data);
             }
-            catch (error) {
+            catch(error) {
                 console.log(error);
             }
         };

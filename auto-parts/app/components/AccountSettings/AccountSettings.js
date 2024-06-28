@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ErrorBox, Form, Input, Loading, Button } from "@/app/components/Index.js";
 import styles from "./account-settings.module.css";
 
-export default function AccountSettings(){
+export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,23 +15,23 @@ export default function AccountSettings(){
             setError(null);
             try {
                 const result = await fetch("/api/authenticated/user/info");
-                if(result.redirected){
+                if(result.redirected) {
                     window.location.href = result.url;
                     return;
                 }
-                if(!result.ok){
+                if(!result.ok) {
                     throw new Error();
                 }
                 const response = await result.json();
                 setUser(response.data);
             }
-            catch(error){
+            catch(error) {
                 setError(new Error("Something went wrong when loading user information."));
             }
             finally {
                 setIsLoading(false);
             }
-        }
+        };
         fetchCurrentUser();
     }, []);
     return (
@@ -40,7 +40,7 @@ export default function AccountSettings(){
         >
             <h2>Account Settings</h2>
             {
-                isLoading ? <Loading /> : error ? 
+                isLoading ? <Loading /> : error ?
                     <ErrorBox
                         error={error}
                         errorBoxClassName="margin-top-2rem"
@@ -58,7 +58,7 @@ export default function AccountSettings(){
                                     required: true,
                                     minLength: 3
                                 }}
-                                validationErrorsState={{validationErrors, setValidationErrors}}
+                                validationErrorsState={{ validationErrors, setValidationErrors }}
                                 defaultValue={user.userName}
                             />
                             <Input
@@ -68,7 +68,7 @@ export default function AccountSettings(){
                                     type: "email",
                                     required: true
                                 }}
-                                validationErrorsState={{validationErrors, setValidationErrors}}
+                                validationErrorsState={{ validationErrors, setValidationErrors }}
                                 defaultValue={user.email}
                             />
                             <Button
@@ -79,5 +79,5 @@ export default function AccountSettings(){
                     )
             }
         </section>
-    )
+    );
 }

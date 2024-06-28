@@ -6,4 +6,4 @@ export {
     KZTFormatter,
     RUBFormatter,
     currencyToNumber
-}
+};

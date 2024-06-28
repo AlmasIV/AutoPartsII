@@ -10,7 +10,7 @@ export default async function onAuthenticationSubmit(
     globalNotification,
     url
 ) {
-    if(!isSending){
+    if(!isSending) {
         setIsSending(true);
         setError(null);
         try {
@@ -22,7 +22,7 @@ export default async function onAuthenticationSubmit(
                 body: JSON.stringify(bodyObject)
             });
             const responseObj = await response.json();
-            if(!response.ok){
+            if(!response.ok) {
                 setError(responseObj.message);
                 globalNotification.setNotifications(
                     [
@@ -35,7 +35,7 @@ export default async function onAuthenticationSubmit(
                     ]
                 );
             }
-            else{
+            else {
                 globalNotification.setNotifications(
                     [
                         {
@@ -49,7 +49,7 @@ export default async function onAuthenticationSubmit(
                 window.location.href = response.headers.get("Location");
             }
         }
-        catch(error){
+        catch(error) {
             setError("Something went wrong.");
             globalNotification.setNotifications(
                 [

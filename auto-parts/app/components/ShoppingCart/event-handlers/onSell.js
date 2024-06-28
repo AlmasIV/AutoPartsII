@@ -1,6 +1,6 @@
 import generateGUID from "@/tools/GUID/GUID.js";
 
-export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState){
+export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState) {
     const orderSummary = {
         totalPriceInKzt: 0,
         orderedParts: []
@@ -14,7 +14,7 @@ export default async function onSell(globalNotification, selectedAutoParts, setS
     await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState);
 }
 
-async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState){
+async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState) {
     try {
         const result = await fetch("/api/authenticated/auto-parts/sell", {
             method: "POST",
@@ -24,11 +24,11 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             },
             body: JSON.stringify(orderSummary)
         });
-        if(result.redirected){
+        if(result.redirected) {
             window.location.href = result.url;
             return;
         }
-        if(result.ok){
+        if(result.ok) {
             globalNotification.setNotifications(
                 [
                     {
@@ -48,17 +48,17 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             const updatedAutoParts = [];
             autoPartsState.autoParts.forEach((ap) => {
                 tempOp = soldParts.find((op) => op.id === ap.id);
-                if(tempOp){
+                if(tempOp) {
                     updatedAutoParts.push(tempOp);
                 }
-                else{
+                else {
                     updatedAutoParts.push(ap);
                 }
             });
             autoPartsState.setAutoParts(updatedAutoParts);
             setSelectedAutoParts([]);
         }
-        else{
+        else {
             globalNotification.setNotifications(
                 [
                     {
@@ -71,7 +71,7 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             );
         }
     }
-    catch{
+    catch {
         globalNotification.setNotifications([
             {
                 message: "Something went wrong.",

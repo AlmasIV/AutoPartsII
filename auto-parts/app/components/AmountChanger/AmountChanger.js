@@ -9,7 +9,7 @@ export default function AmountChanger(
         setSelectedAutoParts,
         selectedAutoPart
     }
-){
+) {
     return (
         <div
             className={styles["container"]}
@@ -17,7 +17,7 @@ export default function AmountChanger(
             <div
                 className={`${styles["prev"]} ${styles["controller"]}`}
                 onClick={() => {
-                    if(selectedAutoPart.selectedAmount > 1){
+                    if(selectedAutoPart.selectedAmount > 1) {
                         const autoPart = {
                             ...selectedAutoPart,
                             amount: selectedAutoPart.amount + 1,
@@ -42,12 +42,12 @@ export default function AmountChanger(
             <div
                 className={`${styles["next"]} ${styles["controller"]}`}
                 onClick={() => {
-                    if(selectedAutoPart.amount > 0){
+                    if(selectedAutoPart.amount > 0) {
                         const autoPart = {
                             ...selectedAutoPart,
                             amount: selectedAutoPart.amount - 1,
                             selectedAmount: selectedAutoPart.selectedAmount + 1
-                        }
+                        };
                         setAutoPart(autoPart);
                         setSelectedAutoParts(
                             [

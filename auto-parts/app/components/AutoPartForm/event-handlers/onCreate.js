@@ -16,12 +16,12 @@ async function submitAutoPart(autoPart, globalNotification, autoPartsState) {
             },
             body: JSON.stringify(autoPart)
         });
-        if(result.redirected){
+        if(result.redirected) {
             window.location.href = result.url;
             return;
         }
         const response = await result.json();
-        if (result.ok) {
+        if(result.ok) {
             globalNotification.setNotifications(
                 [
                     {
@@ -32,7 +32,7 @@ async function submitAutoPart(autoPart, globalNotification, autoPartsState) {
                     ...globalNotification.notifications
                 ]
             );
-            if(autoPartsState.autoParts.length < 99){
+            if(autoPartsState.autoParts.length < 99) {
                 autoPartsState.setAutoParts(
                     [
                         ...autoPartsState.autoParts,
@@ -55,7 +55,7 @@ async function submitAutoPart(autoPart, globalNotification, autoPartsState) {
             );
         }
     }
-    catch (error) {
+    catch(error) {
         globalNotification.setNotifications(
             [
                 {
@@ -73,9 +73,9 @@ export function parseAutoPartFromForm(event) {
     const autoPart = {};
     let prop;
     const formElements = event.target.elements;
-    for (let autoPartConfig of autoPartConfigs) {
-        if (formElements[autoPartConfig.name]) {
-            if (autoPartConfig.type === "number") {
+    for(let autoPartConfig of autoPartConfigs) {
+        if(formElements[autoPartConfig.name]) {
+            if(autoPartConfig.type === "number") {
                 prop = Number(formElements[autoPartConfig.name].value);
             }
             else {

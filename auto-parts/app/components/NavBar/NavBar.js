@@ -1,7 +1,7 @@
 import Link from "next/link.js";
 import styles from "./nav-bar.module.css";
 
-export default function NavBar(){
+export default function NavBar() {
     return (
         <nav
             id={styles["main-nav-bar"]}

@@ -9,13 +9,13 @@ export default function NotificationBox(
     {
         children
     }
-){
+) {
     const [notifications, setNotifications] = useState([]);
     return (
         <NotificationBoxContext.Provider
             value={{ notifications, setNotifications }}
         >
-            { children }
+            {children}
             <div
                 id={styles["notification-box"]}
             >

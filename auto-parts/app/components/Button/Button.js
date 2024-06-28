@@ -3,10 +3,10 @@ export default function Button(
         title,
         className,
         type,
-        onClick=null,
-        isDisabled=false
+        onClick = null,
+        isDisabled = false
     }
-){
+) {
     return (
         <button
             type={type}

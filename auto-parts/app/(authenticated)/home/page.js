@@ -14,7 +14,7 @@ export default function HomePage() {
 
     useEffect(() => {
         const selectedPage = Number(localStorage.getItem("pageNum"));
-        if(Number.isInteger(selectedPage) && selectedPage > 1){
+        if(Number.isInteger(selectedPage) && selectedPage > 1) {
             setSelected(selectedPage);
         }
     }, []);
@@ -26,36 +26,38 @@ export default function HomePage() {
             setError(null);
             try {
                 const result = await fetch(`/api/authenticated/auto-parts/${selected}`);
-                if (result.redirected) {
+                if(result.redirected) {
                     window.location.href = result.url;
                     return;
                 }
                 const response = await result.json();
-                if (!result.ok) {
+                if(!result.ok) {
                     setError(new Error(response.message));
                 }
                 else if(!isIgnore) {
                     setAutoParts(response.data);
                 }
-            } catch (error) {
+            }
+            catch(error) {
                 setError(new Error("Something went wrong."));
-            } finally {
+            }
+            finally {
                 setIsLoading(false);
             }
         };
 
         fetchPage();
 
-        return () => { isIgnore = true; }
+        return () => { isIgnore = true; };
     }, [selected]);
 
     useEffect(() => {
         const selectedParts = [];
         let i = 0;
         let ap = null;
-        for (i; i < localStorage.length; i++) {
+        for(i; i < localStorage.length; i++) {
             ap = localStorage.key(i);
-            if (ap.includes("ap")) {
+            if(ap.includes("ap")) {
                 selectedParts.push(JSON.parse(localStorage.getItem(ap)));
             }
         }
@@ -66,16 +68,16 @@ export default function HomePage() {
         const fetchCount = async () => {
             try {
                 const result = await fetch("/api/authenticated/auto-parts/count");
-                if (result.redirected) {
+                if(result.redirected) {
                     location.href = result.url;
                 }
-                if (!result.ok) {
+                if(!result.ok) {
                     throw new Error("Couldn't get the total number of auto-parts.");
                 }
                 const totalNum = await result.json();
                 setTotalAutoParts(totalNum.data);
             }
-            catch (error) {
+            catch(error) {
                 console.log(error);
             }
         };
@@ -149,7 +151,7 @@ export default function HomePage() {
                                 <p
                                     className="text-center margin-top-2rem"
                                 >
-                                    You don't have any data.
+                                    You don&apos;t have any data.
                                 </p>
                             )
                 }

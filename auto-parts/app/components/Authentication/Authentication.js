@@ -35,7 +35,7 @@ export default function Authentication() {
                         Sign Up
                     </h2>
                     {
-                        signUpError && 
+                        signUpError &&
                         <p
                             className="color-danger margin-top-05rem"
                         >
@@ -105,7 +105,7 @@ export default function Authentication() {
                         Log In
                     </h2>
                     {
-                        logInError && 
+                        logInError &&
                         <p
                             className="color-danger margin-top-05rem"
                         >
@@ -134,7 +134,7 @@ export default function Authentication() {
                     >
                         {
                             userConfigs.map((config) => {
-                                if (config.name !== "passwordConfirmation") {
+                                if(config.name !== "passwordConfirmation") {
                                     return (
                                         <Input
                                             key={config.name}

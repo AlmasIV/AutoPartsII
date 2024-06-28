@@ -17,7 +17,7 @@ export default function AutoPartForm(
     const globalNotification = useContext(NotificationBoxContext);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [validationErrors, setValidationErrors] = useState(new Set());
-    async function handleOnSubmit(event){
+    async function handleOnSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
         await onSubmit(event, globalNotification, autoPartsState);
@@ -39,17 +39,17 @@ export default function AutoPartForm(
                     autoPartConfigs.map(
                         (autoPartConfig) => (
                             autoPart === null ? (
-                                autoPartConfig.name !== "id" && 
+                                autoPartConfig.name !== "id" &&
                                 <Input
                                     key={autoPartConfig.labelName}
                                     config={autoPartConfig}
-                                    validationErrorsState={{validationErrors, setValidationErrors}}
+                                    validationErrorsState={{ validationErrors, setValidationErrors }}
                                 />
                             ) : (
                                 <Input
                                     key={autoPartConfig.labelName}
                                     config={autoPartConfig}
-                                    validationErrorsState={{validationErrors, setValidationErrors}}
+                                    validationErrorsState={{ validationErrors, setValidationErrors }}
                                 />
                             )
                         )

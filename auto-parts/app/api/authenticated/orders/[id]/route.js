@@ -3,9 +3,9 @@
 import getProtected from "@/tools/Credentials/getProtected.js";
 import { NextResponse } from "next/server.js";
 
-export async function GET(request, { params }){
+export async function GET(request, { params }) {
     const id = Number(params.id);
-    if(Number.isInteger(id) && id > 0){
+    if(Number.isInteger(id) && id > 0) {
         return await getProtected(`https://localhost:7019/orders/${id}`, request);
     }
     else {

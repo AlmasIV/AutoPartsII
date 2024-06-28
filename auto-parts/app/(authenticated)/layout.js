@@ -5,12 +5,12 @@ export default function AuthenticatedLayout(
     {
         children
     }
-){
+) {
     return (
         <Fragment>
             <NavBar />
             <main>
-              {children}
+                {children}
             </main>
         </Fragment>
     );

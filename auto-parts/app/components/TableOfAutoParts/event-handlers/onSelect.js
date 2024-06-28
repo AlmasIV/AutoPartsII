@@ -24,7 +24,7 @@ export function disselectAutoPart(autoPart, selectedState, globalNotification) {
     );
 }
 
-export function setAutoPart(autoPart){
+export function setAutoPart(autoPart) {
     localStorage.setItem(autoPart.id + "ap", JSON.stringify(autoPart));
 }
 
@@ -52,7 +52,7 @@ export function selectAutoPart(autoPart, selectedState, globalNotification) {
 }
 
 function toggleSelection(autoPart, selectedState, globalNotification) {
-    if (localStorage.getItem(autoPart.id + "ap")) {
+    if(localStorage.getItem(autoPart.id + "ap")) {
         disselectAutoPart(autoPart, selectedState, globalNotification);
     }
     else {

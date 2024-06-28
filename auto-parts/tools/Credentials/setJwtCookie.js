@@ -2,8 +2,8 @@
 
 import { NextResponse } from "next/server.js";
 
-export default async function setJwtCookie(cookieHeader){
-    if(cookieHeader){
+export default async function setJwtCookie(cookieHeader) {
+    if(cookieHeader) {
         const response = NextResponse.json({
             message: "Successfully authenticated."
         }, {

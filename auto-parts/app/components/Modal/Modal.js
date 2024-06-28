@@ -12,13 +12,13 @@ export default function Modal(
         openButtonClass,
         closeButtonClass,
         dialogType,
-        dialogClass="",
-        onOpenButtonClick=null,
-        onCloseButtonClick=null,
-        isDisabled=false,
-        containerClass=""
+        dialogClass = "",
+        onOpenButtonClick = null,
+        onCloseButtonClick = null,
+        isDisabled = false,
+        containerClass = ""
     }
-){
+) {
     const modalRef = useRef(null);
     return (
         <div

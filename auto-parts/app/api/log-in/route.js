@@ -8,7 +8,7 @@ export async function POST(request) {
     const credentials = await request.json();
     const assertionInfo = credentialsAssertion(credentials, true);
 
-    if(!assertionInfo.isValid){
+    if(!assertionInfo.isValid) {
         return NextResponse.json({
             message: assertionInfo.message
         }, {

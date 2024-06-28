@@ -3,9 +3,9 @@
 import getProtected from "@/tools/Credentials/getProtected.js";
 import { NextResponse } from "next/server.js";
 
-export async function GET(request, { params }){
+export async function GET(request, { params }) {
     const page = Number(params.page);
-    if(Number.isInteger(page) && page > 0){
+    if(Number.isInteger(page) && page > 0) {
         return await getProtected(`https://localhost:7019/auto-parts/${page}`, request);
     }
     else {

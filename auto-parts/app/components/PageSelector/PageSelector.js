@@ -12,17 +12,17 @@ export default function PageSelector(
         setSelected,
         selectorType
     }
-){
+) {
     const [totalPages, setTotalPages] = useState(Math.ceil(count / 100));
 
     useEffect(() => {
         const totPages = Math.ceil(count / 100);
-        if(totPages > totalPages){
+        if(totPages > totalPages) {
             setTotalPages(totPages);
         }
     }, [count]);
 
-    function changePage(page){
+    function changePage(page) {
         setSelected(page);
         localStorage.setItem(selectorType, page);
     }

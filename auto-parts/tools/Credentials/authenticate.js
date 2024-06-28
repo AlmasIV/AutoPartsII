@@ -15,7 +15,7 @@ export default async function authenticate(user, url, isLogIn = false) {
             body: JSON.stringify(user)
         });
     }
-    catch (error) {
+    catch(error) {
         return NextResponse.json({
             message: "Connection with the database can't be established."
         }, {
@@ -23,7 +23,7 @@ export default async function authenticate(user, url, isLogIn = false) {
             statusText: "Internal Server Error"
         });
     }
-    if (!result.ok) {
+    if(!result.ok) {
         let problem = await result.json();
         return NextResponse.json({
             message: isLogIn ? problem.title : problem["errors"].map((error) => {
