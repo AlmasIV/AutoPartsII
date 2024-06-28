@@ -18,6 +18,7 @@ import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
 import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
+import ImagesInput from "./ImagesInput/ImagesInput.js";
 
 export {
     NavBar,
@@ -39,5 +40,6 @@ export {
     Authentication,
     Loading,
     AccountSettings,
-    PageSelector
+    PageSelector,
+    ImagesInput
 };
