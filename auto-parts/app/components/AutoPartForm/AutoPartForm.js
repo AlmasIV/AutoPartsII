@@ -55,7 +55,13 @@ export default function AutoPartForm(
                         )
                     )
                 }
-                <FilesInput />
+                <FilesInput
+                    title="Add Images"
+                    name="images"
+                    accept="images/jpeg"
+                    capture="environment"
+                    isMultiple={true}
+                />
                 <Button
                     title={submitButtonTitle}
                     className={`${(isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
