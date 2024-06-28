@@ -1,0 +1,5 @@
+.files-input {
+	& input[type="file"] {
+		display: none;
+	}
+}
