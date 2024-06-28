@@ -86,9 +86,6 @@ public class Program
 
 		builder.Services.AddAuthorization();
 
-		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddSwaggerGen();
-
 		builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 
 		var app = builder.Build();
@@ -96,8 +93,6 @@ public class Program
 		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment())
 		{
-			app.UseSwagger();
-			app.UseSwaggerUI();
 			app.UseDeveloperExceptionPage();
 		}
 		else

@@ -57,9 +57,10 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter
 			return;
 		}
 
-		decimal calculatedPrice = (from ap in orderSummary.OrderedParts
-								   let op = originalInfo!.Single(op => op.Id == ap.Id)
-								   select ap.Amount * op.PriceInKzt).Sum();
+		decimal calculatedPrice =
+			(from ap in orderSummary.OrderedParts
+			 let op = originalInfo!.Single(op => op.Id == ap.Id)
+			 select ap.Amount * op.PriceInKzt).Sum();
 
 		if (orderSummary.TotalPriceInKzt != calculatedPrice)
 		{

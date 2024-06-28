@@ -15,12 +15,10 @@ namespace AutoPartsApi.Controllers;
 public class UserController : ControllerBase
 {
 	private readonly UserManager<IdentityUser> _userManager;
-	private readonly SignInManager<IdentityUser> _signInManager;
 	private readonly IJwtTokenManager _jwtTokenManager;
-	public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtTokenManager jwtTokenManager)
+	public UserController(UserManager<IdentityUser> userManager, IJwtTokenManager jwtTokenManager)
 	{
 		_userManager = userManager;
-		_signInManager = signInManager;
 		_jwtTokenManager = jwtTokenManager;
 	}
 

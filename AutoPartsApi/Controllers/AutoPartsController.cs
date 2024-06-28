@@ -5,7 +5,6 @@ using AutoPartsApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsApi.Controllers;
@@ -16,7 +15,7 @@ namespace AutoPartsApi.Controllers;
 public class AutoPartController : ControllerBase
 {
 	private readonly AppDbContext _appDbContext;
-	public AutoPartController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory)
+	public AutoPartController(AppDbContext appDbContext)
 	{
 		_appDbContext = appDbContext;
 	}
