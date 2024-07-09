@@ -88,7 +88,7 @@ export default function FilesInput(
 								}
 								<Button
 									title="Remove"
-									className="width-full primary-btn text-center"
+									className="width-full secondary-btn text-center"
 									type="button"
 									onClick={(e) => {
 										setFiles(files.filter((f) => f.name !== file.name && f.size !== file.size && f.lastModified !== file.lastModified));
