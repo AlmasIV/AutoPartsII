@@ -58,7 +58,7 @@ export default function AutoPartForm(
                 <FilesInput
                     title="Add Images"
                     name="images"
-                    accept="images/jpeg"
+                    accept={["image/jpeg", "image/jpg"]}
                     capture="environment"
                     isMultiple={true}
                 />
