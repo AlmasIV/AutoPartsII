@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import styles from "./files-input.module.css";
 import generateGUID from "@/tools/GUID/GUID";
 import { Button } from "@/app/components/Index.js";
@@ -35,6 +35,7 @@ export default function FilesInput(
 				]
 			);
 		}
+		event.target.value = null;
 	}
 	return (
 		<Fragment>
