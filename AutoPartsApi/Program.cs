@@ -18,6 +18,8 @@ public class Program {
 
 		builder.Services.AddControllers();
 
+		builder.Services.AddHttpLogging(options => { });
+
 		builder.Services.AddCors(options => {
 			options.AddDefaultPolicy(policy => {
 				policy.WithOrigins("https://localhost:3000/", "http://localhost:3000/", "https://localhost:3000", "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
@@ -75,6 +77,8 @@ public class Program {
 		builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 
 		var app = builder.Build();
+
+		app.UseHttpLogging();
 
 		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment()) {
