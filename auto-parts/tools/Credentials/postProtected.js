@@ -16,8 +16,7 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "authorize": token.value,
-                    "Content-Type": "multipart/form-data"
+                    "authorize": token.value
                 },
                 body: formData
             });
@@ -34,6 +33,9 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             });
         }
         if(!response.ok) {
+            const e = await response.json();
+            console.log("LOG:");
+            console.log(e);
             return NextResponse.json({
                 message: "Couldn't post the data."
             }, {
