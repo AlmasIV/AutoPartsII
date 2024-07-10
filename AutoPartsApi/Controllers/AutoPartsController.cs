@@ -12,18 +12,15 @@ namespace AutoPartsApi.Controllers;
 [ApiController()]
 [Route("auto-parts")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class AutoPartController : ControllerBase
-{
+public class AutoPartController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
-	public AutoPartController(AppDbContext appDbContext)
-	{
+	public AutoPartController(AppDbContext appDbContext) {
 		_appDbContext = appDbContext;
 	}
 
 	[HttpGet()]
 	[Route("{page:int}")]
-	public async Task<IEnumerable<AutoPart>> GetPage(int page)
-	{
+	public async Task<IEnumerable<AutoPart>> GetPage(int page) {
 		int contentCount = 100;
 		return await _appDbContext.AutoParts
 			.AsNoTracking()
@@ -36,35 +33,34 @@ public class AutoPartController : ControllerBase
 
 	[HttpGet()]
 	[Route("count")]
-	public async Task<int> Count()
-	{
+	public async Task<int> Count() {
 		return await _appDbContext.AutoParts
 			.CountAsync();
 	}
 
 	[HttpPost()]
 	[Route("create")]
-	public async Task<IActionResult> Create([FromBody] AutoPart autoPart)
-	{
-		await _appDbContext.AutoParts.AddAsync(autoPart);
-		await _appDbContext.SaveChangesAsync();
+	public async Task<IActionResult> Create([FromForm] AutoPart autoPart) {
+		// Console.WriteLine("Files:");
+		// foreach(IFormFile file in images){
+		// 	Console.WriteLine($"Filename: {file.FileName}");
+		// 	Console.WriteLine($"Content-Type: {file.ContentType}");
+		// }
+		// await _appDbContext.AutoParts.AddAsync(autoPart);
+		// await _appDbContext.SaveChangesAsync();
 		return Ok(autoPart);
 	}
 
 	[HttpPost()]
 	[Route("sell")]
 	[TypeFilter(typeof(OrderSummaryValidationAttribute))]
-	public async Task<IActionResult> Sell([FromBody] OrderSummaryModel orderSummary)
-	{
-		Order order = new Order()
-		{
+	public async Task<IActionResult> Sell([FromBody] OrderSummaryModel orderSummary) {
+		Order order = new Order() {
 			TotalPriceInKzt = orderSummary.TotalPriceInKzt,
 			AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
 		};
-		foreach (AutoPart autoPart in orderSummary.OrderedParts)
-		{
-			order.AutoPartsSoldAmounts.Add(new AutoPartSoldAmount()
-			{
+		foreach (AutoPart autoPart in orderSummary.OrderedParts) {
+			order.AutoPartsSoldAmounts.Add(new AutoPartSoldAmount() {
 				AutoPartId = autoPart.Id,
 				SoldAmount = autoPart.Amount
 			});
@@ -74,8 +70,7 @@ public class AutoPartController : ControllerBase
 			.Where(ap => orderSummary.OrderedParts.Select(op => op.Id).Contains(ap.Id))
 			.Select(ap => ap)
 			.ToArrayAsync();
-		foreach (AutoPart autoPart in parts)
-		{
+		foreach (AutoPart autoPart in parts) {
 			autoPart.Amount -= orderSummary.OrderedParts
 				.Where(ap => ap.Id == autoPart.Id)
 				.First().Amount;
