@@ -19,7 +19,7 @@ public class AutoPartController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("{page:int}")]
+	[Route("page/{page:int}")]
 	public async Task<IEnumerable<AutoPart>> GetPage(int page) {
 		int contentCount = 100;
 		return await _appDbContext.AutoParts
@@ -38,6 +38,9 @@ public class AutoPartController : ControllerBase {
 			.CountAsync();
 	}
 
+	// [HttpGet()]
+	// [Route("")]
+
 	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
@@ -46,14 +49,23 @@ public class AutoPartController : ControllerBase {
 			2) Sanitize file names, and add GUIDs to file names.
 			3) Check files with anti-virus systems.
 		*/
-		Console.WriteLine("Files:");
+		List<Image> autoPartImages = new List<Image>();
+		Image? image = null;
 		foreach (IFormFile file in images) {
-			Console.WriteLine($"Filename: {file.FileName}");
-			Console.WriteLine($"Content-Type: {file.ContentType}");
+			using (MemoryStream memoryStream = new MemoryStream()) {
+				await file.CopyToAsync(memoryStream);
+				image = new Image() {
+					Title = file.FileName,
+					Data = memoryStream.ToArray(),
+					ContentType = file.ContentType
+				};
+				autoPartImages.Add(image);
+			}
 		}
-		// await _appDbContext.AutoParts.AddAsync(autoPart);
-		// await _appDbContext.SaveChangesAsync();
-		return Ok();
+		autoPart.Images = autoPartImages;
+		await _appDbContext.AutoParts.AddAsync(autoPart);
+		await _appDbContext.SaveChangesAsync();
+		return Ok(autoPart);
 	}
 
 	[HttpPost()]
