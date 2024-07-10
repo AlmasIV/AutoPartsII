@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutoPartsApi;
-
+/*
+	1) Improve exception handling on the global level, and also improve it at the individual level like controller's action methods.
+*/
 public class Program {
 	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
