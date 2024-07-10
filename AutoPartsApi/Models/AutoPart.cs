@@ -18,10 +18,10 @@ public class AutoPart : IEquatable<AutoPart> {
 
 	[Range(0, 9999_9999.99)]
 	[Column(TypeName = "decimal(10, 2)")]
-	public decimal PriceInRub { get; set; }
+	public decimal? PriceInRub { get; set; }
 
 	[Required()]
-	[Range(0, 9999_9999.99)]
+	[Range(100, 9999_9999.99)]
 	[Column(TypeName = "decimal(10, 2)")]
 	public decimal PriceInKzt { get; set; }
 
