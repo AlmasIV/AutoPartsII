@@ -40,15 +40,15 @@ public class AutoPartController : ControllerBase {
 
 	[HttpPost()]
 	[Route("create")]
-	public async Task<IActionResult> Create([FromForm] AutoPart autoPart) {
-		// Console.WriteLine("Files:");
+	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, List<IFormFile> images) {
+		Console.WriteLine("Files:");
 		// foreach(IFormFile file in images){
 		// 	Console.WriteLine($"Filename: {file.FileName}");
 		// 	Console.WriteLine($"Content-Type: {file.ContentType}");
 		// }
 		// await _appDbContext.AutoParts.AddAsync(autoPart);
 		// await _appDbContext.SaveChangesAsync();
-		return Ok(autoPart);
+		return Ok();
 	}
 
 	[HttpPost()]
