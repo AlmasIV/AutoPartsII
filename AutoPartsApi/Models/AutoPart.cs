@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
-public class AutoPart : IEquatable<AutoPart>
-{
+public class AutoPart : IEquatable<AutoPart> {
 	public int Id { get; set; }
 
 	[Required()]
@@ -36,10 +35,8 @@ public class AutoPart : IEquatable<AutoPart>
 	[JsonIgnore()]
 	public List<Image>? Images { get; set; }
 
-	public bool Equals(AutoPart? other)
-	{
-		if (other is null)
-		{
+	public bool Equals(AutoPart? other) {
+		if (other is null) {
 			return false;
 		}
 
@@ -53,13 +50,11 @@ public class AutoPart : IEquatable<AutoPart>
 		);
 	}
 
-	public override bool Equals(object? obj)
-	{
+	public override bool Equals(object? obj) {
 		return Equals(obj as AutoPart);
 	}
 
-	public override int GetHashCode()
-	{
+	public override int GetHashCode() {
 		return HashCode.Combine(Id, Name, Applicability, Company, PriceInRub, PriceInKzt);
 	}
 }

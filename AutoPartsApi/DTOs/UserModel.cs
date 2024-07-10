@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsApi.DTOs;
 
-public class UserModel
-{
+public class UserModel {
 	[Required()]
 	[EmailAddress()]
 	public string Email { get; set; } = null!;

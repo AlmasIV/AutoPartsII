@@ -10,42 +10,34 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AutoPartsApi;
 
-public class Program
-{
-	public static void Main(string[] args)
-	{
+public class Program {
+	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
 
 		// Add services to the container.
 
 		builder.Services.AddControllers();
 
-		builder.Services.AddCors(options =>
-		{
-			options.AddDefaultPolicy(policy =>
-			{
+		builder.Services.AddCors(options => {
+			options.AddDefaultPolicy(policy => {
 				policy.WithOrigins("https://localhost:3000/", "http://localhost:3000/", "https://localhost:3000", "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 			});
 		});
 
-		builder.Services.AddDbContext<AppDbContext>(options =>
-		{
-			options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions =>
-			{
+		builder.Services.AddDbContext<AppDbContext>(options => {
+			options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions => {
 				sqlOptions.EnableRetryOnFailure();
 			});
 		});
 
-		builder.Services.AddDbContext<IdentityDbContext>(options =>
-		{
+		builder.Services.AddDbContext<IdentityDbContext>(options => {
 			options.UseSqlServer(
 				builder.Configuration["ConnectionStrings:Identity"],
 				options => options.MigrationsAssembly("AutoPartsApi")
 			);
 		});
 
-		builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-		{
+		builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 			options.Password.RequiredLength = 8;
 			options.Password.RequireDigit = false;
 			options.Password.RequireLowercase = false;
@@ -55,34 +47,28 @@ public class Program
 			options.User.RequireUniqueEmail = true;
 		}).AddEntityFrameworkStores<IdentityDbContext>();
 
-		builder.Services.AddAuthentication(options =>
-		{
+		builder.Services.AddAuthentication(options => {
 			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 			options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-		}).AddJwtBearer(options =>
-			{
-				options.TokenValidationParameters = new TokenValidationParameters()
-				{
-					ValidateIssuer = true,
-					ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"],
-					ValidateAudience = true,
-					ValidAudience = builder.Configuration["AuthenticationOptions:Audience"],
-					ValidateLifetime = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
-					ValidateIssuerSigningKey = true
-				};
-				options.Events = new JwtBearerEvents()
-				{
-					OnMessageReceived = context =>
-					{
-						if (context.Request.Headers.ContainsKey("authorize"))
-						{
-							context.Token = context.Request.Headers["authorize"];
-						}
-						return Task.CompletedTask;
+		}).AddJwtBearer(options => {
+			options.TokenValidationParameters = new TokenValidationParameters() {
+				ValidateIssuer = true,
+				ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"],
+				ValidateAudience = true,
+				ValidAudience = builder.Configuration["AuthenticationOptions:Audience"],
+				ValidateLifetime = true,
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
+				ValidateIssuerSigningKey = true
+			};
+			options.Events = new JwtBearerEvents() {
+				OnMessageReceived = context => {
+					if (context.Request.Headers.ContainsKey("authorize")) {
+						context.Token = context.Request.Headers["authorize"];
 					}
-				};
-			});
+					return Task.CompletedTask;
+				}
+			};
+		});
 
 		builder.Services.AddAuthorization();
 
@@ -91,12 +77,10 @@ public class Program
 		var app = builder.Build();
 
 		// Configure the HTTP request pipeline.
-		if (app.Environment.IsDevelopment())
-		{
+		if (app.Environment.IsDevelopment()) {
 			app.UseDeveloperExceptionPage();
 		}
-		else
-		{
+		else {
 			app.UseExceptionHandler("/error");
 		}
 

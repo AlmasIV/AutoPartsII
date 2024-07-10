@@ -11,18 +11,15 @@ namespace AutoPartsApi.Controllers;
 [ApiController()]
 [Route("orders")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class OrdersController : ControllerBase
-{
+public class OrdersController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
-	public OrdersController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory)
-	{
+	public OrdersController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory) {
 		_appDbContext = appDbContext;
 	}
 
 	[HttpGet()]
 	[Route("pages/{page:int}")]
-	public async Task<IEnumerable<Order>> GetOrders(int page)
-	{
+	public async Task<IEnumerable<Order>> GetOrders(int page) {
 		int contentCount = 100;
 		return await _appDbContext.Orders
 			.AsNoTracking()
@@ -35,36 +32,30 @@ public class OrdersController : ControllerBase
 
 	[HttpGet()]
 	[Route("count")]
-	public async Task<int> OrdersCount()
-	{
+	public async Task<int> OrdersCount() {
 		return await _appDbContext.Orders
 			.CountAsync();
 	}
 
 	[HttpGet()]
 	[Route("{id:int}")]
-	public async Task<Object> GetOrder(int id)
-	{
+	public async Task<Object> GetOrder(int id) {
 		var result = await _appDbContext.Orders
 			.Where(order => order.Id == id)
 			.Include(order => order.AutoPartsSoldAmounts)
 				.ThenInclude(sa => sa.AutoPart)
-			.Select(o => new
-			{
+			.Select(o => new {
 				id = o.Id,
 				totalPriceInKzt = o.TotalPriceInKzt,
-				soldParts = o.AutoPartsSoldAmounts.Select(sa => new
-				{
+				soldParts = o.AutoPartsSoldAmounts.Select(sa => new {
 					soldPart = sa.AutoPart,
 					soldAmount = sa.SoldAmount
 				}).ToArray()
 			})
 			.SingleOrDefaultAsync();
 
-		if (result is null)
-		{
-			return BadRequest(new ProblemDetails()
-			{
+		if (result is null) {
+			return BadRequest(new ProblemDetails() {
 				Type = null,
 				Status = StatusCodes.Status400BadRequest,
 				Title = "Not found.",

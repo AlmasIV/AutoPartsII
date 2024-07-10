@@ -2,18 +2,14 @@
 
 #nullable disable
 
-namespace AutoPartsApi.Migrations
-{
+namespace AutoPartsApi.Migrations {
 	/// <inheritdoc />
-	public partial class ImagesTable : Migration
-	{
+	public partial class ImagesTable : Migration {
 		/// <inheritdoc />
-		protected override void Up(MigrationBuilder migrationBuilder)
-		{
+		protected override void Up(MigrationBuilder migrationBuilder) {
 			migrationBuilder.CreateTable(
 				name: "Images",
-				columns: table => new
-				{
+				columns: table => new {
 					Id = table.Column<int>(type: "int", nullable: false)
 						.Annotation("SqlServer:Identity", "1, 1"),
 					Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -21,8 +17,7 @@ namespace AutoPartsApi.Migrations
 					ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
 					AutoPartId = table.Column<int>(type: "int", nullable: false)
 				},
-				constraints: table =>
-				{
+				constraints: table => {
 					table.PrimaryKey("PK_Images", x => x.Id);
 					table.ForeignKey(
 						name: "FK_Images_AutoParts_AutoPartId",
@@ -39,8 +34,7 @@ namespace AutoPartsApi.Migrations
 		}
 
 		/// <inheritdoc />
-		protected override void Down(MigrationBuilder migrationBuilder)
-		{
+		protected override void Down(MigrationBuilder migrationBuilder) {
 			migrationBuilder.DropTable(
 				name: "Images");
 		}

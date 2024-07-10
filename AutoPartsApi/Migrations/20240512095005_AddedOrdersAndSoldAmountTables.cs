@@ -4,37 +4,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AutoPartsApi.Migrations
-{
+namespace AutoPartsApi.Migrations {
 	/// <inheritdoc />
-	public partial class AddedOrdersAndSoldAmountTables : Migration
-	{
+	public partial class AddedOrdersAndSoldAmountTables : Migration {
 		/// <inheritdoc />
-		protected override void Up(MigrationBuilder migrationBuilder)
-		{
+		protected override void Up(MigrationBuilder migrationBuilder) {
 			migrationBuilder.CreateTable(
 				name: "Orders",
-				columns: table => new
-				{
+				columns: table => new {
 					Id = table.Column<int>(type: "int", nullable: false)
 						.Annotation("SqlServer:Identity", "1, 1"),
 					TotalPriceInKzt = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
 					CreatedOn = table.Column<DateTime>(type: "datetime2(0)", nullable: false, defaultValueSql: "SYSUTCDATETIME()")
 				},
-				constraints: table =>
-				{
+				constraints: table => {
 					table.PrimaryKey("PK_Orders", x => x.Id);
 				});
 
 			migrationBuilder.CreateTable(
 				name: "AutoPartOrder",
-				columns: table => new
-				{
+				columns: table => new {
 					AutoPartsId = table.Column<int>(type: "int", nullable: false),
 					OrdersId = table.Column<int>(type: "int", nullable: false)
 				},
-				constraints: table =>
-				{
+				constraints: table => {
 					table.PrimaryKey("PK_AutoPartOrder", x => new { x.AutoPartsId, x.OrdersId });
 					table.ForeignKey(
 						name: "FK_AutoPartOrder_AutoParts_AutoPartsId",
@@ -52,16 +45,14 @@ namespace AutoPartsApi.Migrations
 
 			migrationBuilder.CreateTable(
 				name: "AutoPartSoldAmount",
-				columns: table => new
-				{
+				columns: table => new {
 					Id = table.Column<int>(type: "int", nullable: false)
 						.Annotation("SqlServer:Identity", "1, 1"),
 					AutoPartId = table.Column<int>(type: "int", nullable: false),
 					SoldAmount = table.Column<int>(type: "int", nullable: false),
 					OrderId = table.Column<int>(type: "int", nullable: true)
 				},
-				constraints: table =>
-				{
+				constraints: table => {
 					table.PrimaryKey("PK_AutoPartSoldAmount", x => x.Id);
 					table.ForeignKey(
 						name: "FK_AutoPartSoldAmount_AutoParts_AutoPartId",
@@ -93,8 +84,7 @@ namespace AutoPartsApi.Migrations
 		}
 
 		/// <inheritdoc />
-		protected override void Down(MigrationBuilder migrationBuilder)
-		{
+		protected override void Down(MigrationBuilder migrationBuilder) {
 			migrationBuilder.DropTable(
 				name: "AutoPartOrder");
 

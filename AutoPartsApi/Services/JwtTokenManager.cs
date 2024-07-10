@@ -7,16 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AutoPartsApi.Services;
 
-public class JwtTokenManager : IJwtTokenManager
-{
+public class JwtTokenManager : IJwtTokenManager {
 	private readonly IConfiguration _configuration;
-	public JwtTokenManager(IConfiguration configuration)
-	{
+	public JwtTokenManager(IConfiguration configuration) {
 		_configuration = configuration;
 	}
 
-	public string GenerateToken(IdentityUser user)
-	{
+	public string GenerateToken(IdentityUser user) {
 		List<Claim> claims = new List<Claim>(){
 			new Claim(ClaimTypes.Name, user.UserName!),
 			new Claim(ClaimTypes.Email, user.Email!)

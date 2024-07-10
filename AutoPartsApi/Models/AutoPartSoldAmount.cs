@@ -3,8 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
 
-public class AutoPartSoldAmount
-{
+public class AutoPartSoldAmount {
 	public int Id { get; set; }
 
 	public int AutoPartId { get; set; }

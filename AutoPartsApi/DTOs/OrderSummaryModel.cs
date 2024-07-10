@@ -4,8 +4,7 @@ using AutoPartsApi.Models;
 
 namespace AutoPartsApi.DTOs;
 
-public class OrderSummaryModel
-{
+public class OrderSummaryModel {
 	[Required()]
 	[MinLength(1)]
 	public AutoPart[] OrderedParts { get; set; } = null!;

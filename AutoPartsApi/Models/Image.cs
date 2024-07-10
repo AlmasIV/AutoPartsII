@@ -3,8 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
 
-public class Image
-{
+public class Image {
 	public int Id { get; set; }
 	public string Title { get; set; } = null!;
 	public byte[] Data { get; set; } = null!;

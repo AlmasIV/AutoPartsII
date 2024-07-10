@@ -2,15 +2,13 @@ using AutoPartsApi.Models;
 
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : DbContext
-{
+public class AppDbContext : DbContext {
 	public DbSet<AutoPart> AutoParts => Set<AutoPart>();
 	public DbSet<Order> Orders => Set<Order>();
 	public DbSet<Image> Images => Set<Image>();
 	public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions) { }
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
+	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<AutoPart>()
 			.HasMany(part => part.Orders)
 			.WithMany(order => order.AutoParts);
