@@ -61,7 +61,7 @@ namespace AutoPartsApi.Migrations
                     b.Property<decimal>("PriceInKzt")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<decimal>("PriceInRub")
+                    b.Property<decimal?>("PriceInRub")
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
