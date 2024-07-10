@@ -34,6 +34,7 @@ export default function AutoPartForm(
                 formType="flex-column-form"
                 method="dialog"
                 onSubmit={handleOnSubmit}
+                enctype="multipart/form-data"
             >
                 {
                     autoPartConfigs.map(

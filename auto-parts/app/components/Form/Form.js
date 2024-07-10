@@ -5,7 +5,8 @@ export default function Form(
         children,
         formType,
         method,
-        onSubmit
+        onSubmit,
+        enctype = "application/x-www-form-urlencoded"
     }
 ) {
     return (
@@ -13,6 +14,7 @@ export default function Form(
             className={styles[formType]}
             method={method}
             onSubmit={onSubmit}
+            encType={enctype}
         >
             {children}
         </form>
