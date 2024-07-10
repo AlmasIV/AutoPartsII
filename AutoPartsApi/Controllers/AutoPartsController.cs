@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using System.IO.Compression;
+
 namespace AutoPartsApi.Controllers;
 
 [ApiController()]
@@ -38,8 +40,32 @@ public class AutoPartController : ControllerBase {
 			.CountAsync();
 	}
 
-	// [HttpGet()]
-	// [Route("")]
+	[HttpGet()]
+	[Route("{id:int}")]
+	public async Task<IActionResult> GetAutoPartImages(int id) {
+		/*
+			1) Implement memroy streaming, don't hold images in the memory.
+			2) Improve error-recoverability.
+		*/
+		IEnumerable<Image>? images = _appDbContext.Images
+			.AsNoTracking()
+			.Where(im => im.AutoPartId == id)
+			.Select(im => im);
+		if (images is null) {
+			return NotFound();
+		}
+		using (MemoryStream memoryStream = new MemoryStream()) {
+			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true)) {
+				foreach (Image image in images) {
+					ZipArchiveEntry entry = archive.CreateEntry(image.Title, CompressionLevel.Fastest);
+					using (Stream entryStream = entry.Open()) {
+						await entryStream.WriteAsync(image.Data, 0, image.Data.Length);
+					}
+				}
+			}
+			return File(memoryStream.ToArray(), "application/zip", "images/zip");
+		}
+	}
 
 	[HttpPost()]
 	[Route("create")]
