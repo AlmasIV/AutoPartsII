@@ -40,12 +40,17 @@ public class AutoPartController : ControllerBase {
 
 	[HttpPost()]
 	[Route("create")]
-	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, List<IFormFile> images) {
+	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
+		/*
+			1) Compress images, if so then I also need to decompress them.
+			2) Sanitize file names, and add GUIDs to file names.
+			3) Check files with anti-virus systems.
+		*/
 		Console.WriteLine("Files:");
-		// foreach(IFormFile file in images){
-		// 	Console.WriteLine($"Filename: {file.FileName}");
-		// 	Console.WriteLine($"Content-Type: {file.ContentType}");
-		// }
+		foreach (IFormFile file in images) {
+			Console.WriteLine($"Filename: {file.FileName}");
+			Console.WriteLine($"Content-Type: {file.ContentType}");
+		}
 		// await _appDbContext.AutoParts.AddAsync(autoPart);
 		// await _appDbContext.SaveChangesAsync();
 		return Ok();
