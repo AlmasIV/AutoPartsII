@@ -11,12 +11,10 @@ export async function postProtected(url, request, isReturn = false, isFormData =
         let response = null;
         if(isFormData){
             const formData = await request.formData();
-            console.log("FormData:");
-            console.log(formData);
             response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "authorize": token.value
+                    "Authorization": `Bearer ${token.value}`
                 },
                 body: formData
             });
@@ -33,9 +31,9 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             });
         }
         if(!response.ok) {
-            const e = await response.json();
-            console.log("LOG:");
-            console.log(e);
+            // const e = await response.json();
+            // console.log("LOG:");
+            // console.log(e);
             return NextResponse.json({
                 message: "Couldn't post the data."
             }, {

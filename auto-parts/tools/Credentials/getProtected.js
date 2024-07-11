@@ -16,7 +16,7 @@ export default async function getProtected(url, request, cacheTag = null) {
             ...options,
             method: "GET",
             headers: {
-                "authorize": token.value
+                "Authorization": `Bearer ${token.value}`
             }
         });
         if(!result.ok) {
