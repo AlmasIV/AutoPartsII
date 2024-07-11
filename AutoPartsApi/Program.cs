@@ -3,6 +3,7 @@ using System.Text;
 using AutoPartsApi.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 namespace AutoPartsApi;
 /*
 	1) Improve exception handling on the global level, and also improve it at the individual level like controller's action methods.
+	2) Remember to encrypt your database!
+	3) Keep secrets in a safe place!
 */
 public class Program {
 	public static void Main(string[] args) {
@@ -47,9 +50,11 @@ public class Program {
 			options.Password.RequireLowercase = false;
 			options.Password.RequireUppercase = false;
 			options.Password.RequireNonAlphanumeric = false;
-			options.SignIn.RequireConfirmedAccount = false;
+			options.SignIn.RequireConfirmedAccount = false; // Change to true.
 			options.User.RequireUniqueEmail = true;
-		}).AddEntityFrameworkStores<IdentityDbContext>();
+		})
+		.AddRoles<IdentityRole>()
+		.AddEntityFrameworkStores<IdentityDbContext>();
 
 		builder.Services.AddAuthentication(options => {
 			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,6 +69,8 @@ public class Program {
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
 				ValidateIssuerSigningKey = true
 			};
+			// No need for event subscription, because the industry standard is implemented: Authorization: Bearer _token
+			/*
 			options.Events = new JwtBearerEvents() {
 				OnMessageReceived = context => {
 					if (context.Request.Headers.ContainsKey("authorize")) {
@@ -71,12 +78,21 @@ public class Program {
 					}
 					return Task.CompletedTask;
 				}
-			};
+			};*/
 		});
 
-		builder.Services.AddAuthorization();
+
+		// Fallback authorization doesn't work?
+		builder.Services.AddAuthorization(/*options => {
+			options.FallbackPolicy = new AuthorizationPolicyBuilder()
+				.RequireAuthenticatedUser()
+				.Build();
+		}*/);
 
 		builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
+
+		builder.Services.AddEndpointsApiExplorer();
+		builder.Services.AddSwaggerGen();
 
 		var app = builder.Build();
 
@@ -84,6 +100,8 @@ public class Program {
 
 		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment()) {
+			app.UseSwagger();
+			app.UseSwaggerUI();
 			app.UseDeveloperExceptionPage();
 		}
 		else {
