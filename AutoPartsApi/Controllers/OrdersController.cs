@@ -10,7 +10,7 @@ namespace AutoPartsApi.Controllers;
 
 [ApiController()]
 [Route("orders")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize("Bearer")]
 public class OrdersController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
 	public OrdersController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory) {

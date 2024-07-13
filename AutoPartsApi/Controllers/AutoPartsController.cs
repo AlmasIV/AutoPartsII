@@ -13,7 +13,7 @@ namespace AutoPartsApi.Controllers;
 
 [ApiController()]
 [Route("auto-parts")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize("Bearer")]
 public class AutoPartController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
 	public AutoPartController(AppDbContext appDbContext) {

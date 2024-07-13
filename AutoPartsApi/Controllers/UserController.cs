@@ -84,7 +84,7 @@ public class UserController : ControllerBase {
 
 	[HttpGet()]
 	[Route("info")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	[Authorize("Bearer")]
 	public IActionResult UserInfo() {
 		string currentEmail = User.Claims.Single(cu => cu.Type == ClaimTypes.Email).Value;
 		IdentityUser currentUser = _userManager.Users
