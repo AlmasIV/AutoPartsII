@@ -2,22 +2,33 @@ using System.Security.Claims;
 
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Services;
+using AutoPartsApi.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsApi.Controllers;
+
+/*
+	1) Somethings must be saved in config files (I think). For example expirationd date for the refresh tokens, and its max-age?
+	2) Need to study SameSite options. I think there is a potential for security improvement, otherwise I am wrong, but don't be afraid to be! Either way I will learn something new.
+	3) Consider splitting-up some of the things your controller does.
+	4) Is there an optimization stuff I can use? Like not awaiting immediately, or am I thinking in a wrong way?
+*/
 
 [Route("user")]
 [ApiController()]
 public class UsersController : ControllerBase {
 	private readonly UserManager<IdentityUser> _userManager;
-	private readonly IJwtTokenManager _jwtTokenManager;
-	public UsersController(UserManager<IdentityUser> userManager, IJwtTokenManager jwtTokenManager) {
+	private readonly AbstractTokenGenerator _TokenGenerator;
+	private readonly AuthDbContext _authDbContext;
+	public UsersController(UserManager<IdentityUser> userManager, AbstractTokenGenerator TokenGenerator, AuthDbContext authDbContext) {
 		_userManager = userManager;
-		_jwtTokenManager = jwtTokenManager;
+		_TokenGenerator = TokenGenerator;
+		_authDbContext = authDbContext;
 	}
 
 	[HttpPost()]
@@ -47,12 +58,7 @@ public class UsersController : ControllerBase {
 			return BadRequest(problemDetails);
 		}
 
-		Response.Cookies.Append("jwt", _jwtTokenManager.GenerateToken(user), new CookieOptions() {
-			HttpOnly = true,
-			Secure = true,
-			SameSite = SameSiteMode.None,
-			MaxAge = TimeSpan.FromHours(2)
-		});
+		await _SetTokens(user, Response);
 
 		return Ok();
 	}
@@ -72,12 +78,8 @@ public class UsersController : ControllerBase {
 				Type = null
 			});
 		}
-		Response.Cookies.Append("jwt", _jwtTokenManager.GenerateToken(user), new CookieOptions() {
-			HttpOnly = true,
-			Secure = true,
-			SameSite = SameSiteMode.None,
-			MaxAge = TimeSpan.FromHours(2)
-		});
+		
+		await _SetTokens(user, Response);
 
 		return Ok();
 	}
@@ -88,10 +90,36 @@ public class UsersController : ControllerBase {
 	public IActionResult UserInfo() {
 		string currentEmail = User.Claims.Single(cu => cu.Type == ClaimTypes.Email).Value;
 		IdentityUser currentUser = _userManager.Users
+			.AsNoTracking()
 			.Single(u => u.Email == currentEmail);
 		return Ok(new UserModel() {
 			Email = currentUser.Email!,
 			UserName = currentUser.UserName!
+		});
+	}
+
+	private async Task _SetTokens(IdentityUser user, HttpResponse response) {
+		response.Cookies.Append("jwt", _TokenGenerator.GenerateToken(user), new CookieOptions() {
+			HttpOnly = true,
+			Secure = true,
+			SameSite = SameSiteMode.None,
+			MaxAge = TimeSpan.FromMinutes(30)
+		});
+
+		Guid refreshToken = _TokenGenerator.GenerateRefreshToken();
+		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken(){
+			Token = refreshToken,
+			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6)),
+			User = user
+		});
+
+		await _authDbContext.SaveChangesAsync();
+
+		response.Cookies.Append("refreshToken", refreshToken.ToString(), new CookieOptions() {
+			HttpOnly = true,
+			Secure = true,
+			SameSite = SameSiteMode.None,
+			MaxAge = TimeSpan.FromHours(6)
 		});
 	}
 }
