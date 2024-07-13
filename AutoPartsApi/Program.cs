@@ -14,6 +14,9 @@ namespace AutoPartsApi;
 	1) Improve exception handling on the global level, and also improve it at the individual level like controller's action methods.
 	2) Remember to encrypt your database!
 	3) Keep secrets in a safe place!
+	4) Add two-factor authentication, password reset and so on...
+	5) Data protection: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction?view=aspnetcore-8.0.
+	6) Maybe document all your custom types?
 */
 public class Program {
 	public static void Main(string[] args) {
@@ -37,7 +40,7 @@ public class Program {
 			});
 		});
 
-		builder.Services.AddDbContext<IdentityDbContext>(options => {
+		builder.Services.AddDbContext<AuthDbContext>(options => {
 			options.UseSqlServer(
 				builder.Configuration["ConnectionStrings:Identity"],
 				options => options.MigrationsAssembly("AutoPartsApi")
@@ -53,8 +56,8 @@ public class Program {
 			options.SignIn.RequireConfirmedAccount = false; // Change to true.
 			options.User.RequireUniqueEmail = true;
 		})
-		.AddRoles<IdentityRole>()
-		.AddEntityFrameworkStores<IdentityDbContext>();
+		.AddEntityFrameworkStores<AuthDbContext>()
+		.AddDefaultTokenProviders(); // In the future I might need this.
 
 		builder.Services.AddAuthentication(options => {
 			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -87,9 +90,17 @@ public class Program {
 			options.FallbackPolicy = new AuthorizationPolicyBuilder()
 				.RequireAuthenticatedUser()
 				.Build();
-		}*/);
+		}*/
+			options => {
+				options.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+					.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+					.RequireAuthenticatedUser()
+					.Build()
+				);
+			}
+		);
 
-		builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
+		builder.Services.AddSingleton<IJwtTokenManager, JwtTokenManager>();
 
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen();
