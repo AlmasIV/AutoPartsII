@@ -100,7 +100,7 @@ public class Program {
 			}
 		);
 
-		builder.Services.AddSingleton<IJwtTokenManager, JwtTokenManager>();
+		builder.Services.AddSingleton<AbstractTokenGenerator, TokenGenerator>();
 
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen();

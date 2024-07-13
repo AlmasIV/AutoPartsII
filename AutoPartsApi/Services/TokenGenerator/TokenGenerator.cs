@@ -5,11 +5,12 @@ using System.Text;
 using AutoPartsApi.Models;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutoPartsApi.Services;
 
-public class JwtTokenManager : IJwtTokenManager {
+public class TokenGenerator : AbstractTokenGenerator {
 	/*
 		1) Store the token using the browser sessionStorage container.
 		2) Add it as a Bearer HTTP Authentication header with JavaScript when calling services.
@@ -24,11 +25,11 @@ public class JwtTokenManager : IJwtTokenManager {
 		11) RefreshTokens table must be periodically cleaned from tokens that are expired.
 	*/
 	private readonly IConfiguration _configuration;
-	public JwtTokenManager(IConfiguration configuration) {
+	public TokenGenerator(IConfiguration configuration) {
 		_configuration = configuration;
 	}
 
-	public string GenerateToken(IdentityUser user) {
+	public override string GenerateToken(IdentityUser user) {
 		List<Claim> claims = new List<Claim>(){
 			new Claim(ClaimTypes.Name, user.UserName!),
 			new Claim(ClaimTypes.Email, user.Email!)
@@ -37,14 +38,11 @@ public class JwtTokenManager : IJwtTokenManager {
 			issuer: _configuration["AuthenticationOptions:Issuer"],
 			audience: _configuration["AuthenticationOptions:Audience"],
 			claims: claims,
-			expires: DateTime.Now.Add(TimeSpan.FromHours(2)),
+			expires: DateTime.Now.Add(TimeSpan.FromMinutes(30)),
 			signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthenticationOptions:Key"]!)), SecurityAlgorithms.HmacSha256)
 		));
 	}
-	public RefreshToken GenerateRefreshToken() {
-		return new RefreshToken(){
-			Token = Guid.NewGuid(),
-			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6))
-		};
+	public override Guid GenerateRefreshToken() {
+		return Guid.NewGuid();
 	}
 }
