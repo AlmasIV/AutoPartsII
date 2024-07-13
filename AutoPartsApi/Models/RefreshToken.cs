@@ -11,7 +11,6 @@ public class RefreshToken {
 	public Guid Token { get; set; }
 
 	[Required()]
-	[JsonIgnore()]
 	public DateTime ExpirationDateTime { get; set; }
 
 	[Required()]
