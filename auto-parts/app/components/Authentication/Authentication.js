@@ -51,7 +51,7 @@ export default function Authentication() {
                             const credentials = {
                                 email: formData.get("email"),
                                 password: formData.get("password"),
-                                passwordConfirmation: formData.get("passswordConfirmation")
+                                passwordConfirmation: formData.get("passwordConfirmation")
                             };
                             await onAuthenticationSubmit(
                                 credentials,
