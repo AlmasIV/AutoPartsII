@@ -2,6 +2,10 @@
 
 import generateGUID from "@/tools/GUID/GUID.js";
 
+/*
+    1) Do I need ths isSending?
+*/
+
 export default async function onAuthenticationSubmit(
     bodyObject,
     isSending,
