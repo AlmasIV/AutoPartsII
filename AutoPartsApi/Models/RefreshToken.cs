@@ -16,7 +16,7 @@ public class RefreshToken {
 
 	[Required()]
 	[JsonIgnore()]
-	public int UserId { get; set; }
+	public string UserId { get; set; } = null!;
 
 	[Required()]
 	[JsonIgnore()]

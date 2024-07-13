@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+using AutoPartsApi.Models;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,6 +21,7 @@ public class JwtTokenManager : IJwtTokenManager {
 		8) Use refresh token rotation.
 		9) Revoke refresh tokens when suspicious activity is detected -->>> Study this, seems like an interesting thing.
 		10) Access tokens are visibly, always use HTTPS, and don't transfer secure info.
+		11) RefreshTokens table must be periodically cleaned from tokens that are expired.
 	*/
 	private readonly IConfiguration _configuration;
 	public JwtTokenManager(IConfiguration configuration) {
@@ -37,5 +40,11 @@ public class JwtTokenManager : IJwtTokenManager {
 			expires: DateTime.Now.Add(TimeSpan.FromHours(2)),
 			signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthenticationOptions:Key"]!)), SecurityAlgorithms.HmacSha256)
 		));
+	}
+	public RefreshToken GenerateRefreshToken() {
+		return new RefreshToken(){
+			Token = Guid.NewGuid(),
+			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6))
+		};
 	}
 }
