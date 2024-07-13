@@ -14,9 +14,9 @@ namespace AutoPartsApi.Controllers;
 [ApiController()]
 [Route("auto-parts")]
 [Authorize("Bearer")]
-public class AutoPartController : ControllerBase {
+public class AutoPartsController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
-	public AutoPartController(AppDbContext appDbContext) {
+	public AutoPartsController(AppDbContext appDbContext) {
 		_appDbContext = appDbContext;
 	}
 

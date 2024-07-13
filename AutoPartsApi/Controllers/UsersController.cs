@@ -12,10 +12,10 @@ namespace AutoPartsApi.Controllers;
 
 [Route("user")]
 [ApiController()]
-public class UserController : ControllerBase {
+public class UsersController : ControllerBase {
 	private readonly UserManager<IdentityUser> _userManager;
 	private readonly IJwtTokenManager _jwtTokenManager;
-	public UserController(UserManager<IdentityUser> userManager, IJwtTokenManager jwtTokenManager) {
+	public UsersController(UserManager<IdentityUser> userManager, IJwtTokenManager jwtTokenManager) {
 		_userManager = userManager;
 		_jwtTokenManager = jwtTokenManager;
 	}

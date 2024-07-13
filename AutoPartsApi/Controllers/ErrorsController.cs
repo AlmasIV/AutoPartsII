@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 namespace AutoPartsApi.Controllers;
 
 [ApiController()]
-public class ErrorController : ControllerBase {
+public class ErrorsController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
-	public ErrorController(AppDbContext appDbContext) {
+	public ErrorsController(AppDbContext appDbContext) {
 		_appDbContext = appDbContext;
 	}
 	[Route("/error")]
