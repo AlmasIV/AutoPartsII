@@ -19,7 +19,7 @@ namespace AutoPartsApi.Controllers;
 	4) Is there an optimization stuff I can use? Like not awaiting immediately, or am I thinking in a wrong way?
 */
 
-[Route("user")]
+[Route("users")]
 [ApiController()]
 public class UsersController : ControllerBase {
 	private readonly UserManager<IdentityUser> _userManager;
@@ -78,7 +78,7 @@ public class UsersController : ControllerBase {
 				Type = null
 			});
 		}
-		
+
 		await _SetTokens(user, Response);
 
 		return Ok();
@@ -98,6 +98,10 @@ public class UsersController : ControllerBase {
 		});
 	}
 
+	[HttpPost()]
+	[Route("")]
+
+	[NonAction()]
 	private async Task _SetTokens(IdentityUser user, HttpResponse response) {
 		response.Cookies.Append("jwt", _TokenGenerator.GenerateToken(user), new CookieOptions() {
 			HttpOnly = true,
@@ -107,7 +111,7 @@ public class UsersController : ControllerBase {
 		});
 
 		Guid refreshToken = _TokenGenerator.GenerateRefreshToken();
-		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken(){
+		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken() {
 			Token = refreshToken,
 			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6)),
 			User = user

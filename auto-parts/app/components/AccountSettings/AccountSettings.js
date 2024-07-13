@@ -14,7 +14,7 @@ export default function AccountSettings() {
             setIsLoading(true);
             setError(null);
             try {
-                const result = await fetch("/api/authenticated/user/info");
+                const result = await fetch("/api/authenticated/users/info");
                 if(result.redirected) {
                     window.location.href = result.url;
                     return;

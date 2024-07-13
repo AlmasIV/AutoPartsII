@@ -21,5 +21,5 @@ export async function POST(request) {
         email: credentials.email,
         password: credentials.password,
         passwordConfirmation: credentials.passwordConfirmation
-    }, "https://localhost:7019/user/sign-up");
+    }, "https://localhost:7019/users/sign-up");
 }
