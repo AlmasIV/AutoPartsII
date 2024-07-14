@@ -1,7 +1,6 @@
 "use server";
 
 import { NextResponse } from "next/server.js";
-import setJwtCookie from "./setJwtCookie.js";
 
 export default async function authenticate(user, url, isLogIn = false) {
     let result = null;
@@ -35,7 +34,27 @@ export default async function authenticate(user, url, isLogIn = false) {
         });
     }
     else {
+        /*
+            1) Do I need to check the cookieHeader's existence?
+            2) Maybe extract the logic into another function?
+        */
         const cookieHeader = result.headers.get("Set-Cookie");
-        return setJwtCookie(cookieHeader);
+        if(cookieHeader){
+            const response = NextResponse.json({
+                message: "Successfully authenticated."
+            }, {
+                status: 303,
+                statusText: "See Other"
+            });
+            response.headers.set("Set-Cookie", cookieHeader);
+            response.headers.set("Location", `${process.env.BASE_URL}/home`);
+            return response;
+        }
+        return NextResponse.json({
+            message: "Authentication failed."
+        }, {
+            status: 500,
+            statusText: "Internal Server Error"
+        });
     }
 }
