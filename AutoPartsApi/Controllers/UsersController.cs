@@ -98,8 +98,33 @@ public class UsersController : ControllerBase {
 		});
 	}
 
-	[HttpPost()]
-	[Route("")]
+	[HttpGet()]
+	[AllowAnonymous()]
+	[Route("refresh-token/{refrestToken:guid}")]
+	public async Task<IActionResult> RefreshToken(Guid refreshToken) {
+		RefreshToken? savedToken = await _authDbContext.RefreshTokens
+			.Include(rt => rt.User)
+			.SingleOrDefaultAsync(rt => rt.Token == refreshToken);
+
+		if (savedToken is not null) {
+			_authDbContext.RefreshTokens.Remove(savedToken);
+			await _authDbContext.SaveChangesAsync();
+		}
+
+		if (savedToken is null || DateTime.Now >= savedToken.ExpirationDateTime) {
+			return BadRequest(new ProblemDetails() {
+				Title = "Refresh token invalid.",
+				Status = StatusCodes.Status400BadRequest,
+				Detail = "Refresh token that was provided is invalid. Try to log-in again.",
+				Instance = HttpContext.Request.Path,
+				Type = null
+			});
+		}
+
+		await _SetTokens(savedToken.User, Response);
+
+		return Ok();
+	}
 
 	[NonAction()]
 	private async Task _SetTokens(IdentityUser user, HttpResponse response) {
