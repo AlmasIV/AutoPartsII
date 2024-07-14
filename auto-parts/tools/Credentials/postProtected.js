@@ -9,7 +9,7 @@ export async function postProtected(url, request, isReturn = false, isFormData =
     try {
         const token = request.cookies.get("jwt");
         let response = null;
-        if(isFormData){
+        if(isFormData) {
             const formData = await request.formData();
             response = await fetch(url, {
                 method: "POST",
