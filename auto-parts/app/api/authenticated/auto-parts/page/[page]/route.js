@@ -1,4 +1,5 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
+import validateId from "@/app/api/authenticated/utils/validateId/validateId.js";
 import { NextResponse } from "next/server.js";
 
 /*
@@ -7,7 +8,7 @@ import { NextResponse } from "next/server.js";
 
 export async function GET(request, { params }) {
     const page = Number(params.page);
-    if(Number.isInteger(page) && page > 0) {
+    if(validateId(page)) {
         return await getProtected(`https://localhost:7019/auto-parts/page/${page}`, request);
     }
     else {
