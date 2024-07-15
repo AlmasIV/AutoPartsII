@@ -3,6 +3,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
+import redirectIfCan from "@/tools/ResponseHelpers/redirectIfCan";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);
@@ -10,12 +11,15 @@ export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [totalAutoParts, setTotalAutoParts] = useState(0);
-    const [selected, setSelected] = useState(1);
+    const [selectedPage, setSelectedPage] = useState(1);
 
     useEffect(() => {
-        const selectedPage = Number(localStorage.getItem("pageNum"));
-        if(Number.isInteger(selectedPage) && selectedPage > 1) {
-            setSelected(selectedPage);
+        const sp = Number(localStorage.getItem("pageNum"));
+        /*
+            1) Maybe add a config file that sets the total product count displayed on the page? If so we need to create some kind of configuration mechanism. We could limit the upper bound for the "pageNum".
+        */
+        if(Number.isInteger(sp) && sp > 1) {
+            setSelectedPage(sp);
         }
     }, []);
 
@@ -25,17 +29,14 @@ export default function HomePage() {
             setIsLoading(true);
             setError(null);
             try {
-                const result = await fetch(`/api/authenticated/auto-parts/page/${selected}`);
-                if(result.redirected) {
-                    window.location.href = result.url;
-                    return;
-                }
-                const response = await result.json();
-                if(!result.ok) {
-                    setError(new Error(response.message));
+                const response = await fetch(`/api/authenticated/auto-parts/page/${selectedPage}`);
+                redirectIfCan(response);
+                const bodyData = await response.json();
+                if(!response.ok) {
+                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
                 }
                 else if(!isIgnore) {
-                    setAutoParts(response.data);
+                    setAutoParts(bodyData.data);
                 }
             }
             catch(error) {
@@ -49,36 +50,29 @@ export default function HomePage() {
         fetchPage();
 
         return () => { isIgnore = true; };
-    }, [selected]);
+    }, [selectedPage]);
 
     useEffect(() => {
-        const selectedParts = [];
-        let i = 0;
-        let ap = null;
-        for(i; i < localStorage.length; i++) {
-            ap = localStorage.key(i);
-            if(ap.includes("ap")) {
-                selectedParts.push(JSON.parse(localStorage.getItem(ap)));
-            }
-        }
-        setSelectedAutoParts([...selectedParts]);
+        setSelectedAutoParts(
+            Object.keys(localStorage)
+                .filter(key => key.includes("ap"))
+                .map(key => JSON.parse(localStorage.getItem(key)))
+        );
     }, []);
 
     useEffect(() => {
         const fetchCount = async () => {
             try {
-                const result = await fetch("/api/authenticated/auto-parts/count");
-                if(result.redirected) {
-                    location.href = result.url;
+                const response = await fetch("/api/authenticated/auto-parts/count");
+                redirectIfCan(response);
+                const totalNum = await response.json();
+                if(!response.ok) {
+                    setError(totalNum.data || `${response.status} ${response.statusText}`);
                 }
-                if(!result.ok) {
-                    throw new Error("Couldn't get the total number of auto-parts.");
-                }
-                const totalNum = await result.json();
                 setTotalAutoParts(totalNum.data);
             }
             catch(error) {
-                console.log(error);
+                setError(new Error("Couldn't get the total number of auto-parts."));
             }
         };
 
@@ -142,8 +136,8 @@ export default function HomePage() {
                                     </div>
                                     <PageSelector
                                         count={totalAutoParts}
-                                        selected={selected}
-                                        setSelected={setSelected}
+                                        selected={selectedPage}
+                                        setSelected={setSelectedPage}
                                         selectorType="pageNum"
                                     />
                                 </Fragment>
