@@ -1,8 +1,8 @@
 "use server";
 
 import { NextResponse } from "next/server.js";
-import credentialsAssertion from "@/app/api/utils/credentialsAssertion.js";
-import authenticate from "@/app/api/utils/authenticate.js";
+import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
+import authenticate from "@/app/api/utils/authenticate/authenticate.js";
 
 export async function POST(request) {
     const credentials = await request.json();
