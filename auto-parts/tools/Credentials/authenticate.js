@@ -39,15 +39,9 @@ export default async function authenticate(user, url, isLogIn = false) {
             2) Maybe extract the logic into another function?
         */
         const cookieHeader = result.headers.get("Set-Cookie");
-        if(cookieHeader){
-            const response = NextResponse.json({
-                message: "Successfully authenticated."
-            }, {
-                status: 303,
-                statusText: "See Other"
-            });
+        if(cookieHeader) {
+            const response = NextResponse.redirect(`${process.env.BASE_URL}/home`, 303);
             response.headers.set("Set-Cookie", cookieHeader);
-            response.headers.set("Location", `${process.env.BASE_URL}/home`);
             return response;
         }
         return NextResponse.json({

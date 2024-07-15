@@ -25,8 +25,8 @@ export default async function onAuthenticationSubmit(
                 },
                 body: JSON.stringify(bodyObject)
             });
-            const responseObj = await response.json();
             if(!response.ok) {
+                const responseObj = await response.json();
                 setError(responseObj.message);
                 globalNotification.setNotifications(
                     [
@@ -43,14 +43,14 @@ export default async function onAuthenticationSubmit(
                 globalNotification.setNotifications(
                     [
                         {
-                            message: responseObj.message,
+                            message: "Successfully authenticated.",
                             level: "success",
                             key: generateGUID()
                         },
                         ...globalNotification.notifications
                     ]
                 );
-                window.location.href = response.headers.get("Location");
+                window.location.href = response.url;
             }
         }
         catch(error) {
