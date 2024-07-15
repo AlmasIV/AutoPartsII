@@ -1,6 +1,6 @@
 "use server";
 
-import getProtected from "@/tools/Credentials/getProtected.js";
+import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
 import { NextResponse } from "next/server.js";
 
 export async function GET(request, { params }) {

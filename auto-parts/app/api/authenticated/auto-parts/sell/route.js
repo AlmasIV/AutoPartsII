@@ -1,4 +1,4 @@
-import { postProtected } from "@/tools/Credentials/postProtected.js";
+import { postProtected } from "@/app/api/authenticated/utils/HTTP-fetch/postProtected.js";
 
 export async function POST(request) {
     const result = await postProtected("https://localhost:7019/auto-parts/sell", request);
