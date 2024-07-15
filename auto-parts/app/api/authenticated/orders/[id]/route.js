@@ -1,5 +1,3 @@
-"use server";
-
 import getProtected from "@/tools/Credentials/getProtected.js";
 import { NextResponse } from "next/server.js";
 
