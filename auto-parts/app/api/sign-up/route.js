@@ -3,18 +3,14 @@
 import { NextResponse } from "next/server.js";
 import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
 import authenticate from "@/app/api/utils/authenticate/authenticate.js";
+import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
 
 export async function POST(request) {
     const credentials = await request.json();
     const assertionInfo = credentialsAssertion(credentials);
 
     if(!assertionInfo.isValid) {
-        return NextResponse.json({
-            message: assertionInfo.message
-        }, {
-            status: 400,
-            statusText: "Bad Request"
-        });
+        return getBadResponseMessage(assertionInfo.message);
     }
 
     return await authenticate({

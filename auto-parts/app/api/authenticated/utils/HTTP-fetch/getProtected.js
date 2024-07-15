@@ -1,6 +1,7 @@
 "use server";
 
 import { NextResponse } from "next/server.js";
+import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
 
 export default async function getProtected(url, request, cacheTag = null) {
     try {
@@ -20,12 +21,7 @@ export default async function getProtected(url, request, cacheTag = null) {
             }
         });
         if(!result.ok) {
-            return NextResponse.json({
-                message: "Couldn't get the data."
-            }, {
-                status: 500,
-                statusText: "Internal Server Error"
-            });
+            return getBadResponseMessage("Couldn't get the data.", 500, "Internal Server Error");
         }
         else {
             const response = await result.json();
@@ -38,11 +34,6 @@ export default async function getProtected(url, request, cacheTag = null) {
         }
     }
     catch(error) {
-        return NextResponse.json({
-            message: "Something went wrong."
-        }, {
-            status: 500,
-            statusText: "Internal Server Error"
-        });
+        return getBadResponseMessage("Something went wrong.", 500, "Internal Server Error");
     }
 }

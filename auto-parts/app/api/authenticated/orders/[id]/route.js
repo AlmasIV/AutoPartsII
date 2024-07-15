@@ -1,6 +1,6 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
 import validateId from "@/app/api/authenticated/utils/validateId/validateId.js";
-import { NextResponse } from "next/server.js";
+import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
 
 export async function GET(request, { params }) {
     const id = Number(params.id);
@@ -8,11 +8,6 @@ export async function GET(request, { params }) {
         return await getProtected(`https://localhost:7019/orders/${id}`, request);
     }
     else {
-        return NextResponse.json({
-            message: "Provide positive integer ID."
-        }, {
-            status: 400,
-            statusText: "Bad Request"
-        });
+        return getBadResponseMessage("Provide a positive integer ID.");
     }
 }
