@@ -2,7 +2,7 @@
 
 import { Orders } from "@/app/components/Index.js";
 
-export default function History() {
+export default async function History() {
     return (
         <Orders />
     );
