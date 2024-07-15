@@ -1,7 +1,9 @@
-"use server";
-
 import getProtected from "@/tools/Credentials/getProtected.js";
 import { NextResponse } from "next/server.js";
+
+/*
+    1) Added lower bound for checking the "page". What about the upper bound.
+*/
 
 export async function GET(request, { params }) {
     const page = Number(params.page);
