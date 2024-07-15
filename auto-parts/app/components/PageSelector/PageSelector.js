@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./page-selector.module.css";
 import { Button, Modal } from "@/app/components/Index.js";
-import generateGUID from "@/tools/GUID/GUID.js";
+import generateGUID from "@/utils/GUID/GUID.js";
 
 export default function PageSelector(
     {

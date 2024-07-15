@@ -1,7 +1,7 @@
 "use client";
 
-import generateGUID from "@/tools/GUID/GUID.js";
-import redirectIfCan from "@/tools/ResponseHelpers/redirectIfCan";
+import generateGUID from "@/utils/GUID/GUID.js";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
 /*
     1) Do I need ths isSending?

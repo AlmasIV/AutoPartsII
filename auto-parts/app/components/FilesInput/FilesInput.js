@@ -2,7 +2,7 @@
 
 import { Fragment, useRef, useState } from "react";
 import styles from "./files-input.module.css";
-import generateGUID from "@/tools/GUID/GUID";
+import generateGUID from "@/utils/GUID/GUID";
 import { Button } from "@/app/components/Index.js";
 
 export default function FilesInput(

@@ -3,7 +3,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
-import redirectIfCan from "@/tools/ResponseHelpers/redirectIfCan";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);

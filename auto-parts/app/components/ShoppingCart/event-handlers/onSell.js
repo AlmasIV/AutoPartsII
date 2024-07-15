@@ -1,4 +1,4 @@
-import generateGUID from "@/tools/GUID/GUID.js";
+import generateGUID from "@/utils/GUID/GUID.js";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState) {
     const orderSummary = {
