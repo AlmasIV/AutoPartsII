@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server.js";
 import credentialsAssertion from "@/tools/Credentials/credentialsAssertion.js";
-import authenticate from "@/tools/Credentials/authenticate.js";
+import authenticate from "@/app/api/utils/authenticate.js";
 
 export async function POST(request) {
     const credentials = await request.json();
