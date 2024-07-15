@@ -1,6 +1,7 @@
 "use client";
 
 import generateGUID from "@/tools/GUID/GUID.js";
+import redirectIfCan from "@/tools/ResponseHelpers/redirectIfCan";
 
 /*
     1) Do I need ths isSending?
@@ -50,7 +51,7 @@ export default async function onAuthenticationSubmit(
                         ...globalNotification.notifications
                     ]
                 );
-                window.location.href = response.url;
+                redirectIfCan(response);
             }
         }
         catch(error) {
