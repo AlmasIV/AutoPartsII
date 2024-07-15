@@ -1,5 +1,3 @@
-"use server";
-
 import { NextResponse } from "next/server.js";
 import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
 

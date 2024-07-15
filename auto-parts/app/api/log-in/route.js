@@ -1,5 +1,3 @@
-"use server";
-
 import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
 import authenticate from "@/app/api/utils/authenticate/authenticate.js";
 import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
