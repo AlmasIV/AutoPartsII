@@ -35,43 +35,46 @@ export default function AccountSettings() {
         <section>
             <h2>Account Settings</h2>
             {
-                isLoading ? <Loading /> : error ?
-                    <ErrorBox
-                        error={error}
-                        errorBoxClassName="margin-top-2rem"
-                    /> : (
-                        <Form
-                            formType="flex-column-form"
-                            method="POST"
-                            onSubmit={null}
-                        >
-                            <Input
-                                config={{
-                                    labelName: "Username",
-                                    name: "username",
-                                    type: "text",
-                                    required: true,
-                                    minLength: 3
-                                }}
-                                validationErrorsState={{ validationErrors, setValidationErrors }}
-                                defaultValue={user.userName}
-                            />
-                            <Input
-                                config={{
-                                    labelName: "Email",
-                                    name: "email",
-                                    type: "email",
-                                    required: true
-                                }}
-                                validationErrorsState={{ validationErrors, setValidationErrors }}
-                                defaultValue={user.email}
-                            />
-                            <Button
-                                title="Save"
-                                className="primary-btn margin-top-2rem width-full"
-                            />
-                        </Form>
-                    )
+                isLoading ?
+                    <Loading
+                        size="medium"
+                    /> : error ?
+                        <ErrorBox
+                            error={error}
+                            errorBoxClassName="margin-top-2rem"
+                        /> : (
+                            <Form
+                                formType="flex-column-form"
+                                method="POST"
+                                onSubmit={null}
+                            >
+                                <Input
+                                    config={{
+                                        labelName: "Username",
+                                        name: "username",
+                                        type: "text",
+                                        required: true,
+                                        minLength: 3
+                                    }}
+                                    validationErrorsState={{ validationErrors, setValidationErrors }}
+                                    defaultValue={user.userName}
+                                />
+                                <Input
+                                    config={{
+                                        labelName: "Email",
+                                        name: "email",
+                                        type: "email",
+                                        required: true
+                                    }}
+                                    validationErrorsState={{ validationErrors, setValidationErrors }}
+                                    defaultValue={user.email}
+                                />
+                                <Button
+                                    title="Save"
+                                    className="primary-btn margin-top-2rem width-full"
+                                />
+                            </Form>
+                        )
             }
         </section>
     );
