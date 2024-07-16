@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ErrorBox, Form, Input, Loading, Button } from "@/app/components/Index.js";
-import styles from "./account-settings.module.css";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
@@ -14,19 +14,16 @@ export default function AccountSettings() {
             setIsLoading(true);
             setError(null);
             try {
-                const result = await fetch("/api/authenticated/users/info");
-                if(result.redirected) {
-                    window.location.href = result.url;
-                    return;
+                const response = await fetch("/api/authenticated/users/info");
+                redirectIfCan(response);
+                const bodyData = await response.json();
+                if(!response.ok) {
+                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
                 }
-                if(!result.ok) {
-                    throw new Error();
-                }
-                const response = await result.json();
-                setUser(response.data);
+                setUser(bodyData.data);
             }
             catch(error) {
-                setError(new Error("Something went wrong when loading user information."));
+                setError(new Error("Something went wrong."));
             }
             finally {
                 setIsLoading(false);
@@ -35,9 +32,7 @@ export default function AccountSettings() {
         fetchCurrentUser();
     }, []);
     return (
-        <section
-            className={styles["account-settings"]}
-        >
+        <section>
             <h2>Account Settings</h2>
             {
                 isLoading ? <Loading /> : error ?
