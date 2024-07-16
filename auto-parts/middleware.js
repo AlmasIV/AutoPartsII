@@ -3,9 +3,9 @@ import * as jose from "jose";
 
 /*
     1) Suppose a "token" is a random string, then you get a loop, the server will be dead.
-    2) Implement refresh-tokens. ANSWER: I will implement it at the client-side.
-    3) Need to extract a lot of code into other functions.
-    4) Validate the request.url ? What are the best practices?
+    2) Implement refresh-tokens. ANSWER: I will implement it at the client-side. DONE!!!
+    3) Need to extract a lot of code into other functions. Is that so?
+    4) Validate the request.url? What are the best practices? Seems like I need to sanitize it.
 */
 
 export async function middleware(request) {
@@ -13,7 +13,7 @@ export async function middleware(request) {
     if(!token && request.nextUrl.pathname !== "/") {
         const refreshToken = request.cookies.get("refreshToken");
         if(!refreshToken) {
-            return NextResponse.redirect(new URL("/", process.env.BASE_URL));
+            return redirectToLogIn();
         }
         const response = await fetch(`https://localhost:7019/users/refresh-token/${refreshToken}`);
         if(response.ok) {
@@ -25,7 +25,7 @@ export async function middleware(request) {
                 return result;
             }
         }
-        const result = NextResponse.redirect(new URL("/", process.env.BASE_URL));
+        const result = redirectToLogIn();
         result.cookies.delete("refreshToken");
         return result;
     }
@@ -37,10 +37,14 @@ export async function middleware(request) {
             }
         }
         catch(error) {
-            const response = NextResponse.redirect(new URL("/", process.env.BASE_URL));
+            const response = redirectToLogIn();
             response.cookies.delete("jwt");
             return response;
         }
+    }
+
+    function redirectToLogIn(){
+        return NextResponse.redirect(new URL("/", process.env.BASE_URL));
     }
 }
 
