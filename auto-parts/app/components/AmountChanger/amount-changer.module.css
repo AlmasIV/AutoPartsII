@@ -41,7 +41,6 @@
     }
 
     .controller {
-
         @media screen and (hover: hover){
             opacity: 0;
             transition: var(--global-transition);
