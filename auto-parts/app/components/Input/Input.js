@@ -60,7 +60,7 @@ export default function Input(
             };
             break;
         default:
-            throw new Error("Unknown config type.");
+            throw new TypeError("Unknown config type.");
     }
     function handleOnChange(event) {
         const value = event.target.value;
