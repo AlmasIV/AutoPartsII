@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useState } from "react";
 import styles from "./files-input.module.css";
 import generateGUID from "@/utils/GUID/GUID";
 import { Button } from "@/app/components/Index.js";
@@ -71,13 +71,12 @@ export default function FilesInput(
 						return (
 							<div
 								key={generateGUID()}
-								className={`${styles[""]}`}
 							>
 								{
 									file.type.startsWith("image/") ? 
 										<img
 											src={URL.createObjectURL(file)}
-											className={`${styles[""]} width-full margin-top-05rem`}
+											className="width-full margin-top-05rem"
 											alt={file.name}
 										/> : 
 										<p
@@ -90,7 +89,7 @@ export default function FilesInput(
 									title="Remove"
 									className="width-full secondary-btn text-center"
 									type="button"
-									onClick={(e) => {
+									onClick={() => {
 										setFiles(files.filter((f) => f.name !== file.name && f.size !== file.size && f.lastModified !== file.lastModified));
 									}}
 								/>
