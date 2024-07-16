@@ -26,6 +26,7 @@ export default async function onAuthenticationSubmit(
                 },
                 body: JSON.stringify(bodyObject)
             });
+            redirectIfCan(response);
             if(!response.ok) {
                 const responseObj = await response.json();
                 setError(responseObj.message);
@@ -51,7 +52,6 @@ export default async function onAuthenticationSubmit(
                         ...globalNotification.notifications
                     ]
                 );
-                redirectIfCan(response);
             }
         }
         catch(error) {
