@@ -23,18 +23,16 @@ export default function TableOfAutoParts(
             <thead>
                 <tr>
                     {
-                        autoPartConfigs.map((autoPartConfig) => {
-                            if(autoPartConfig["inTable"]) {
-                                return (
-                                    <th
-                                        key={autoPartConfig.labelName}
-                                        scope="col"
-                                        className="text-center"
-                                    >
-                                        {autoPartConfig.labelName}
-                                    </th>
-                                );
-                            }
+                        tableConfigs.map((tc) => {
+                            return (
+                                <th
+                                    key={tc.labelName}
+                                    scope="col"
+                                    className="text-center"
+                                >
+                                    {tc.labelName}
+                                </th>
+                            );
                         })
                     }
                 </tr>
