@@ -1,5 +1,3 @@
-"use client";
-
 import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import styles from "./amount-changer.module.css";
 
