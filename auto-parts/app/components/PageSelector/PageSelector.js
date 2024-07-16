@@ -46,7 +46,7 @@ export default function PageSelector(
             />
             <Modal
                 openButtonTitle="select"
-                closeButtonTitle="close"
+                closeButtonTitle="cancel"
                 openButtonClass="secondary-btn"
                 closeButtonClass="secondary-btn width-full margin-top-05rem"
                 dialogType="shopping-cart-modal"
