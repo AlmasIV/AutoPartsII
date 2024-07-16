@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { OrderModal, ErrorBox, Loading, PageSelector } from "@/app/components/Index.js";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -22,17 +23,14 @@ export default function Orders() {
         async function fetchOrders() {
             setIsLoading(true);
             try {
-                const result = await fetch(`/api/authenticated/orders/pages/${selectedPage}`);
-                if(result.redirected) {
-                    window.location.href = result.url;
-                    return;
+                const response = await fetch(`/api/authenticated/orders/pages/${selectedPage}`);
+                redirectIfCan(response);
+                const bodyData = await response.json();
+                if(!response.ok) {
+                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
                 }
-                if(!result.ok) {
-                    throw new Error("Something went wrong.");
-                }
-                const fetchedOrders = await result.json();
                 if(!isIgnore) {
-                    setOrders(fetchedOrders.data);
+                    setOrders(bodyData.data);
                 }
             }
             catch(error) {
@@ -45,26 +43,22 @@ export default function Orders() {
 
         fetchOrders();
 
-        return () => {
-            isIgnore = true;
-        };
+        return () => { isIgnore = true; };
     }, [selectedPage]);
 
     useEffect(() => {
         const fetchCount = async () => {
             try {
-                const result = await fetch("/api/authenticated/orders/count");
-                if(result.redirected) {
-                    location.href = result.url;
+                const response = await fetch("/api/authenticated/orders/count");
+                redirectIfCan(response);
+                const bodyData = await response.json();
+                if(!response.ok) {
+                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
                 }
-                if(!result.ok) {
-                    throw new Error("Couldn't get the total number of orders.");
-                }
-                const totalNum = await result.json();
-                setTotalOrders(totalNum.data);
+                setTotalOrders(bodyData.data);
             }
             catch(error) {
-                console.log(error);
+                setError(new Error("Something went wrong."));
             }
         };
 
@@ -78,38 +72,40 @@ export default function Orders() {
             >
                 Order History
             </h2>
-            {error ? (
-                <ErrorBox
-                    error={error}
-                />
-            ) : isLoading ? (
-                <Loading />
-            ) : orders.length > 0 ? (
-                <Fragment>
-                    {
-                        orders.map((o) => {
-                            return (
-                                <OrderModal
-                                    key={o.id}
-                                    order={o}
-                                />
-                            );
-                        })
-                    }
-                    <PageSelector
-                        count={totalOrders}
-                        selected={selectedPage}
-                        setSelected={setSelectedPage}
-                        selectorType="orderPageNum"
+            {
+                error ? (
+                    <ErrorBox
+                        error={error}
                     />
-                </Fragment>
-            ) : (
-                <h3
-                    className="text-center"
-                >
-                    You don't have any order history.
-                </h3>
-            )}
+                ) : isLoading ? (
+                    <Loading />
+                ) : orders.length > 0 ? (
+                    <Fragment>
+                        {
+                            orders.map((o) => {
+                                return (
+                                    <OrderModal
+                                        key={o.id}
+                                        order={o}
+                                    />
+                                );
+                            })
+                        }
+                        <PageSelector
+                            count={totalOrders}
+                            selected={selectedPage}
+                            setSelected={setSelectedPage}
+                            selectorType="orderPageNum"
+                        />
+                    </Fragment>
+                ) : (
+                    <h3
+                        className="text-center"
+                    >
+                        You don't have any order history.
+                    </h3>
+                )
+            }
         </div>
     );
 }

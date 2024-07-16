@@ -5,6 +5,7 @@ import { LocalDataFormatter } from "@/utils/dateFormatters/LocalDateFormatter.js
 import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
 
 export default function OrderModal(
     {
@@ -19,16 +20,13 @@ export default function OrderModal(
         if(!details) {
             try {
                 setIsLoading(true);
-                const result = await fetch(`/api/authenticated/orders/${order.id}`);
-                if(result.redirected) {
-                    window.location.href = result.url;
-                    return;
-                }
-                if(!result.ok) {
-                    setError(new Error("Something went wrong."));
+                const response = await fetch(`/api/authenticated/orders/${order.id}`);
+                redirectIfCan(response);
+                if(!response.ok) {
+                    setError(new Error(response.message || `${response.status} ${response.statusText}`));
                 }
                 else {
-                    const details = await result.json();
+                    const details = await response.json();
                     setDetails(details.data);
                 }
             }
