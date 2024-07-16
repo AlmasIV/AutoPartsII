@@ -1,4 +1,5 @@
 import generateGUID from "@/utils/GUID/GUID.js";
+import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState) {
     const orderSummary = {
@@ -16,19 +17,27 @@ export default async function onSell(globalNotification, selectedAutoParts, setS
 
 async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState) {
     try {
-        const result = await fetch("/api/authenticated/auto-parts/sell", {
+        const response = await fetch("/api/authenticated/auto-parts/sell", {
             method: "POST",
-            cache: "no-cache",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(orderSummary)
         });
-        if(result.redirected) {
-            window.location.href = result.url;
-            return;
+        redirectIfCan(response);
+        if(!response.ok) {
+            globalNotification.setNotifications(
+                [
+                    {
+                        message: `Failed to sell: ${orderSummary.orderAutoParts.length} auto parts.`,
+                        level: "danger",
+                        key: generateGUID()
+                    },
+                    ...globalNotification.notifications
+                ]
+            );
         }
-        if(result.ok) {
+        else {
             globalNotification.setNotifications(
                 [
                     {
@@ -57,18 +66,6 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             });
             autoPartsState.setAutoParts(updatedAutoParts);
             setSelectedAutoParts([]);
-        }
-        else {
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: `Failed to sell: ${orderSummary.orderAutoParts.length} auto parts.`,
-                        level: "danger",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
         }
     }
     catch {
