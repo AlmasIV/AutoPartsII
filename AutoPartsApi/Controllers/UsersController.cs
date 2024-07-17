@@ -4,7 +4,6 @@ using AutoPartsApi.DTOs;
 using AutoPartsApi.Services;
 using AutoPartsApi.Models;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AutoPartsApi.Controllers;
 
 /*
-	1) Somethings must be saved in config files (I think). For example expirationd date for the refresh tokens, and its max-age?
+	1) Somethings must be saved in config files (I think). For example expiration date for the refresh tokens, and its max-age?
 	2) Need to study SameSite options. I think there is a potential for security improvement, otherwise I am wrong, but don't be afraid to be! Either way I will learn something new.
 	3) Consider splitting-up some of the things your controller does.
 	4) Is there an optimization stuff I can use? Like not awaiting immediately, or am I thinking in a wrong way?
