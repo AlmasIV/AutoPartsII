@@ -95,6 +95,7 @@ public class Program {
 			app.UseDeveloperExceptionPage();
 		}
 		else {
+			// Remember to add it.
 			app.UseExceptionHandler("/error");
 		}
 
