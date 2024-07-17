@@ -5,7 +5,6 @@ using AutoPartsApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,8 +20,6 @@ namespace AutoPartsApi;
 public class Program {
 	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
-
-		// Add services to the container.
 
 		builder.Services.AddControllers();
 
@@ -56,8 +53,7 @@ public class Program {
 			options.SignIn.RequireConfirmedAccount = false; // Change to true.
 			options.User.RequireUniqueEmail = true;
 		})
-		.AddEntityFrameworkStores<AuthDbContext>()
-		.AddDefaultTokenProviders(); // In the future I might need this.
+		.AddEntityFrameworkStores<AuthDbContext>();
 
 		builder.Services.AddAuthentication(options => {
 			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -72,25 +68,9 @@ public class Program {
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
 				ValidateIssuerSigningKey = true
 			};
-			// No need for event subscription, because the industry standard is implemented: Authorization: Bearer _token
-			/*
-			options.Events = new JwtBearerEvents() {
-				OnMessageReceived = context => {
-					if (context.Request.Headers.ContainsKey("authorize")) {
-						context.Token = context.Request.Headers["authorize"];
-					}
-					return Task.CompletedTask;
-				}
-			};*/
 		});
 
-
-		// Fallback authorization doesn't work?
-		builder.Services.AddAuthorization(/*options => {
-			options.FallbackPolicy = new AuthorizationPolicyBuilder()
-				.RequireAuthenticatedUser()
-				.Build();
-		}*/
+		builder.Services.AddAuthorization(
 			options => {
 				options.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
 					.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
@@ -109,7 +89,6 @@ public class Program {
 
 		app.UseHttpLogging();
 
-		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment()) {
 			app.UseSwagger();
 			app.UseSwaggerUI();
