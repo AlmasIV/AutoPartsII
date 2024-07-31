@@ -5,7 +5,7 @@ import validateId from "@/app/api/authenticated/utils/validateId/validateId.js";
 export async function GET(request, { params }) {
     const page = Number(params.page);
     if(validateId(page)) {
-        return await getProtected(`https://localhost:7019/orders/pages/${page}`, request);
+        return await getProtected(`${process.env.API_URL}/orders/pages/${page}`, request);
     }
     else {
         return getBadResponseMessage("Provide a valid page number.");

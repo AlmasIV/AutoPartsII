@@ -15,7 +15,7 @@ export async function middleware(request) {
         if(!refreshToken) {
             return redirectToLogIn();
         }
-        const response = await fetch(`https://localhost:7019/users/refresh-token/${refreshToken}`);
+        const response = await fetch(`${process.env.API_URL}/users/refresh-token/${refreshToken}`);
         if(response.ok) {
             const cookie = response.headers.get("Set-Cookie");
             if(cookie) {
@@ -43,7 +43,7 @@ export async function middleware(request) {
         }
     }
 
-    function redirectToLogIn(){
+    function redirectToLogIn() {
         return NextResponse.redirect(new URL("/", process.env.BASE_URL));
     }
 }

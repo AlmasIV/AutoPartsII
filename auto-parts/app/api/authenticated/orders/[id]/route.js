@@ -5,7 +5,7 @@ import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadR
 export async function GET(request, { params }) {
     const id = Number(params.id);
     if(validateId(id)) {
-        return await getProtected(`https://localhost:7019/orders/${id}`, request);
+        return await getProtected(`${process.env.API_URL}/orders/${id}`, request);
     }
     else {
         return getBadResponseMessage("Provide a positive integer ID.");

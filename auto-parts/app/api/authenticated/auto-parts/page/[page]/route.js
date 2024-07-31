@@ -9,7 +9,7 @@ import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadR
 export async function GET(request, { params }) {
     const page = Number(params.page);
     if(validateId(page)) {
-        return await getProtected(`https://localhost:7019/auto-parts/page/${page}`, request);
+        return await getProtected(`${process.env.API_URL}/auto-parts/page/${page}`, request);
     }
     else {
         return getBadResponseMessage("Provide a valid page number.");

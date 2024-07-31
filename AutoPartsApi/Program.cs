@@ -99,7 +99,7 @@ public class Program {
 			app.UseExceptionHandler("/error");
 		}
 
-		app.UseHttpsRedirection();
+		//app.UseHttpsRedirection();
 
 		app.UseCors();
 

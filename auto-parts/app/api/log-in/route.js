@@ -13,5 +13,5 @@ export async function POST(request) {
     return await authenticate({
         email: credentials.email,
         password: credentials.password
-    }, "https://localhost:7019/users/log-in", true);
+    }, `${process.env.API_URL}/users/log-in`, true);
 }
