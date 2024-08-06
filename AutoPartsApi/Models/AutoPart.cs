@@ -29,6 +29,8 @@ public class AutoPart : IEquatable<AutoPart> {
 	[Range(1, ushort.MaxValue)]
 	public ushort Amount { get; set; }
 
+	public string? Notes { get; set; }
+
 	[JsonIgnore()]
 	public List<Order>? Orders { get; set; }
 
