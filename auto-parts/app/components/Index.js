@@ -20,6 +20,7 @@ import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
 import FilesInput from "./FilesInput/FilesInput.js";
 import AutoPartDescription from "./AutoPartDescription/AutoPartDescription.js";
+import NumberController from "./NumberController/NumberController.js";
 
 export {
     NavBar,
@@ -43,5 +44,6 @@ export {
     AccountSettings,
     PageSelector,
     FilesInput,
-    AutoPartDescription
+    AutoPartDescription,
+    NumberController
 };
