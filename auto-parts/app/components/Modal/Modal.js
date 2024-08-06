@@ -16,8 +16,7 @@ export default function Modal(
         onOpenButtonClick = null,
         onCloseButtonClick = null,
         isDisabled = false,
-        containerClass = "",
-        isOpen = false
+        containerClass = ""
     }
 ) {
     const modalRef = useRef(null);
@@ -28,7 +27,6 @@ export default function Modal(
             <dialog
                 ref={modalRef}
                 className={`${styles[dialogType]} ${dialogClass}`}
-                open={isOpen}
             >
                 {children}
                 <Button
