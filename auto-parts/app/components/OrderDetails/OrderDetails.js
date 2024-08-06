@@ -1,6 +1,7 @@
 import { KZTFormatter } from "@/utils/numberFormatters/formatters.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import styles from "./order-details.module.css";
+import { AutoPartDescription } from "@/app/components/Index.js";
 
 export default function OrderDetails(
     {
@@ -31,25 +32,9 @@ export default function OrderDetails(
                                 key={sp.soldPart.id}
                                 className={`${styles["auto-part-detail"]} margin-top-05rem`}
                             >
-                                {
-                                    autoPartConfigs.map((apc) => {
-                                        if(sp.soldPart[apc.name]) {
-                                            return (
-                                                <p
-                                                    key={apc.name}
-                                                >
-                                                    <span
-                                                        className="opacity-08"
-                                                    >
-                                                        {
-                                                            apc.name === "amount" ? "In stock:" : apc.labelName + ":"
-                                                        }
-                                                    </span> {sp.soldPart[apc.name]}
-                                                </p>
-                                            );
-                                        }
-                                    })
-                                }
+                                <AutoPartDescription
+                                    autoPart={sp.soldPart}
+                                />
                                 <p>
                                     <span
                                         className="opacity-08"

@@ -19,6 +19,7 @@ import Loading from "./Loading/Loading.js";
 import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
 import FilesInput from "./FilesInput/FilesInput.js";
+import AutoPartDescription from "./AutoPartDescription/AutoPartDescription.js";
 
 export {
     NavBar,
@@ -41,5 +42,6 @@ export {
     Loading,
     AccountSettings,
     PageSelector,
-    FilesInput
+    FilesInput,
+    AutoPartDescription
 };
