@@ -32,7 +32,8 @@ export function selectAutoPart(autoPart, selectedState, globalNotification) {
     autoPart = {
         ...autoPart,
         amount: autoPart.amount - 1,
-        selectedAmount: 1
+        selectedAmount: 1,
+        discountPercentage: 0
     };
     setAutoPart(autoPart);
     const sortedArray = [...selectedState.selectedAutoParts, autoPart].sort((a, b) => a.id - b.id);

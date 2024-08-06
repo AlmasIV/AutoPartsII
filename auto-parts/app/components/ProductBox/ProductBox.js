@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { AmountChanger, Button, AutoPartDescription } from "@/app/components/Index.js";
+import { AmountChanger, Button, AutoPartDescription, DiscountApplier } from "@/app/components/Index.js";
 import { disselectAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { KZTFormatter } from "@/utils/numberFormatters/formatters.js";
@@ -46,11 +46,18 @@ export default function ProductBox(
                     }}
                 />
             </div>
-            <AmountChanger
-                selectedAutoParts={selectedAutoParts}
-                setSelectedAutoParts={setSelectedAutoParts}
-                selectedAutoPart={autoPart}
-            />
+            <div
+                className="flex-container flex-column space-between flex-grow-1 align-end"
+            >
+                <AmountChanger
+                    selectedAutoParts={selectedAutoParts}
+                    setSelectedAutoParts={setSelectedAutoParts}
+                    selectedAutoPart={autoPart}
+                />
+                <DiscountApplier
+                    selectedAutoPart={autoPart}
+                />
+            </div>
         </div>
     );
 }

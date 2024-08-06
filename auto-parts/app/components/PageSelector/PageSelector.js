@@ -53,7 +53,7 @@ export default function PageSelector(
                 isDisabled={count % 100 === 0}
             >
                 <div
-                    className="flex-container space-around-flex flex-wrap"
+                    className="flex-container space-around flex-wrap"
                 >
                     {
                         Array.from({ length: totalPages }, (_, index) => {
