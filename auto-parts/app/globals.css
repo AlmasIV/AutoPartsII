@@ -7,7 +7,7 @@
 html {
     font-size: 18px;
 
-    @media screen and (max-width: 1080px){
+    @media screen and (max-width: 1080px) {
         font-size: 12px;
     }
 
@@ -57,7 +57,8 @@ main {
             transform: scaleX(1);
         }
     }
-    @media screen and (hover: none){
+
+    @media screen and (hover: none) {
         &:active {
             color: var(--main-lightish);
             border-bottom: 0.2rem solid var(--main-lightish);
@@ -78,18 +79,19 @@ main {
     color: var(--main-lightish);
     user-select: none;
 
-    @media screen and (max-width: 720px){
+    @media screen and (max-width: 720px) {
         padding: 0.5rem 1.5rem;
     }
 
-    @media screen and (hover: hover){
+    @media screen and (hover: hover) {
         cursor: pointer;
+
         &:hover {
             background-color: var(--main-green);
         }
     }
 
-    @media screen and (hover: none){
+    @media screen and (hover: none) {
         &:active {
             background-color: var(--main-green);
         }
@@ -99,14 +101,15 @@ main {
 .disabled-btn {
     background-color: var(--main-gray);
 
-    @media screen and (hover: hover){
+    @media screen and (hover: hover) {
         cursor: not-allowed;
+
         &:hover {
             background-color: var(--main-gray);
         }
     }
 
-    @media screen and (hover: none){
+    @media screen and (hover: none) {
         &:active {
             background-color: var(--main-gray);
         }
@@ -120,14 +123,14 @@ main {
 }
 
 .informational-btn {
-    @media screen and (hover: hover){
+    @media screen and (hover: hover) {
         &:hover {
             background-color: var(--info);
             color: var(--main-darkish);
         }
     }
 
-    @media screen and (hover: none){
+    @media screen and (hover: none) {
         &:active {
             background-color: var(--info);
             color: var(--main-darkish);
@@ -140,14 +143,14 @@ main {
     border: 0.1rem solid var(--danger);
     background-color: var(--main-lightish);
 
-    @media screen and (hover: hover){
+    @media screen and (hover: hover) {
         &:hover {
             color: var(--main-lightish);
             background-color: var(--danger);
         }
     }
 
-    @media screen and not (hover: hover){
+    @media screen and not (hover: hover) {
         &:active {
             color: var(--main-lightish);
             background-color: var(--danger);
@@ -209,8 +212,20 @@ main {
     display: flex;
 }
 
-.space-around-flex {
+.flex-column {
+    flex-direction: column;
+}
+
+.space-around {
     justify-content: space-around;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-end {
+    align-items: flex-end;
 }
 
 .flex-wrap {
