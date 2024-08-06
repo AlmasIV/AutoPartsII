@@ -1,7 +1,6 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import styles from "./files-input.module.css";
 import generateGUID from "@/utils/GUID/GUID";
 import { Button } from "@/app/components/Index.js";
 
@@ -49,7 +48,7 @@ export default function FilesInput(
 				}
 			</p>
 			<label
-				className={`${styles["files-input"]} ${isDisabled ? "disabled-btn" : "informational-btn"} text-center width-full`}
+				className={`${isDisabled ? "disabled-btn" : "informational-btn"} text-center width-full`}
 			>
 				{title}
 				<input
@@ -61,6 +60,7 @@ export default function FilesInput(
 					required={isRequired}
 					onChange={handleFilesChange}
 					disabled={isDisabled}
+					className="display-none"
 				/>
 			</label>
 			<div
