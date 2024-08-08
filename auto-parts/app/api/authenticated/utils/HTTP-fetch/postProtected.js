@@ -25,13 +25,14 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "authorize": token.value,
+                    "Authorization": `Bearer ${token.value}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(bodyData)
             });
         }
         if(!response.ok) {
+            console.log(response);
             return getBadResponseMessage("Couldn't post the data.", 500, "Internal Server Error");
         }
         else {
