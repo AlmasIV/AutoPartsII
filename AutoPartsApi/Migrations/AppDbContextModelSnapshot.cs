@@ -54,7 +54,7 @@ namespace AutoPartsApi.Migrations
                     b.Property<string>("Company")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte?>("DiscountPercentage")
+                    b.Property<byte>("DiscountPercentage")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Name")

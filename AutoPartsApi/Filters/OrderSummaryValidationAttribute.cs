@@ -53,7 +53,9 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 		decimal calculatedPrice =
 			(from ap in orderSummary.OrderedParts
 			 let op = originalInfo!.Single(op => op.Id == ap.Id)
-			 select ap.Amount * op.PriceInKzt).Sum();
+			 let price = ap.Amount * op.PriceInKzt
+			 let discount = price - ap.DiscountPercentage / 100
+			 select price - discount).Sum();
 
 		if (orderSummary.TotalPriceInKzt != calculatedPrice) {
 			context.Result = new ObjectResult(

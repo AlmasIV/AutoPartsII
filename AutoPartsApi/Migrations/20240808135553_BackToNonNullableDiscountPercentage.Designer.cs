@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPartsApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240808134811_NullableDiscountPercentage")]
-    partial class NullableDiscountPercentage
+    [Migration("20240808135553_BackToNonNullableDiscountPercentage")]
+    partial class BackToNonNullableDiscountPercentage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace AutoPartsApi.Migrations
                     b.Property<string>("Company")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte?>("DiscountPercentage")
+                    b.Property<byte>("DiscountPercentage")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
