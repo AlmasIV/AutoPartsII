@@ -31,6 +31,8 @@ public class AutoPart : IEquatable<AutoPart> {
 
 	public string? Notes { get; set; }
 
+	public byte DiscountPercentage { get; set; }
+
 	[JsonIgnore()]
 	public List<Order>? Orders { get; set; }
 
