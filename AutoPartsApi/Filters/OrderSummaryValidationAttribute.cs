@@ -54,7 +54,7 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 			(from ap in orderSummary.OrderedParts
 			 let op = originalInfo!.Single(op => op.Id == ap.Id)
 			 let price = ap.Amount * op.PriceInKzt
-			 let discount = price - ap.DiscountPercentage / 100
+			 let discount = price * ap.DiscountPercentage / 100
 			 select price - discount).Sum();
 
 		if (orderSummary.TotalPriceInKzt != calculatedPrice) {
