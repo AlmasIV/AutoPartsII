@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
@@ -18,4 +19,9 @@ public class AutoPartSoldAmount {
 
 	[Range(1, int.MaxValue)]
 	public int SoldAmount { get; set; }
+
+	public byte DiscountPercentage { get; set; }
+
+	[Column(TypeName = "decimal(10, 2)")]
+	public decimal Price { get; set; }
 }
