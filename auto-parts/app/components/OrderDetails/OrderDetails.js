@@ -42,6 +42,20 @@ export default function OrderDetails(
                                         Sold amount:
                                     </span> {sp.soldAmount}
                                 </p>
+                                <p>
+                                    <span
+                                        className="opacity-08"
+                                    >
+                                        Price:
+                                    </span> {sp.price}
+                                </p>
+                                <p>
+                                    <span
+                                        className="opacity-08"
+                                    >
+                                        Discount Percentage:
+                                    </span> {sp.discountPercentage ?? "0" + "%"}
+                                </p>
                             </div>
                         );
                     })
