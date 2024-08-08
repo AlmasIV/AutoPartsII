@@ -48,7 +48,9 @@ public class OrdersController : ControllerBase {
 				totalPriceInKzt = o.TotalPriceInKzt,
 				soldParts = o.AutoPartsSoldAmounts.Select(sa => new {
 					soldPart = sa.AutoPart,
-					soldAmount = sa.SoldAmount
+					soldAmount = sa.SoldAmount,
+					price = sa.Price,
+					discountPercentage = sa.DiscountPercentage
 				}).ToArray()
 			})
 			.SingleOrDefaultAsync();
