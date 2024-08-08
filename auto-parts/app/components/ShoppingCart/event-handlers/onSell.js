@@ -8,7 +8,9 @@ export default async function onSell(globalNotification, selectedAutoParts, setS
     };
     selectedAutoParts.forEach((ap) => {
         const { selectedAmount, ...autoPart } = ap;
-        orderSummary.totalPriceInKzt += selectedAmount * autoPart.priceInKzt;
+        let price = selectedAmount * autoPart.priceInKzt;
+        let discount = price * ap.discountPercentage / 100;
+        orderSummary.totalPriceInKzt += price - discount;
         autoPart.amount = selectedAmount;
         orderSummary.orderedParts.push(autoPart);
     });
