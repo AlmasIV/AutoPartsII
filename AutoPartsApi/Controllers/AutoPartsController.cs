@@ -102,7 +102,7 @@ public class AutoPartsController : ControllerBase {
 			AutoPartsSoldAmounts = new List<AutoPartSoldAmount>()
 		};
 		foreach (AutoPart autoPart in orderSummary.OrderedParts) {
-			decimal discount = autoPart.PriceInKzt * autoPart.DiscountPercentage / 100;
+			decimal discount = autoPart.PriceInKzt * (autoPart.DiscountPercentage ?? 0) / 100;
 			order.AutoPartsSoldAmounts.Add(new AutoPartSoldAmount() {
 				AutoPartId = autoPart.Id,
 				SoldAmount = autoPart.Amount,
