@@ -1,3 +1,5 @@
+"use client";
+
 import { NumberController } from "@/app/components/Index.js";
 import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
@@ -6,6 +8,8 @@ import generateGUID from "@/utils/GUID/GUID.js";
 
 export default function DiscountApplier(
 	{
+		selectedAutoParts,
+		setSelectedAutoParts,
 		selectedAutoPart
 	}
 ) {
@@ -17,6 +21,11 @@ export default function DiscountApplier(
 				discountPercentage: selectedAutoPart.discountPercentage + 1
 			};
 			setAutoPart(autoPart);
+			setSelectedAutoParts(
+				[
+					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+				]
+			);
 		}
 		else {
 			globalNotification.setNotifications(
@@ -39,6 +48,11 @@ export default function DiscountApplier(
 				discountPercentage: selectedAutoPart.discountPercentage - 1
 			};
 			setAutoPart(autoPart);
+			setSelectedAutoParts(
+				[
+					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+				]
+			);
 		}
 		else {
 			globalNotification.setNotifications(

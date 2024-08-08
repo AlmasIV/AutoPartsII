@@ -12,7 +12,8 @@ export default function ProductBox(
         autoPart,
         selectedAutoParts,
         setSelectedAutoParts,
-        price
+        price,
+        discount
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
@@ -36,6 +37,11 @@ export default function ProductBox(
                         Calculated Price:
                     </span>
                     {" " + KZTFormatter.format(price)}
+                    <span
+                        className="color-danger"
+                    >
+                        {" (-" + KZTFormatter.format(discount) + ")"}
+                    </span>
                 </p>
                 <Button
                     title="Remove"
@@ -55,6 +61,8 @@ export default function ProductBox(
                     selectedAutoPart={autoPart}
                 />
                 <DiscountApplier
+                    selectedAutoParts={selectedAutoParts}
+                    setSelectedAutoParts={setSelectedAutoParts}
                     selectedAutoPart={autoPart}
                 />
             </div>

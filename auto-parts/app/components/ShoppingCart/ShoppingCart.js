@@ -19,7 +19,11 @@ export default function ShoppingCart(
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     useEffect(() => {
-        setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => accumulator + ap.selectedAmount * ap.priceInKzt, 0));
+        setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => {
+            let price = ap.selectedAmount * Number(ap.priceInKzt);
+            let discount = price * ap.discountPercentage / 100;
+            return accumulator + price - discount;
+        }, 0));
     }, [selectedAutoParts]);
     async function handleOnSubmit(event) {
         event.preventDefault();
@@ -35,13 +39,16 @@ export default function ShoppingCart(
         >
             {
                 selectedAutoParts.map((ap) => {
+                    let price = ap.selectedAmount * Number(ap.priceInKzt);
+                    let discount = price * ap.discountPercentage / 100;
                     return (
                         <ProductBox
                             key={ap.id}
                             autoPart={ap}
                             selectedAutoParts={selectedAutoParts}
                             setSelectedAutoParts={setSelectedAutoParts}
-                            price={ap.selectedAmount * Number(ap.priceInKzt)}
+                            price={discount === 0 ? price : price - discount}
+                            discount={discount}
                         />
                     );
                 })
