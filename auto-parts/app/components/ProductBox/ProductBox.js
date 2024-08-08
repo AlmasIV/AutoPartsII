@@ -37,11 +37,16 @@ export default function ProductBox(
                         Calculated Price:
                     </span>
                     {" " + KZTFormatter.format(price)}
-                    <span
-                        className="color-danger"
-                    >
-                        {" (-" + KZTFormatter.format(discount) + ")"}
-                    </span>
+                    {
+                        discount > 0 && 
+                        (
+                            <span
+                                className="color-danger"
+                            >
+                                {" (-" + KZTFormatter.format(discount) + ")"}
+                            </span>
+                        )
+                    }
                 </p>
                 <Button
                     title="Remove"
