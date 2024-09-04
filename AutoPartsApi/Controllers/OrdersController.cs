@@ -66,4 +66,10 @@ public class OrdersController : ControllerBase {
 		}
 		return result;
 	}
+
+	[HttpPost()]
+	[Route("refund")]
+	public async Task<IActionResult> RefundAutoPart(){
+		throw new NotImplementedException();
+	}
 }
