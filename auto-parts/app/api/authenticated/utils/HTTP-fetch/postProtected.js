@@ -4,9 +4,6 @@ import { NextResponse } from "next/server.js";
 import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
 
 export async function postProtected(url, request, isReturn = false, isFormData = false) {
-    /*
-        1) Don't forget to set the Authorize: "Bearer jwtToken". Because it is an industry standard. You are currently using the "authorize".
-    */
     try {
         const token = request.cookies.get("jwt");
         let response = null;
@@ -32,7 +29,6 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             });
         }
         if(!response.ok) {
-            console.log(response);
             return getBadResponseMessage("Couldn't post the data.", 500, "Internal Server Error");
         }
         else {
