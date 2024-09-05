@@ -1,4 +1,4 @@
-import { authenticate } from "@/middlewares/middlewares.js";
+import { authenticate } from "@/middlewares/index.js";
 
 export async function middleware(request) {
     await authenticate(request);

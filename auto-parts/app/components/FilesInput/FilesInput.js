@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import generateGUID from "@/utils/GUID/GUID";
+import generateGUID from "@/utils/GUID/generateGUID.js";
 import { Button } from "@/app/components/Index.js";
 
 export default function FilesInput(
