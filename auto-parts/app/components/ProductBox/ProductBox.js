@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AmountChanger, Button, AutoPartDescription, DiscountApplier } from "@/app/components/Index.js";
 import { disselectAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import { KZTFormatter } from "@/utils/numberFormatters/formatters.js";
+import { KZTFormatter } from "@/utils/numberFormatters/index.js";
 import styles from "./product-box.module.css";
 
 export default function ProductBox(
@@ -38,7 +38,7 @@ export default function ProductBox(
                     </span>
                     {" " + KZTFormatter.format(price)}
                     {
-                        discount > 0 && 
+                        discount > 0 &&
                         (
                             <span
                                 className="color-danger"

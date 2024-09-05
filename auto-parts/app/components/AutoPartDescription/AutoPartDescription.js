@@ -1,6 +1,6 @@
 "use client";
 
-import { KZTFormatter, RUBFormatter } from "@/utils/numberFormatters/formatters.js";
+import { KZTFormatter, RUBFormatter } from "@/utils/numberFormatters/index.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 
 export default function AutoPartDescription(
