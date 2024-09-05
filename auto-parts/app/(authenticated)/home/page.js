@@ -102,7 +102,7 @@ export default function HomePage() {
                 <Modal
                     openButtonTitle="Shopping Cart"
                     closeButtonTitle="Exit"
-                    openButtonClass={`${(error || isLoading) ? "disabled-btn" : "informational-btn"} width-full margin-bottom-05rem`}
+                    openButtonClass={`${(error || isLoading) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
                     closeButtonClass="secondary-btn width-full margin-top-05rem"
                     dialogType="shopping-cart-modal"
                     isDisabled={error || isLoading}

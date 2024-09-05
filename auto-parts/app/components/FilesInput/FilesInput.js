@@ -48,7 +48,7 @@ export default function FilesInput(
 				}
 			</p>
 			<label
-				className={`${isDisabled ? "disabled-btn" : "informational-btn"} text-center width-full`}
+				className={`${isDisabled ? "disabled-btn" : "secondary-btn"} text-center width-full`}
 			>
 				{title}
 				<input
@@ -73,12 +73,12 @@ export default function FilesInput(
 								key={generateGUID()}
 							>
 								{
-									file.type.startsWith("image/") ? 
+									file.type.startsWith("image/") ?
 										<img
 											src={URL.createObjectURL(file)}
 											className="width-full margin-top-05rem"
 											alt={file.name}
-										/> : 
+										/> :
 										<p
 											className="margin-top-05rem"
 										>

@@ -69,7 +69,6 @@ main {
 
 .primary-btn,
 .secondary-btn,
-.informational-btn,
 .danger-btn,
 .disabled-btn {
     font-size: 1rem;
@@ -123,22 +122,6 @@ main {
     background-color: var(--main-lightish);
 }
 
-.informational-btn {
-    @media screen and (hover: hover) {
-        &:hover {
-            background-color: var(--info);
-            color: var(--main-darkish);
-        }
-    }
-
-    @media screen and (hover: none) {
-        &:active {
-            background-color: var(--info);
-            color: var(--main-darkish);
-        }
-    }
-}
-
 .danger-btn {
     color: var(--main-darkish);
     border: 0.1rem solid var(--danger);
@@ -189,10 +172,6 @@ main {
     text-align: center;
 }
 
-.text-left {
-    text-align: left;
-}
-
 .opacity-08 {
     opacity: 0.8;
 }
@@ -215,10 +194,6 @@ main {
 
 .flex-column {
     flex-direction: column;
-}
-
-.space-around {
-    justify-content: space-around;
 }
 
 .space-between {
