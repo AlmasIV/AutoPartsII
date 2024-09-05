@@ -1,6 +1,6 @@
 "use client";
 
-import generateGUID from "@/utils/GUID/GUID.js";
+import generateGUID from "@/utils/GUID/generateGUID.js";
 
 export default function onSelect(selectedState, globalNotification, autoPart) {
     toggleSelection(autoPart, selectedState, globalNotification);

@@ -6,7 +6,7 @@ import { NotificationBoxContext } from "@/app/components/NotificationBox/Notific
 import { KZTFormatter, RUBFormatter } from "@/utils/numberFormatters/formatters.js";
 import onSelect from "./event-handlers/onSelect.js";
 import styles from "./table-of-auto-parts.module.css";
-import generateGUID from "@/utils/GUID/GUID.js";
+import generateGUID from "@/utils/GUID/generateGUID.js";
 
 export default function TableOfAutoParts(
     {

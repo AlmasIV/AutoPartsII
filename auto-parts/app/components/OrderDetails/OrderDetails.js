@@ -1,6 +1,6 @@
 import { KZTFormatter } from "@/utils/numberFormatters/formatters.js";
 import styles from "./order-details.module.css";
-import { AutoPartDescription } from "@/app/components/Index.js";
+import { AutoPartDescription, Button } from "@/app/components/Index.js";
 
 export default function OrderDetails(
     {
@@ -55,6 +55,9 @@ export default function OrderDetails(
                                         Discount Percentage:
                                     </span> {`${sp.discountPercentage ?? "0"}% (${KZTFormatter.format((sp.discountPercentage / 100) * sp.soldPart.priceInKzt)})`}
                                 </p>
+                                <Button
+                                    
+                                />
                             </div>
                         );
                     })

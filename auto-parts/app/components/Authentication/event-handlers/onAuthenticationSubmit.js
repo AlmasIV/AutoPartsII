@@ -1,6 +1,6 @@
 "use client";
 
-import generateGUID from "@/utils/GUID/GUID.js";
+import generateGUID from "@/utils/GUID/generateGUID.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
 /*
