@@ -40,7 +40,7 @@ export default function HomePage() {
                 }
             }
             catch(error) {
-                setError(new Error("Something went wrong."));
+                setError(new Error("Something went wrong. The requested page couldn't load."));
             }
             finally {
                 setIsLoading(false);
@@ -61,15 +61,18 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
+        let isIgnore = false;
         const fetchCount = async () => {
             try {
                 const response = await fetch("/api/authenticated/auto-parts/count");
                 redirectIfCan(response);
-                const totalNum = await response.json();
+                const bodyData = await response.json();
                 if(!response.ok) {
-                    setError(totalNum.data || `${response.status} ${response.statusText}`);
+                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
-                setTotalAutoParts(totalNum.data);
+                else if(!isIgnore){
+                    setTotalAutoParts(bodyData.data);
+                }
             }
             catch(error) {
                 setError(new Error("Couldn't get the total number of auto-parts."));
@@ -77,6 +80,8 @@ export default function HomePage() {
         };
 
         fetchCount();
+
+        return () => { isIgnore = true };
     }, []);
     return (
         <Fragment>
