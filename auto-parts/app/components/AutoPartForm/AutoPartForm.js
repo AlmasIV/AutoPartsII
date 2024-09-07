@@ -31,7 +31,6 @@ export default function AutoPartForm(
                 {formTitle}
             </h2>
             <Form
-                formType="flex-column-form"
                 method="dialog"
                 onSubmit={handleOnSubmit}
                 enctype="multipart/form-data"

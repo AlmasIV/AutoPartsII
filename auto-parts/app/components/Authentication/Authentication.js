@@ -43,7 +43,6 @@ export default function Authentication() {
                         </p>
                     }
                     <Form
-                        formType="flex-column-form"
                         method="POST"
                         onSubmit={async (event) => {
                             event.preventDefault();
@@ -113,7 +112,6 @@ export default function Authentication() {
                         </p>
                     }
                     <Form
-                        formType="flex-column-form"
                         method="POST"
                         onSubmit={async (event) => {
                             event.preventDefault();

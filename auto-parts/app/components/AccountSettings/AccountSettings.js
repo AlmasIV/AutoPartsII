@@ -44,7 +44,6 @@ export default function AccountSettings() {
                             errorBoxClassName="margin-top-2rem"
                         /> : (
                             <Form
-                                formType="flex-column-form"
                                 method="POST"
                                 onSubmit={null}
                             >

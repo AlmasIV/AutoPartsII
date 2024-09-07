@@ -50,7 +50,7 @@ export default function OrderModal(
                     Order ID: {order.id}
                 </h2>
                 <div
-                    className={styles["order-flex"]}
+                    className="flex-container flex-column space-between overflow-auto"
                 >
                     {
                         error ? (

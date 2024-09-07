@@ -33,7 +33,6 @@ export default function ShoppingCart(
     }
     return selectedAutoParts.length > 0 ? (
         <Form
-            formType="flex-column-form"
             method="dialog"
             onSubmit={handleOnSubmit}
         >

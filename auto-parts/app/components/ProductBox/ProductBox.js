@@ -19,7 +19,7 @@ export default function ProductBox(
     const globalNotification = useContext(NotificationBoxContext);
     return (
         <div
-            className={styles["auto-part-box"]}
+            className={`${styles["auto-part-box"]} flex-container space-between`}
         >
             <div>
                 {

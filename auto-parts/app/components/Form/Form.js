@@ -3,7 +3,6 @@ import styles from "./form.module.css";
 export default function Form(
     {
         children,
-        formType,
         method,
         onSubmit,
         enctype = "application/x-www-form-urlencoded"
@@ -11,7 +10,7 @@ export default function Form(
 ) {
     return (
         <form
-            className={styles[formType]}
+            className="flex-container flex-column space-between"
             method={method}
             onSubmit={onSubmit}
             encType={enctype}
