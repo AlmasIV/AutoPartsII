@@ -45,5 +45,4 @@ export default async function authenticate(request) {
 			return response;
 		}
 	}
-	return NextResponse.next();
 }

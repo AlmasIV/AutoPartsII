@@ -1,7 +1,10 @@
 import { authenticate } from "@/middlewares/index.js";
 
 export async function middleware(request) {
-    await authenticate(request);
+    const response = await authenticate(request);
+    if(response) {
+        return response;
+    }
 }
 
 export const config = {
