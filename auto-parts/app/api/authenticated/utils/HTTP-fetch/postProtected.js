@@ -1,7 +1,6 @@
 "use server";
 
-import { NextResponse } from "next/server.js";
-import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
+import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 export async function postProtected(url, request, isReturn = false, isFormData = false) {
     try {
@@ -29,20 +28,14 @@ export async function postProtected(url, request, isReturn = false, isFormData =
             });
         }
         if(!response.ok) {
-            return getBadResponseMessage("Couldn't post the data.", 500, "Internal Server Error");
+            return getResponse("Couldn't post the data.", 500, "Internal Server Error");
         }
         else {
-            const result = isReturn ? { data: await response.json() } : {};
-            return NextResponse.json({
-                message: "Success.",
-                ...result
-            }, {
-                status: 200,
-                statusText: "OK"
-            });
+            const result = isReturn ? { data: await response.json() } : { data: "Success" };
+            return getResponse(result.data, 200, "OK");
         }
     }
     catch(error) {
-        return getBadResponseMessage("Something went wrong.", 500, "Internal Server Error");
+        return getResponse("Something went wrong.", 500, "Internal Server Error");
     }
 }

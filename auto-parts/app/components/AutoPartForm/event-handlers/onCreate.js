@@ -19,7 +19,7 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
             globalNotification.setNotifications(
                 [
                     {
-                        message: bodyData.message || `${response.status} ${response.statusText}`,
+                        message: bodyData.data || `${response.status} ${response.statusText}`,
                         level: "danger",
                         key: generateGUID()
                     },
@@ -31,7 +31,7 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
             globalNotification.setNotifications(
                 [
                     {
-                        message: bodyData.message,
+                        message: bodyData.data,
                         level: "success",
                         key: generateGUID()
                     },

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-export default function getBadResponseMessage(message, status = 400, statusText = "Bad Request"){
+export default function getResponse(data, status, statusText) {
 	return NextResponse.json({
-		message: message
+		data: data
 	}, {
 		status: status,
 		statusText: statusText

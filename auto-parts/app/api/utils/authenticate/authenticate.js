@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server.js";
-import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
+import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 export default async function authenticate(user, url, isLogIn = false) {
     let result = null;
@@ -14,11 +14,11 @@ export default async function authenticate(user, url, isLogIn = false) {
         });
     }
     catch(error) {
-        return getBadResponseMessage("Connection with the database can't be established.", 500, "Internal Server Error");
+        return getResponse("Connection with the database can't be established.", 500, "Internal Server Error");
     }
     if(!result.ok) {
         let problem = await result.json();
-        return getBadResponseMessage(isLogIn ? problem.title : problem["errors"].map((error) => error.description).join(", "));
+        return getResponse(isLogIn ? problem.title : problem["errors"].map((error) => error.description).join(", "), 400, "Bad Request");
     }
     else {
         /*
@@ -31,6 +31,6 @@ export default async function authenticate(user, url, isLogIn = false) {
             response.headers.set("Set-Cookie", cookieHeader);
             return response;
         }
-        return getBadResponseMessage("Authentication failed.", 500, "Internal Server Error");
+        return getResponse("Authentication failed.", 500, "Internal Server Error");
     }
 }

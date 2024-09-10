@@ -1,5 +1,5 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
-import getBadResponseMessage from "@/app/api/utils/getBadResponseMessage/getBadResponseMessage.js";
+import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger.js";
 
 export async function GET(request, { params }) {
@@ -7,6 +7,6 @@ export async function GET(request, { params }) {
         return await getProtected(`${process.env.API_URL}/orders/pages/${params.page}`, request);
     }
     else {
-        return getBadResponseMessage("Provide a valid page number.");
+        return getResponse("Provide a valid page number.", 400, "Bad Request");
     }
 }

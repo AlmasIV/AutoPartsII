@@ -33,7 +33,7 @@ export default function HomePage() {
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
-                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
+                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
                 else if(!isIgnore) {
                     setAutoParts(bodyData.data);

@@ -27,7 +27,7 @@ export default function Orders() {
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
-                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
+                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
                 if(!isIgnore) {
                     setOrders(bodyData.data);
@@ -53,7 +53,7 @@ export default function Orders() {
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
-                    setError(new Error(bodyData.message || `${response.status} ${response.statusText}`));
+                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
                 setTotalOrders(bodyData.data);
             }

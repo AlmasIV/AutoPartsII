@@ -23,7 +23,7 @@ export default function OrderModal(
                 const response = await fetch(`/api/authenticated/orders/${order.id}`);
                 redirectIfCan(response);
                 if(!response.ok) {
-                    setError(new Error(response.message || `${response.status} ${response.statusText}`));
+                    setError(new Error(response.data || `${response.status} ${response.statusText}`));
                 }
                 else {
                     const details = await response.json();

@@ -29,11 +29,11 @@ export default async function onAuthenticationSubmit(
             redirectIfCan(response);
             if(!response.ok) {
                 const responseObj = await response.json();
-                setError(responseObj.message);
+                setError(responseObj.data);
                 globalNotification.setNotifications(
                     [
                         {
-                            message: responseObj.message,
+                            message: responseObj.data,
                             level: "danger",
                             key: generateGUID()
                         },
