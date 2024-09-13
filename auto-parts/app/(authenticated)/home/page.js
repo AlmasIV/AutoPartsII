@@ -71,7 +71,7 @@ export default function HomePage() {
                 if(!response.ok) {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
-                else if(!isIgnore){
+                else if(!isIgnore) {
                     setTotalAutoParts(bodyData.data);
                 }
             }
@@ -82,7 +82,7 @@ export default function HomePage() {
 
         fetchCount();
 
-        return () => { isIgnore = true };
+        return () => { isIgnore = true; };
     }, []);
     return (
         <Fragment>
