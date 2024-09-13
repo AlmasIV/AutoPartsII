@@ -6,6 +6,9 @@ export default async function authenticate(user, url, isLogIn = false) {
         const result = await fetch(url, {
             method: "POST",
             cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(user)
         });
         if(!result.ok) {
