@@ -31,7 +31,7 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
             globalNotification.setNotifications(
                 [
                     {
-                        message: bodyData.data,
+                        message: `${bodyData.data.name} was successfully created.`,
                         level: "success",
                         key: generateGUID()
                     },
