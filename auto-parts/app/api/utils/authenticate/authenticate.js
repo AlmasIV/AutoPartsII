@@ -2,25 +2,16 @@ import { NextResponse } from "next/server.js";
 import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 export default async function authenticate(user, url, isLogIn = false) {
-    let result = null;
     try {
-        result = await fetch(url, {
+        const result = await fetch(url, {
             method: "POST",
             cache: "no-cache",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify(user)
         });
-    }
-    catch(error) {
-        return getResponse("Connection with the database can't be established.", 500, "Internal Server Error");
-    }
-    if(!result.ok) {
-        let problem = await result.json();
-        return getResponse(isLogIn ? problem.title : problem["errors"].map((error) => error.description).join(", "), 400, "Bad Request");
-    }
-    else {
+        if(!result.ok) {
+            const problem = await result.json();
+            return getResponse(isLogIn ? problem.title : problem["errors"].map((error) => error.description).join(", "), 400, "Bad Request");
+        }
         /*
             1) Do I need to check the cookieHeader's existence?
             2) Maybe extract the logic into another function?
@@ -32,5 +23,8 @@ export default async function authenticate(user, url, isLogIn = false) {
             return response;
         }
         return getResponse("Authentication failed.", 500, "Internal Server Error");
+    }
+    catch(error) {
+        return getResponse("Connection with the database can't be established.", 500, "Internal Server Error");
     }
 }

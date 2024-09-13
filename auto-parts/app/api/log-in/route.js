@@ -7,7 +7,7 @@ export async function POST(request) {
     const assertionInfo = credentialsAssertion(credentials, true);
 
     if(!assertionInfo.isValid) {
-        return getResponse(assertionInfo.data);
+        return getResponse(assertionInfo.data, 400, "Bad Request");
     }
 
     return await authenticate({
