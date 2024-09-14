@@ -2,4 +2,4 @@
 
 import { createContext } from "react";
 
-export const NotificationBoxContext = createContext([]);
+export const NotificationBoxContext = createContext({});
