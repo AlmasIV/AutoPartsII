@@ -76,8 +76,8 @@ export default function OrderModal(
             <div
                 className={styles["order-box"]}
                 onClick={async () => {
-                    await fetchDetails();
                     modalRef.current.showModal();
+                    await fetchDetails();
                 }}
             >
                 <p>
