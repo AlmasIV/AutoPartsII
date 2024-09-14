@@ -1,4 +1,4 @@
-import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
+import { saveAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 import { NumberController } from "@/app/components/Index.js";
 
 export default function AmountChanger(
@@ -8,14 +8,14 @@ export default function AmountChanger(
         selectedAutoPart
     }
 ) {
-    function onIncrement(){
+    function onIncrement() {
         if(selectedAutoPart.amount > 0) {
             const autoPart = {
                 ...selectedAutoPart,
                 amount: selectedAutoPart.amount - 1,
                 selectedAmount: selectedAutoPart.selectedAmount + 1
             };
-            setAutoPart(autoPart);
+            saveAutoPart(autoPart);
             setSelectedAutoParts(
                 [
                     ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
@@ -24,14 +24,14 @@ export default function AmountChanger(
         }
     }
 
-    function onDecrement(){
+    function onDecrement() {
         if(selectedAutoPart.selectedAmount > 1) {
             const autoPart = {
                 ...selectedAutoPart,
                 amount: selectedAutoPart.amount + 1,
                 selectedAmount: selectedAutoPart.selectedAmount - 1
             };
-            setAutoPart(autoPart);
+            saveAutoPart(autoPart);
             setSelectedAutoParts(
                 [
                     ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)

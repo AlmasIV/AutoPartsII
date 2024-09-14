@@ -24,7 +24,7 @@ export function disselectAutoPart(autoPart, selectedState, globalNotification) {
     );
 }
 
-export function setAutoPart(autoPart) {
+export function saveAutoPart(autoPart) {
     localStorage.setItem(autoPart.id + "ap", JSON.stringify(autoPart));
 }
 
@@ -35,7 +35,7 @@ export function selectAutoPart(autoPart, selectedState, globalNotification) {
         selectedAmount: 1,
         discountPercentage: 0
     };
-    setAutoPart(autoPart);
+    saveAutoPart(autoPart);
     const sortedArray = [...selectedState.selectedAutoParts, autoPart].sort((a, b) => a.id - b.id);
     selectedState.setSelectedAutoParts(
         [...sortedArray]

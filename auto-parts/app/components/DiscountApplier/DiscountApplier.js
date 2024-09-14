@@ -1,5 +1,5 @@
 import { NumberController } from "@/app/components/Index.js";
-import { setAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
+import { saveAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
 
 export default function DiscountApplier(
 	{
@@ -14,7 +14,7 @@ export default function DiscountApplier(
 				...selectedAutoPart,
 				discountPercentage: selectedAutoPart.discountPercentage + 1
 			};
-			setAutoPart(autoPart);
+			saveAutoPart(autoPart);
 			setSelectedAutoParts(
 				[
 					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
@@ -29,7 +29,7 @@ export default function DiscountApplier(
 				...selectedAutoPart,
 				discountPercentage: selectedAutoPart.discountPercentage - 1
 			};
-			setAutoPart(autoPart);
+			saveAutoPart(autoPart);
 			setSelectedAutoParts(
 				[
 					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
