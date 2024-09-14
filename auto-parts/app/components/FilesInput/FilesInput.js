@@ -1,7 +1,6 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import generateGUID from "@/utils/GUID/generateGUID.js";
 import { Button } from "@/app/components/Index.js";
 
 export default function FilesInput(
@@ -9,7 +8,7 @@ export default function FilesInput(
 		title,
 		name,
 		accept,
-		capture,
+		capture="environment",
 		isMultiple = false,
 		isRequired = false,
 		isDisabled = false
@@ -70,7 +69,7 @@ export default function FilesInput(
 					files.map((file) => {
 						return (
 							<div
-								key={generateGUID()}
+								key={file.name + file.lastModified + file.size}
 							>
 								{
 									file.type.startsWith("image/") ?

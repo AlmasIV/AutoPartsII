@@ -4,8 +4,7 @@ export default function NumberController(
     {
         onIncrement,
         onDecrement,
-        value,
-        valuePostFix = ""
+        value
     }
 ) {
     return (
@@ -21,7 +20,7 @@ export default function NumberController(
             <div
                 className={styles["amount-box"]}
             >
-                {value + valuePostFix}
+                {value}
             </div>
             <div
                 className={`${styles["next"]} ${styles["controller"]}`}

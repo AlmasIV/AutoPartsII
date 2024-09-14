@@ -42,8 +42,7 @@ export default function DiscountApplier(
 		<NumberController
 			onIncrement={onIncrement}
 			onDecrement={onDecrement}
-			value={selectedAutoPart.discountPercentage}
-			valuePostFix="%"
+			value={selectedAutoPart.discountPercentage + "%"}
 		/>
 	);
 }

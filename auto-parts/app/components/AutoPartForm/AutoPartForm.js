@@ -10,8 +10,7 @@ export default function AutoPartForm(
         formTitle,
         submitButtonTitle,
         onSubmit,
-        autoPartsState,
-        autoPart = null
+        autoPartsState
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
@@ -38,20 +37,12 @@ export default function AutoPartForm(
                 {
                     autoPartConfigs.map(
                         (autoPartConfig) => (
-                            autoPart === null ? (
-                                autoPartConfig.name !== "id" &&
-                                <Input
-                                    key={autoPartConfig.labelName}
-                                    config={autoPartConfig}
-                                    validationErrorsState={{ validationErrors, setValidationErrors }}
-                                />
-                            ) : (
-                                <Input
-                                    key={autoPartConfig.labelName}
-                                    config={autoPartConfig}
-                                    validationErrorsState={{ validationErrors, setValidationErrors }}
-                                />
-                            )
+                            autoPartConfig.name !== "id" &&
+                            <Input
+                                key={autoPartConfig.labelName}
+                                config={autoPartConfig}
+                                validationErrorsState={{ validationErrors, setValidationErrors }}
+                            />
                         )
                     )
                 }
@@ -59,7 +50,6 @@ export default function AutoPartForm(
                     title="Add Images"
                     name="images"
                     accept={["image/jpeg", "image/jpg"]}
-                    capture="environment"
                     isMultiple={true}
                 />
                 <Button

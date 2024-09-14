@@ -10,7 +10,6 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
     try {
         const response = await fetch("/api/authenticated/auto-parts/create", {
             method: "POST",
-            cache: "no-cache",
             body: formData
         });
         redirectIfCan(response);
