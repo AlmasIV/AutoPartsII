@@ -4,12 +4,17 @@ import { useEffect, useState } from "react";
 import { ErrorBox, Form, Input, Loading, Button } from "@/app/components/Index.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
+/*
+    This is the least important component. That's why the work is stopped here.
+*/
+
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [validationErrors, setValidationErrors] = useState(new Set());
     useEffect(() => {
+        let isIgnore = false;
         const fetchCurrentUser = async () => {
             setIsLoading(true);
             setError(null);
@@ -19,8 +24,11 @@ export default function AccountSettings() {
                 const bodyData = await response.json();
                 if(!response.ok) {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
+                    return;
                 }
-                setUser(bodyData.data);
+                if(!isIgnore){
+                    setUser(bodyData.data);
+                }
             }
             catch(error) {
                 setError(new Error("Something went wrong."));
@@ -30,6 +38,8 @@ export default function AccountSettings() {
             }
         };
         fetchCurrentUser();
+
+        return () => { isIgnore = true };
     }, []);
     return (
         <section>
