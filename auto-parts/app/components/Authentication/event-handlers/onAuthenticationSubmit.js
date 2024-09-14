@@ -3,10 +3,6 @@
 import generateGUID from "@/utils/GUID/generateGUID.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 
-/*
-    1) Do I need ths isSending?
-*/
-
 export default async function onAuthenticationSubmit(
     bodyObject,
     isSending,
