@@ -3,6 +3,11 @@
 import { Fragment, useEffect, useState } from "react";
 import { OrderModal, ErrorBox, Loading, PageSelector } from "@/app/components/Index.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
+import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger";
+
+/*
+    useEffects are updating the same error state. Maybe I shall define an error  state for each useEffect? But the current state provides a simple solution, and a generic error.
+*/
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -13,7 +18,7 @@ export default function Orders() {
 
     useEffect(() => {
         const orderPage = Number(localStorage.getItem("orderPageNum"));
-        if(Number.isInteger(orderPage) && orderPage > 1) {
+        if(isPositiveInteger(orderPage)) {
             setSelectedPage(orderPage);
         }
     }, []);
@@ -22,6 +27,7 @@ export default function Orders() {
         let isIgnore = false;
         async function fetchOrders() {
             setIsLoading(true);
+            setError(null);
             try {
                 const response = await fetch(`/api/authenticated/orders/pages/${selectedPage}`);
                 redirectIfCan(response);
@@ -47,7 +53,9 @@ export default function Orders() {
     }, [selectedPage]);
 
     useEffect(() => {
+        let isIgnore = false;
         const fetchCount = async () => {
+            setError(null);
             try {
                 const response = await fetch("/api/authenticated/orders/count");
                 redirectIfCan(response);
@@ -63,6 +71,8 @@ export default function Orders() {
         };
 
         fetchCount();
+
+        return () => { isIgnore = true };
     }, []);
 
     return (
