@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./page-selector.module.css";
 import { Button, Modal } from "@/app/components/Index.js";
 import generateGUID from "@/utils/GUID/generateGUID.js";
 
@@ -28,7 +27,7 @@ export default function PageSelector(
     }
     return (
         <div
-            className={`${styles["page-selector"]} width-full flex-container margin-top-2rem`}
+            className={"space-between width-full flex-container margin-top-2rem"}
         >
             <Button
                 title="first"
