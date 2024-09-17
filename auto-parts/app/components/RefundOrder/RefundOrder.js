@@ -14,6 +14,7 @@ export default function RefundOrder(
 		setOrderedParts
 	}
 ) {
+	console.log(orderedParts);
 	const globalNotification = useContext(NotificationBoxContext);
 	const ordersState = useContext(OrdersStateContext);
 	const [isSending, setIsSending] = useState(false);
@@ -25,7 +26,7 @@ export default function RefundOrder(
 		try {
 			setIsSending(true);
 			setError(null);
-			const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.soldPart.discountPercentage / 100;
+			const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.discountPercentage / 100;
 			const refundMoney = soldPartDetails.soldAmount * soldPartDetails.soldPart.priceInKzt - discountPrice;
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
@@ -34,12 +35,12 @@ export default function RefundOrder(
 				},
 				body: JSON.stringify(
 					{
-						orderId: orderedParts.orderId,
+						orderId: orderedParts.id,
 						autoPartId: soldPartDetails.soldPart.id,
 						refundAmount: refundAmount,
 						refundMoney: refundMoney,
 						discountPercentage: soldPartDetails.discountPercentage,
-						totalPrice: price,
+						totalPrice: soldPartDetails.price,
 						soldAmount: soldPartDetails.soldAmount
 					}
 				)

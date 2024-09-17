@@ -9,8 +9,7 @@ export async function middleware(request) {
 
 export const config = {
     matcher: [
-        "/home",
-        "/history",
+        "/main/:path*",
         "/",
         "/api/authenticated/:path*",
         "/settings"

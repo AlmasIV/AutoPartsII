@@ -1,4 +1,5 @@
 using AutoPartsApi.Models;
+using AutoPartsApi.DTOs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +71,14 @@ public class OrdersController : ControllerBase {
 	[HttpPost()]
 	[Route("refund")]
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel){
-		
-		throw new NotImplementedException();
+		Console.WriteLine("Refund Model:");
+		Console.WriteLine($"Discount Percentage: {refundModel.DiscountPercentage}");
+		Console.WriteLine($"Auto Part Id: {refundModel.AutoPartId}");
+		Console.WriteLine($"Order Id: {refundModel.OrderId}");
+		Console.WriteLine($"Refund Amount: {refundModel.RefundAmount}");
+		Console.WriteLine($"Refund Money: {refundModel.RefundMoney}");
+		Console.WriteLine($"Sold Amount: {refundModel.SoldAmount}");
+		Console.WriteLine($"Total Price: {refundModel.TotalPrice}");
+		return Ok();
 	}
 }

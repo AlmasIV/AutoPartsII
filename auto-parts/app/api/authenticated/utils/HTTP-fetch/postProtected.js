@@ -7,11 +7,14 @@ export async function postProtected(url, request, isFormData = false, isReturnRe
         const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${token.value}`
+                "Authorization": `Bearer ${token.value}`,
+                ...(isFormData ? {} : {"Content-Type": "application/json"})
             },
             body: isFormData ? body : JSON.stringify(body)
         });
         if(!response.ok) {
+            const err = await response.json();
+            console.error(err);
             return getResponse("Couldn't post the data.", 500, "Internal Server Error");
         }
         else {

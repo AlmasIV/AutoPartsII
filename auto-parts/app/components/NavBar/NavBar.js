@@ -9,7 +9,7 @@ export default function NavBar() {
             <ul>
                 <li>
                     <Link
-                        href="/home"
+                        href="/main/home"
                         className="underline-link-animation"
                     >
                         Home
@@ -17,7 +17,7 @@ export default function NavBar() {
                 </li>
                 <li>
                     <Link
-                        href="/history"
+                        href="/main/history"
                         className="underline-link-animation"
                     >
                         History

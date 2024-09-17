@@ -14,7 +14,6 @@ export default function AccountSettings() {
     const [error, setError] = useState(null);
     const [validationErrors, setValidationErrors] = useState(new Set());
     useEffect(() => {
-        let isIgnore = false;
         const fetchCurrentUser = async () => {
             setIsLoading(true);
             setError(null);
@@ -26,9 +25,7 @@ export default function AccountSettings() {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                     return;
                 }
-                if(!isIgnore){
-                    setUser(bodyData.data);
-                }
+                setUser(bodyData.data);
             }
             catch(error) {
                 setError(new Error("Something went wrong."));
@@ -38,8 +35,6 @@ export default function AccountSettings() {
             }
         };
         fetchCurrentUser();
-
-        return () => { isIgnore = true };
     }, []);
     return (
         <section>

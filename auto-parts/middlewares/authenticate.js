@@ -34,7 +34,7 @@ export default async function authenticate(request) {
 		try {
 			await jwtVerify(token.value, new TextEncoder().encode(process.env.JWT_KEY), { issuer: process.env.JWT_ISSUER, audience: process.env.JWT_AUDIENCE });
 			if(request.nextUrl.pathname === "/") {
-				return NextResponse.redirect(new URL("/home", process.env.BASE_URL));
+				return NextResponse.redirect(new URL("/main/home", process.env.BASE_URL));
 			}
 		}
 		catch(error) {
