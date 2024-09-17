@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsApi.DTOs;
 
-public class LogInModel {
+public abstract class AuthenticationModelAbstract {
 	[Required()]
 	[EmailAddress()]
 	public string Email { get; set; } = null!;
