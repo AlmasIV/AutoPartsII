@@ -25,12 +25,24 @@ export default function RefundOrder(
 		try {
 			setIsSending(true);
 			setError(null);
+			const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.soldPart.discountPercentage / 100;
+			const refundMoney = soldPartDetails.soldAmount * soldPartDetails.soldPart.priceInKzt - discountPrice;
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ ...soldPartDetails, refundAmount: refundAmount, orderId: orderedParts.id })
+				body: JSON.stringify(
+					{
+						orderId: orderedParts.orderId,
+						autoPartId: soldPartDetails.soldPart.id,
+						refundAmount: refundAmount,
+						refundMoney: refundMoney,
+						discountPercentage: soldPartDetails.discountPercentage,
+						totalPrice: price,
+						soldAmount: soldPartDetails.soldAmount
+					}
+				)
 			});
 			redirectIfCan(response);
 			const bodyData = await response.json();
@@ -60,10 +72,8 @@ export default function RefundOrder(
 					...globalNotification.notifications
 				]
 			);
-			const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.soldPart.discountPercentage / 100;
-			const refundedMoney = soldPartDetails.soldAmount * soldPartDetails.soldPart.priceInKzt - discountPrice;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
-				if(orderedParts.totalPriceInKzt - refundedMoney === 0){
+				if(orderedParts.totalPriceInKzt - refundMoney === 0){
 					ordersState.setOrders(
 						[
 							...ordersState.orders.filter((o) => o.id !== orderedParts.id)
@@ -83,10 +93,10 @@ export default function RefundOrder(
 				setOrderedParts(
 					{ 
 						...orderedParts,
-						totalPriceInKzt: orderedParts.totalPriceInKzt - refundedMoney,
+						totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney,
 						soldParts: [...orderedParts.soldParts.filter((sp) => {
 							return sp.soldPart.id !== soldPartDetails.soldPart.id
-						}), { ...soldPartDetails, price: soldPartDetails.price - refundedMoney, soldAmount: soldPartDetails.soldAmount - refundAmount }].sort((a, b) => a.id - b.id)
+						}), { ...soldPartDetails, price: soldPartDetails.price - refundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount }].sort((a, b) => a.id - b.id)
 					}
 				);
 				ordersState.setOrders(
@@ -96,7 +106,7 @@ export default function RefundOrder(
 						}),
 						{
 							...orderedParts.orders.find((o) => o.id === orderedParts.id),
-							totalPriceInKzt: orderedParts.totalPriceInKzt - refundedMoney
+							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney
 						}
 					]
 				);
