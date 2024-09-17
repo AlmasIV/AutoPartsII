@@ -14,7 +14,6 @@ export default function RefundOrder(
 		setOrderedParts
 	}
 ) {
-	console.log(orderedParts);
 	const globalNotification = useContext(NotificationBoxContext);
 	const ordersState = useContext(OrdersStateContext);
 	const [isSending, setIsSending] = useState(false);
