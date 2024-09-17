@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { OrderModal, ErrorBox, Loading, PageSelector } from "@/app/components/Index.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
 import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger";
+import { OrdersStateContext } from "./OrdersStateContext.js";
 
 /*
     useEffects are updating the same error state. Maybe I shall define an error  state for each useEffect? But the current state provides a simple solution, and a generic error.
@@ -63,7 +64,9 @@ export default function Orders() {
                 if(!response.ok) {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
                 }
-                setTotalOrders(bodyData.data);
+                if(!isIgnore){
+                    setTotalOrders(bodyData.data);
+                }
             }
             catch(error) {
                 setError(new Error("Something went wrong."));
@@ -91,16 +94,25 @@ export default function Orders() {
                     <Loading />
                 ) : orders.length > 0 ? (
                     <Fragment>
-                        {
-                            orders.map((o) => {
-                                return (
-                                    <OrderModal
-                                        key={o.id}
-                                        order={o}
-                                    />
-                                );
-                            })
-                        }
+                        <OrdersStateContext.Provider
+                            value={
+                                {
+                                    orders,
+                                    setOrders
+                                }
+                            }
+                        >
+                            {
+                                orders.map((o) => {
+                                    return (
+                                        <OrderModal
+                                            key={o.id}
+                                            order={o}
+                                        />
+                                    );
+                                })
+                            }
+                        </OrdersStateContext.Provider>
                         <PageSelector
                             count={totalOrders}
                             selected={selectedPage}

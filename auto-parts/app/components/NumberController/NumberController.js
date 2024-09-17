@@ -4,12 +4,13 @@ export default function NumberController(
     {
         onIncrement,
         onDecrement,
-        value
+        value,
+        containerStyles = ""
     }
 ) {
     return (
         <div
-            className={styles["container"]}
+            className={`${styles["container"]} ${containerStyles}`}
         >
             <div
                 className={`${styles["prev"]} ${styles["controller"]}`}

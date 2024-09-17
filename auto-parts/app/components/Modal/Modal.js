@@ -33,7 +33,6 @@ export default function Modal(
                     title={closeButtonTitle}
                     className={closeButtonClass}
                     type="button"
-                    isDisabled={isDisabled}
                     onClick={() => {
                         modalRef.current.close();
                         onCloseButtonClick && onCloseButtonClick();

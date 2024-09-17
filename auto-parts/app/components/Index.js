@@ -22,6 +22,7 @@ import FilesInput from "./FilesInput/FilesInput.js";
 import AutoPartDescription from "./AutoPartDescription/AutoPartDescription.js";
 import NumberController from "./NumberController/NumberController.js";
 import DiscountApplier from "./DiscountApplier/DiscountApplier.js";
+import RefundOrder from "./RefundOrder/RefundOrder.js";
 
 export {
     NavBar,
@@ -47,5 +48,6 @@ export {
     FilesInput,
     AutoPartDescription,
     NumberController,
-    DiscountApplier
+    DiscountApplier,
+    RefundOrder
 };
