@@ -21,7 +21,7 @@ export default async function authenticate(user, url, isLogIn = false) {
         */
         const cookieHeader = result.headers.get("Set-Cookie");
         if(cookieHeader) {
-            const response = NextResponse.redirect(`${process.env.BASE_URL}/home`, 303);
+            const response = NextResponse.redirect(`${process.env.BASE_URL}/main/home`, 303);
             response.headers.set("Set-Cookie", cookieHeader);
             return response;
         }
