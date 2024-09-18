@@ -27,7 +27,6 @@ export default function HomePage() {
     useEffect(() => {
         const abortController = new AbortController();
         const fetchPage = async () => {
-            setIsLoading(true);
             setError(null);
             try {
                 const response = await fetch(`/api/authenticated/auto-parts/page/${selectedPage}`, {
@@ -45,6 +44,9 @@ export default function HomePage() {
                 if(error.name !== "AbortError"){
                     setError(new Error("Something went wrong. The requested page couldn't load."));
                 }
+            }
+            finally {
+                setIsLoading(false);
             }
         };
 
@@ -80,6 +82,9 @@ export default function HomePage() {
                 if(error.name !== "AbortError"){
                     setError(new Error("Couldn't get the total number of auto-parts."));
                 }
+            }
+            finally {
+                setIsLoading(false);
             }
         };
 

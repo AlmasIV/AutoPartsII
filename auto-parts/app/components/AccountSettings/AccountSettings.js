@@ -16,7 +16,6 @@ export default function AccountSettings() {
     useEffect(() => {
         const abortController = new AbortController();
         const fetchCurrentUser = async () => {
-            setIsLoading(true);
             setError(null);
             try {
                 const response = await fetch("/api/authenticated/users/info", {
@@ -34,6 +33,9 @@ export default function AccountSettings() {
                 if(error.name !== "AbortError"){
                     setError(new Error("Something went wrong."));
                 }
+            }
+            finally {
+                setIsLoading(false);
             }
         };
         fetchCurrentUser();

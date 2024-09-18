@@ -45,6 +45,9 @@ export default function MainFunctionalityLayout(
 					setError(new Error("Something went wrong."));
 				}
 			}
+			finally {
+				setIsLoading(false);
+			}
 		};
 
 		fetchCount();
@@ -55,7 +58,6 @@ export default function MainFunctionalityLayout(
 	useEffect(() => {
 		const abortController = new AbortController();
 		async function fetchOrders() {
-			setIsLoading(true);
 			setError(null);
 			try {
 				const response = await fetch(`/api/authenticated/orders/pages/${selectedPage}`, {
@@ -73,6 +75,9 @@ export default function MainFunctionalityLayout(
 				if(error.name !== "AbortError") {
 					setError(new Error("Something went wrong."));
 				}
+			}
+			finally {
+				setIsLoading(false);
 			}
 		}
 
