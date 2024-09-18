@@ -12,13 +12,17 @@ export default function MainFunctionalityLayout(
 	}
 ) {
 	const [orders, setOrders] = useState([]);
-	const [selectedPage, setSelectedPage] = useState(() => {
-		const orderPage = Number(localStorage.getItem("orderPageNum"));
-		return isPositiveInteger(orderPage) ? orderPage : 1;
-	});
+	const [selectedPage, setSelectedPage] = useState(1);
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const orderPage = Number(localStorage.getItem("orderPageNum"));
+		if(isPositiveInteger(orderPage)) {
+			setSelectedPage(orderPage);
+		}
+	});
 
 	useEffect(() => {
 		const abortController = new AbortController();
@@ -32,11 +36,12 @@ export default function MainFunctionalityLayout(
 				const bodyData = await response.json();
 				if(!response.ok) {
 					setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
+					return;
 				}
 				setTotalOrders(bodyData.data);
 			}
 			catch(error) {
-				if(error.name !== "AbortError"){
+				if(error.name !== "AbortError") {
 					setError(new Error("Something went wrong."));
 				}
 			}
@@ -60,16 +65,14 @@ export default function MainFunctionalityLayout(
 				const bodyData = await response.json();
 				if(!response.ok) {
 					setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
+					return;
 				}
 				setOrders(bodyData.data);
 			}
 			catch(error) {
-				if(error.name !== "AbortError"){
+				if(error.name !== "AbortError") {
 					setError(new Error("Something went wrong."));
 				}
-			}
-			finally {
-				setIsLoading(false);
 			}
 		}
 
@@ -89,10 +92,10 @@ export default function MainFunctionalityLayout(
 			}
 		>
 			{
-				isLoading && !error ? <Loading /> : error ? 
-				<ErrorBox
-					error={error}
-				/> : children
+				isLoading && !error ? <Loading /> : error ?
+					<ErrorBox
+						error={error}
+					/> : children
 			}
 		</OrdersStateContext.Provider>
 	);
