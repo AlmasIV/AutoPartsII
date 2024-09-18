@@ -14,11 +14,14 @@ export default function AccountSettings() {
     const [error, setError] = useState(null);
     const [validationErrors, setValidationErrors] = useState(new Set());
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchCurrentUser = async () => {
             setIsLoading(true);
             setError(null);
             try {
-                const response = await fetch("/api/authenticated/users/info");
+                const response = await fetch("/api/authenticated/users/info", {
+                    signal: abortController.signal
+                });
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
@@ -28,13 +31,14 @@ export default function AccountSettings() {
                 setUser(bodyData.data);
             }
             catch(error) {
-                setError(new Error("Something went wrong."));
-            }
-            finally {
-                setIsLoading(false);
+                if(error.name !== "AbortError"){
+                    setError(new Error("Something went wrong."));
+                }
             }
         };
         fetchCurrentUser();
+
+        return () => abortController.abort();
     }, []);
     return (
         <section>

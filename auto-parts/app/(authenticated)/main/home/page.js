@@ -25,32 +25,32 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
-        let isIgnore = false;
+        const abortController = new AbortController();
         const fetchPage = async () => {
             setIsLoading(true);
             setError(null);
             try {
-                const response = await fetch(`/api/authenticated/auto-parts/page/${selectedPage}`);
+                const response = await fetch(`/api/authenticated/auto-parts/page/${selectedPage}`, {
+                    signal: abortController.signal
+                });
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
+                    return;
                 }
-                else if(!isIgnore) {
-                    setAutoParts(bodyData.data);
-                }
+                setAutoParts(bodyData.data);
             }
             catch(error) {
-                setError(new Error("Something went wrong. The requested page couldn't load."));
-            }
-            finally {
-                setIsLoading(false);
+                if(error.name !== "AbortError"){
+                    setError(new Error("Something went wrong. The requested page couldn't load."));
+                }
             }
         };
 
         fetchPage();
 
-        return () => { isIgnore = true; };
+        return () => abortController.abort();
     }, [selectedPage]);
 
     useEffect(() => {
@@ -62,27 +62,30 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
-        let isIgnore = false;
+        const abortController = new AbortController();
         const fetchCount = async () => {
             try {
-                const response = await fetch("/api/authenticated/auto-parts/count");
+                const response = await fetch("/api/authenticated/auto-parts/count", {
+                    signal: abortController.signal
+                });
                 redirectIfCan(response);
                 const bodyData = await response.json();
                 if(!response.ok) {
                     setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
+                    return;
                 }
-                else if(!isIgnore) {
-                    setTotalAutoParts(bodyData.data);
-                }
+                setTotalAutoParts(bodyData.data);
             }
             catch(error) {
-                setError(new Error("Couldn't get the total number of auto-parts."));
+                if(error.name !== "AbortError"){
+                    setError(new Error("Couldn't get the total number of auto-parts."));
+                }
             }
         };
 
         fetchCount();
 
-        return () => { isIgnore = true; };
+        return () => abortController.abort();
     }, []);
     return (
         <Fragment>
