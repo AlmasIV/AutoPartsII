@@ -5,6 +5,7 @@ export default async function getProtected(url, request) {
         const token = request.cookies.get("jwt");
         const result = await fetch(url, {
             method: "GET",
+            cache: "no-cache",
             headers: {
                 "Authorization": `Bearer ${token.value}`
             }
