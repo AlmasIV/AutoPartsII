@@ -90,6 +90,7 @@ export default function MainFunctionalityLayout(
 			value={
 				{
 					orders,
+					setOrders,
 					selectedPage,
 					setSelectedPage,
 					totalOrders
