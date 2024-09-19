@@ -124,6 +124,6 @@ public class AutoPartsController : ControllerBase {
 		await _appDbContext.Orders.AddAsync(order);
 		await _appDbContext.SaveChangesAsync();
 
-		return Ok();
+		return Ok(new ClientOrderModel(order));
 	}
 }

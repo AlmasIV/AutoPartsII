@@ -1,4 +1,3 @@
-using AutoPartsApi.Models;
 using AutoPartsApi.DTOs;
 
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +18,7 @@ public class OrdersController : ControllerBase {
 
 	[HttpGet()]
 	[Route("pages/{page:int}")]
-	public async Task<IEnumerable<Order>> GetOrders(int page) {
+	public async Task<IEnumerable<ClientOrderModel>> GetOrders(int page) {
 		int contentCount = 100;
 		return await _appDbContext.Orders
 			.AsNoTracking()
@@ -27,6 +26,7 @@ public class OrdersController : ControllerBase {
 			.OrderByDescending(o => o.CreatedOn)
 			.Skip(page * contentCount - contentCount)
 			.Take(contentCount)
+			.Select(o => new ClientOrderModel(o))
 			.ToArrayAsync();
 	}
 
