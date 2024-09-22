@@ -93,7 +93,8 @@ export default function MainFunctionalityLayout(
 					setOrders,
 					selectedPage,
 					setSelectedPage,
-					totalOrders
+					totalOrders,
+					setTotalOrders
 				}
 			}
 		>

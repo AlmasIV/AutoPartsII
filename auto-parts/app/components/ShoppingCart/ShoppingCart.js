@@ -5,6 +5,7 @@ import { Form, ProductBox, Button } from "@/app/components/Index.js";
 import { KZTFormatter } from "@/utils/numberFormatters/index.js";
 import onSell from "@/app/components/ShoppingCart/event-handlers/onSell.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
+import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import styles from "./shopping-cart.module.css";
 
 export default function ShoppingCart(
@@ -16,6 +17,7 @@ export default function ShoppingCart(
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
+    const { orders, setOrders, totalOrders, setTotalOrders } = useContext(OrdersStateContext);
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     useEffect(() => {
@@ -33,7 +35,7 @@ export default function ShoppingCart(
     async function handleOnSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
-        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts });
+        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrders, setTotalOrders });
         setIsSubmitting(false);
     }
     return selectedAutoParts.length > 0 ? (

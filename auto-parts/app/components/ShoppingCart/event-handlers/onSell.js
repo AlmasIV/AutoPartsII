@@ -1,7 +1,7 @@
 import generateGUID from "@/utils/GUID/generateGUID.js";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
 
-export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState) {
+export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
     const orderSummary = {
         totalPriceInKzt: 0,
         orderedParts: []
@@ -14,10 +14,10 @@ export default async function onSell(globalNotification, selectedAutoParts, setS
         autoPart.amount = selectedAmount;
         orderSummary.orderedParts.push(autoPart);
     });
-    await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState);
+    await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState, historyPageState);
 }
 
-async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState) {
+async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState, historyPageState) {
     try {
         const response = await fetch("/api/authenticated/auto-parts/sell", {
             method: "POST",
@@ -68,6 +68,18 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             });
             autoPartsState.setAutoParts(updatedAutoParts);
             setSelectedAutoParts([]);
+
+            // Update the history page data.
+            historyPageState.setTotalOrders(historyPageState.totalOrders + 1);
+            if(historyPageState.orders.length < 100) {
+                const order = await response.json();
+                historyPageState.setOrders(
+                    [
+                        order.data,
+                        ...historyPageState.orders
+                    ]
+                );
+            }
         }
     }
     catch {
