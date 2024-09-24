@@ -26,7 +26,7 @@ export default function RefundOrder(
 			setIsSending(true);
 			setError(null);
 			const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.discountPercentage / 100;
-			const refundMoney = soldPartDetails.soldAmount * soldPartDetails.soldPart.priceInKzt - discountPrice;
+			const refundMoney = refundAmount * soldPartDetails.soldPart.priceInKzt - discountPrice;
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
 				headers: {
@@ -105,7 +105,7 @@ export default function RefundOrder(
 							return o.id !== orderedParts.id;
 						}),
 						{
-							...orderedParts.orders.find((o) => o.id === orderedParts.id),
+							...ordersState.orders.find((o) => o.id === orderedParts.id),
 							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney
 						}
 					]
@@ -170,7 +170,7 @@ export default function RefundOrder(
 				onClick={async () => {
 					await onConfirmation();
 				}}
-				isDisabled={isSending}
+				isDisabled={isSending || refundAmount === 0}
 			/>
 		</Modal>
 	);
