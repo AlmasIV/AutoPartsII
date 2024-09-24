@@ -57,7 +57,13 @@ export default function OrderModal(
                             <ErrorBox
                                 error={error}
                             />
-                        ) : isLoading ? (<Loading />) : (
+                        ) : isLoading ? 
+                        (
+                            <Loading
+                                size="medium"
+                                containerClass="medium-container"
+                            />
+                        ) : (
                             <OrderDetails
                                 details={details}
                             />

@@ -13,6 +13,17 @@
     animation-iteration-count: infinite;
 }
 
+.medium-container {
+    margin-top: 2rem;
+    width: 100%;
+    height: 4rem;
+
+    & .loading-spinner {
+        position: static;
+        margin: auto;
+    }
+}
+
 .large {
     width: 8rem;
     height: 8rem;
