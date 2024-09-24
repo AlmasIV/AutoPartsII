@@ -65,7 +65,7 @@ export default function RefundOrder(
 			globalNotification.setNotifications(
 				[
 					{
-						message: `${soldAmount} of ${soldPartDetails.soldPart.name} was refunded.`,
+						message: `${refundAmount} of ${soldPartDetails.soldPart.name} was refunded.`,
 						level: "success",
 						key: generateGUID()
 					},
@@ -84,8 +84,20 @@ export default function RefundOrder(
 					setOrderedParts(
 						{
 							...orderedParts,
+							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney,
 							soldParts: orderedParts.soldParts.filter((spd) => spd.soldPart.id !== soldPartDetails.soldPart.id)
 						}
+					);
+					ordersState.setOrders(
+						[
+							...ordersState.orders.filter((o) => {
+								return o.id !== orderedParts.id;
+							}),
+							{
+								...ordersState.orders.find((o) => o.id === orderedParts.id),
+								totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney
+							}
+						]
 					);
 				}
 			}

@@ -6,6 +6,7 @@ import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
+import { KZTFormatter } from "@/utils/numberFormatters/KZTFormatter.js";
 
 export default function OrderModal(
     {
@@ -105,7 +106,7 @@ export default function OrderModal(
                         className="opacity-08"
                     >
                         Total price in tenge:
-                    </span> {order.totalPriceInKzt}
+                    </span> {KZTFormatter.format(order.totalPriceInKzt)}
                 </p>
             </div>
         </Fragment>
