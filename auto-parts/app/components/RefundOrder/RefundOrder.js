@@ -97,18 +97,19 @@ export default function RefundOrder(
 								...ordersState.orders.find((o) => o.id === orderedParts.id),
 								totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney
 							}
-						]
+						].sort((o1, o2) => o2.id - o1.id)
 					);
 				}
 			}
 			else {
+				console.log(orderedParts);
 				setOrderedParts(
-					{ 
+					{
 						...orderedParts,
 						totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney,
 						soldParts: [...orderedParts.soldParts.filter((sp) => {
 							return sp.soldPart.id !== soldPartDetails.soldPart.id
-						}), { ...soldPartDetails, price: soldPartDetails.price - refundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount }].sort((a, b) => a.id - b.id)
+						}), { ...soldPartDetails, price: soldPartDetails.price - refundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
 					}
 				);
 				ordersState.setOrders(
@@ -120,7 +121,7 @@ export default function RefundOrder(
 							...ordersState.orders.find((o) => o.id === orderedParts.id),
 							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney
 						}
-					]
+					].sort((o1, o2) => o2.id - o1.id)
 				);
 			}
 		}
