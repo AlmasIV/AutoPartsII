@@ -102,7 +102,6 @@ export default function RefundOrder(
 				}
 			}
 			else {
-				console.log(orderedParts);
 				setOrderedParts(
 					{
 						...orderedParts,
@@ -126,7 +125,6 @@ export default function RefundOrder(
 			}
 		}
 		catch(error) {
-			// Log the error.
 			setError(new Error("Something went wrong."));
 		}
 		finally {
