@@ -56,8 +56,8 @@ export default function OrderDetails(
                                     <span
                                         className="opacity-08"
                                     >
-                                        Discount Percentage:
-                                    </span> {`${sp.discountPercentage ?? "0"}% (${KZTFormatter.format((sp.discountPercentage / 100) * sp.soldPart.priceInKzt)})`}
+                                        Discount:
+                                    </span> {`${KZTFormatter.format(sp.discount)}`}
                                 </p>
                                 <RefundOrder
                                     soldPartDetails={sp}

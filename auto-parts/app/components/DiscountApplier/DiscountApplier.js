@@ -9,10 +9,10 @@ export default function DiscountApplier(
 	}
 ) {
 	function onIncrement() {
-		if(selectedAutoPart.discountPercentage <= 100) {
+		if(selectedAutoPart.discount + 100 <= selectedAutoPart.priceInKzt) {
 			const autoPart = {
 				...selectedAutoPart,
-				discountPercentage: selectedAutoPart.discountPercentage + 1
+				discount: selectedAutoPart.discount + 100
 			};
 			saveAutoPart(autoPart);
 			setSelectedAutoParts(
@@ -24,10 +24,10 @@ export default function DiscountApplier(
 	}
 
 	function onDecrement() {
-		if(selectedAutoPart.discountPercentage >= 1) {
+		if(selectedAutoPart.discount >= 1) {
 			const autoPart = {
 				...selectedAutoPart,
-				discountPercentage: selectedAutoPart.discountPercentage - 1
+				discount: selectedAutoPart.discount - 100 < 0 ? 0 : selectedAutoPart.discount - 100
 			};
 			saveAutoPart(autoPart);
 			setSelectedAutoParts(
@@ -42,7 +42,7 @@ export default function DiscountApplier(
 		<NumberController
 			onIncrement={onIncrement}
 			onDecrement={onDecrement}
-			value={selectedAutoPart.discountPercentage + "%"}
+			value={selectedAutoPart.discount}
 		/>
 	);
 }
