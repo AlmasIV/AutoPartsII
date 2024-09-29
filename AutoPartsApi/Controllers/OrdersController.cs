@@ -51,7 +51,7 @@ public class OrdersController : ControllerBase {
 					soldPart = sa.AutoPart,
 					soldAmount = sa.SoldAmount,
 					price = sa.Price,
-					discountPercentage = sa.DiscountPercentage
+					discount = sa.Discount
 				}).ToArray()
 			})
 			.SingleOrDefaultAsync();
