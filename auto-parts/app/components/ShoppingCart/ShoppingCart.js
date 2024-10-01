@@ -20,16 +20,12 @@ export default function ShoppingCart(
     const { orders, setOrders, totalOrders, setTotalOrders } = useContext(OrdersStateContext);
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    console.log("***ShoppingCart***");
-    console.log("selectedAutoParts:");
-    console.log(selectedAutoParts);
     useEffect(() => {
         let isIgnore = false;
         if(!isIgnore){
             setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => {
-                let price = ap.selectedAmount * Number(ap.priceInKzt);
-                //let discount = price * ap.discountPercentage / 100;
-                return accumulator + price - ap.discount;
+                let price = ap.selectedAmount * Number(ap.priceInKzt) - ap.discount;
+                return accumulator + price;
             }, 0));
         }
 

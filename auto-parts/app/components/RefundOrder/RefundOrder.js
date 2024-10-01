@@ -21,15 +21,10 @@ export default function RefundOrder(
 	const [refundAmount, setRefundAmount] = useState(0);
 	const [error, setError] = useState(null);
 
-	console.log("***RefundOrder***");
-	console.log("soldPartDetails:");
-	console.log(soldPartDetails);
-
 	async function onConfirmation() {
 		try {
 			setIsSending(true);
 			setError(null);
-			// const discountPrice = soldPartDetails.soldPart.priceInKzt * soldPartDetails.discountPercentage / 100;
 			const refundMoney = refundAmount * soldPartDetails.soldPart.priceInKzt - soldPartDetails.discount;
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",

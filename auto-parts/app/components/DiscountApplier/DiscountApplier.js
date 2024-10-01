@@ -9,10 +9,10 @@ export default function DiscountApplier(
 	}
 ) {
 	function onIncrement() {
-		if(selectedAutoPart.discount + 100 <= selectedAutoPart.priceInKzt) {
+		if(selectedAutoPart.discount <= selectedAutoPart.priceInKzt) {
 			const autoPart = {
 				...selectedAutoPart,
-				discount: selectedAutoPart.discount + 100
+				discount: selectedAutoPart.discount + 100 > selectedAutoPart.priceInKzt ? selectedAutoPart.priceInKzt : selectedAutoPart.discount + 100
 			};
 			saveAutoPart(autoPart);
 			setSelectedAutoParts(

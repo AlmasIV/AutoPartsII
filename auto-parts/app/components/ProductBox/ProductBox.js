@@ -16,9 +16,6 @@ export default function ProductBox(
         discount
     }
 ) {
-    console.log("***ProductBox***");
-    console.log("discount:");
-    console.log(discount);
     const globalNotification = useContext(NotificationBoxContext);
     return (
         <div

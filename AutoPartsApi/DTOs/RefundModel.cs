@@ -19,7 +19,7 @@ public class RefundModel {
 
 	[Required()]
 	[Range(0, 100)]
-	public byte DiscountPercentage { get; set; }
+	public decimal Discount { get; set; }
 
 	[Required()]
 	[Range(100, 9999_9999.99)]
