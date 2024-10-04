@@ -1,4 +1,5 @@
 using AutoPartsApi.DTOs;
+using AutoPartsApi.Filters;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +71,7 @@ public class OrdersController : ControllerBase {
 
 	[HttpPost()]
 	[Route("refund")]
+	[TypeFilter(typeof(RefundValidationAttribute))]
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
 		Console.WriteLine("Refund Model:");
 		Console.WriteLine($"Discount Percentage: {refundModel.Discount}");

@@ -44,6 +44,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 					Instance = "Internal error.",
 					Type = null
 				});
+			return;
 		}
 
 		AutoPartSoldAmount? refundedPart = order!.AutoPartsSoldAmounts
@@ -58,9 +59,10 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 					Instance = "Internal error.",
 					Type = null
 				});
+			return;
 		}
 
-		if (refund.TotalPrice != order.TotalPriceInKzt || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
+		if (refund.TotalPrice > order.TotalPriceInKzt || refund.TotalPrice != refundedPart.Price || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Detail = "Invalid data. Try to refresh the page.",
@@ -69,6 +71,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 					Instance = "Internal error.",
 					Type = null
 				});
+			return;
 		}
 
 		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price) {
@@ -80,6 +83,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 					Instance = "Internal error.",
 					Type = null
 				});
+			return;
 		}
 
 		await next();
