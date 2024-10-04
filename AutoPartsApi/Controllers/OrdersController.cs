@@ -70,9 +70,9 @@ public class OrdersController : ControllerBase {
 
 	[HttpPost()]
 	[Route("refund")]
-	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel){
+	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
 		Console.WriteLine("Refund Model:");
-		Console.WriteLine($"Discount Percentage: {refundModel.DiscountPercentage}");
+		Console.WriteLine($"Discount Percentage: {refundModel.Discount}");
 		Console.WriteLine($"Auto Part Id: {refundModel.AutoPartId}");
 		Console.WriteLine($"Order Id: {refundModel.OrderId}");
 		Console.WriteLine($"Refund Amount: {refundModel.RefundAmount}");

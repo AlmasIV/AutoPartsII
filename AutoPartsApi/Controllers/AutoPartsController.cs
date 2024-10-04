@@ -1,3 +1,5 @@
+using System.IO.Compression;
+
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Filters;
 using AutoPartsApi.Models;
@@ -5,8 +7,6 @@ using AutoPartsApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using System.IO.Compression;
 
 namespace AutoPartsApi.Controllers;
 

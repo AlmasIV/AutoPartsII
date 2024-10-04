@@ -2,28 +2,24 @@
 
 #nullable disable
 
-namespace AutoPartsApi.Migrations
-{
-    /// <inheritdoc />
-    public partial class DiscountPercentageAdded : Migration
-    {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<byte>(
-                name: "DiscountPercentage",
-                table: "AutoParts",
-                type: "tinyint",
-                nullable: false,
-                defaultValue: (byte)0);
-        }
+namespace AutoPartsApi.Migrations {
+	/// <inheritdoc />
+	public partial class DiscountPercentageAdded : Migration {
+		/// <inheritdoc />
+		protected override void Up(MigrationBuilder migrationBuilder) {
+			migrationBuilder.AddColumn<byte>(
+				name: "DiscountPercentage",
+				table: "AutoParts",
+				type: "tinyint",
+				nullable: false,
+				defaultValue: (byte)0);
+		}
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "DiscountPercentage",
-                table: "AutoParts");
-        }
-    }
+		/// <inheritdoc />
+		protected override void Down(MigrationBuilder migrationBuilder) {
+			migrationBuilder.DropColumn(
+				name: "DiscountPercentage",
+				table: "AutoParts");
+		}
+	}
 }

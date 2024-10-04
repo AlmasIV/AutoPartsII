@@ -1,8 +1,8 @@
 using System.Security.Claims;
 
 using AutoPartsApi.DTOs;
-using AutoPartsApi.Services;
 using AutoPartsApi.Models;
+using AutoPartsApi.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -1,3 +1,3 @@
 namespace AutoPartsApi.DTOs;
 
-public class LogInModel : AuthenticationModelAbstract {}
+public class LogInModel : AuthenticationModelAbstract { }

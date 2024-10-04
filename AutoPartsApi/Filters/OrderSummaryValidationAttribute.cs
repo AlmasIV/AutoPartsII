@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsApi.Filters;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 	private readonly AppDbContext _appDbContext;
 	public OrderSummaryValidationAttribute(AppDbContext appDbContext) {

@@ -1,0 +1,87 @@
+
+using AutoPartsApi.DTOs;
+using AutoPartsApi.Models;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+
+namespace AutoPartsApi.Filters;
+
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
+	private readonly AppDbContext _appDbContext;
+	public RefundValidationAttribute(AppDbContext appDbContext) {
+		_appDbContext = appDbContext;
+	}
+	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
+		RefundModel? refund = context.ActionArguments["refundModel"] as RefundModel;
+
+		if (refund is null) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Detail = "Internal error. Something bad happened. Contact the devs.",
+					Instance = "Required data wasn't present.",
+					Status = StatusCodes.Status500InternalServerError,
+					Title = "Internal error.",
+					Type = null
+				}
+			);
+			return;
+		}
+
+		Order? order = await _appDbContext.Orders
+			.AsNoTracking()
+			.Include(o => o.AutoPartsSoldAmounts)
+			.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
+
+		if (order is null) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Detail = "The requested order doesn't exist. Refresh the page and try again.",
+					Title = "Order doesn't exist.",
+					Status = StatusCodes.Status500InternalServerError,
+					Instance = "Internal error.",
+					Type = null
+				});
+		}
+
+		AutoPartSoldAmount? refundedPart = order!.AutoPartsSoldAmounts
+			.SingleOrDefault(ap => ap.AutoPartId == refund.AutoPartId);
+
+		if (refundedPart is null) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
+					Title = "Auto-part doesn't exist.",
+					Status = StatusCodes.Status500InternalServerError,
+					Instance = "Internal error.",
+					Type = null
+				});
+		}
+
+		if (refund.TotalPrice != order.TotalPriceInKzt || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Detail = "Invalid data. Try to refresh the page.",
+					Title = "Data inconsistency.",
+					Status = StatusCodes.Status500InternalServerError,
+					Instance = "Internal error.",
+					Type = null
+				});
+		}
+
+		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Detail = "Invalid data. Something went wrong. Contact the devs.",
+					Title = "Internal error.",
+					Status = StatusCodes.Status500InternalServerError,
+					Instance = "Internal error.",
+					Type = null
+				});
+		}
+
+		await next();
+	}
+}
