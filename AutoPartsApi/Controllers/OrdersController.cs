@@ -1,5 +1,6 @@
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Filters;
+using AutoPartsApi.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,14 +74,37 @@ public class OrdersController : ControllerBase {
 	[Route("refund")]
 	[TypeFilter(typeof(RefundValidationAttribute))]
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
-		Console.WriteLine("Refund Model:");
-		Console.WriteLine($"Discount Percentage: {refundModel.Discount}");
-		Console.WriteLine($"Auto Part Id: {refundModel.AutoPartId}");
-		Console.WriteLine($"Order Id: {refundModel.OrderId}");
-		Console.WriteLine($"Refund Amount: {refundModel.RefundAmount}");
-		Console.WriteLine($"Refund Money: {refundModel.RefundMoney}");
-		Console.WriteLine($"Sold Amount: {refundModel.SoldAmount}");
-		Console.WriteLine($"Total Price: {refundModel.TotalPrice}");
+		Order order = await _appDbContext.Orders
+			.Include(o => o.AutoPartsSoldAmounts)
+			.Where(o => o.Id == refundModel.OrderId)
+			.SingleAsync();
+
+		if (order.TotalPriceInKzt - refundModel.RefundMoney == 0) {
+			_appDbContext.Orders.Remove(order);
+		}
+		else {
+			AutoPartSoldAmount autoPart = order.AutoPartsSoldAmounts
+				.Where(ap => ap.AutoPartId == refundModel.AutoPartId)
+				.Single();
+
+			if (autoPart.SoldAmount - refundModel.RefundAmount == 0) {
+				order.AutoPartsSoldAmounts.Remove(autoPart);
+			}
+			else {
+				autoPart.SoldAmount -= refundModel.RefundAmount;
+				autoPart.Price = refundModel.RefundMoney;
+			}
+		}
+
+
+		// Console.WriteLine("Refund Model:");
+		// Console.WriteLine($"Discount Percentage: {refundModel.Discount}");
+		// Console.WriteLine($"Auto Part Id: {refundModel.AutoPartId}");
+		// Console.WriteLine($"Order Id: {refundModel.OrderId}");
+		// Console.WriteLine($"Refund Amount: {refundModel.RefundAmount}");
+		// Console.WriteLine($"Refund Money: {refundModel.RefundMoney}");
+		// Console.WriteLine($"Sold Amount: {refundModel.SoldAmount}");
+		// Console.WriteLine($"Total Price: {refundModel.TotalPrice}");
 		return Ok();
 	}
 }

@@ -33,6 +33,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		Order? order = await _appDbContext.Orders
 			.AsNoTracking()
 			.Include(o => o.AutoPartsSoldAmounts)
+			.Include(o => o.AutoParts)
 			.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
 
 		if (order is null) {
@@ -40,7 +41,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Detail = "The requested order doesn't exist. Refresh the page and try again.",
 					Title = "Order doesn't exist.",
-					Status = StatusCodes.Status500InternalServerError,
+					Status = StatusCodes.Status400BadRequest,
 					Instance = "Internal error.",
 					Type = null
 				});
@@ -74,11 +75,15 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price) {
+		AutoPart? autoPart = order.AutoParts
+			.Where(ap => ap.Id == refund.AutoPartId)
+			.SingleOrDefault();
+
+		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price || autoPart is null || autoPart.PriceInKzt * refund.RefundAmount - refundedPart.Discount != refund.RefundMoney) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Invalid data. Something went wrong. Contact the devs.",
-					Title = "Internal error.",
+					Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
+					Title = "Auto-part doesn't exist.",
 					Status = StatusCodes.Status500InternalServerError,
 					Instance = "Internal error.",
 					Type = null

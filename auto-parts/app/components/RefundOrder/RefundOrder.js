@@ -72,7 +72,7 @@ export default function RefundOrder(
 				]
 			);
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
-				if(orderedParts.totalPriceInKzt - refundMoney === 0){
+				if(orderedParts.totalPriceInKzt - refundMoney === 0) {
 					ordersState.setOrders(
 						[
 							...ordersState.orders.filter((o) => o.id !== orderedParts.id)
@@ -106,7 +106,7 @@ export default function RefundOrder(
 						...orderedParts,
 						totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney,
 						soldParts: [...orderedParts.soldParts.filter((sp) => {
-							return sp.soldPart.id !== soldPartDetails.soldPart.id
+							return sp.soldPart.id !== soldPartDetails.soldPart.id;
 						}), { ...soldPartDetails, price: soldPartDetails.price - refundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
 					}
 				);
