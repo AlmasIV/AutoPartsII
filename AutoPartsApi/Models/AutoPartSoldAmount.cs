@@ -17,9 +17,11 @@ public class AutoPartSoldAmount {
 	[JsonIgnore()]
 	public AutoPart AutoPart { get; set; } = null!;
 
-	[Range(1, int.MaxValue)]
-	public int SoldAmount { get; set; }
+	[Range(1, ushort.MaxValue)]
+	public ushort SoldAmount { get; set; }
 
+	[Range(0, 9999_9999.99)]
+	[Column(TypeName = "decimal(10, 2)")]
 	public decimal Discount { get; set; }
 
 	[Column(TypeName = "decimal(10, 2)")]

@@ -76,6 +76,7 @@ public class OrdersController : ControllerBase {
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
 		Order order = await _appDbContext.Orders
 			.Include(o => o.AutoPartsSoldAmounts)
+				.ThenInclude(aps => aps.AutoPart)
 			.Where(o => o.Id == refundModel.OrderId)
 			.SingleAsync();
 
@@ -91,8 +92,9 @@ public class OrdersController : ControllerBase {
 				order.AutoPartsSoldAmounts.Remove(autoPart);
 			}
 			else {
-				autoPart.SoldAmount -= refundModel.RefundAmount;
-				autoPart.Price = refundModel.RefundMoney;
+				// autoPart.SoldAmount -= refundModel.RefundAmount;
+				// autoPart.Price -= refundModel.RefundMoney;
+				// autoPart.AutoPart.Amount += refundModel.RefundAmount;
 			}
 		}
 

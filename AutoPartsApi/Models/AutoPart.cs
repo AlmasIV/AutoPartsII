@@ -31,6 +31,8 @@ public class AutoPart : IEquatable<AutoPart> {
 
 	public string? Notes { get; set; }
 
+	[Range(0, 9999_9999.99)]
+	[Column(TypeName = "decimal(10, 2)")]
 	public decimal Discount { get; set; }
 
 	[JsonIgnore()]
