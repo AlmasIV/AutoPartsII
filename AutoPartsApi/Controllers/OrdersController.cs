@@ -92,9 +92,9 @@ public class OrdersController : ControllerBase {
 				order.AutoPartsSoldAmounts.Remove(autoPart);
 			}
 			else {
-				// autoPart.SoldAmount -= refundModel.RefundAmount;
-				// autoPart.Price -= refundModel.RefundMoney;
-				// autoPart.AutoPart.Amount += refundModel.RefundAmount;
+				autoPart.SoldAmount -= refundModel.RefundAmount;
+				autoPart.Price -= refundModel.RefundMoney;
+				autoPart.AutoPart.Amount += refundModel.RefundAmount;
 			}
 		}
 
