@@ -40,7 +40,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Detail = "The requested order doesn't exist. Refresh the page and try again.",
-					Title = "Order doesn't exist.",
+					Title = "Data inconsistency.",
 					Status = StatusCodes.Status400BadRequest,
 					Instance = "Internal error.",
 					Type = null
@@ -56,7 +56,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
 					Title = "Auto-part doesn't exist.",
-					Status = StatusCodes.Status500InternalServerError,
+					Status = StatusCodes.Status400BadRequest,
 					Instance = "Internal error.",
 					Type = null
 				});
@@ -66,9 +66,9 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		if (refund.TotalPrice > order.TotalPriceInKzt || refund.TotalPrice != refundedPart.Price || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Invalid data. Try to refresh the page.",
+					Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
 					Title = "Data inconsistency.",
-					Status = StatusCodes.Status500InternalServerError,
+					Status = StatusCodes.Status400BadRequest,
 					Instance = "Internal error.",
 					Type = null
 				});
@@ -82,9 +82,9 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price || autoPart is null || autoPart.PriceInKzt * refund.RefundAmount - refundedPart.Discount != refund.RefundMoney) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
-					Title = "Auto-part doesn't exist.",
-					Status = StatusCodes.Status500InternalServerError,
+					Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
+					Title = "Data inconsistency.",
+					Status = StatusCodes.Status400BadRequest,
 					Instance = "Internal error.",
 					Type = null
 				});
