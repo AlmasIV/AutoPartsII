@@ -33,7 +33,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		Order? order = await _appDbContext.Orders
 			.AsNoTracking()
 			.Include(o => o.AutoPartsSoldAmounts)
-			.Include(o => o.AutoParts)
+				.ThenInclude(aps => aps.AutoPart)
 			.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
 
 		if (order is null) {
@@ -75,9 +75,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		AutoPart? autoPart = order.AutoParts
-			.Where(ap => ap.Id == refund.AutoPartId)
-			.SingleOrDefault();
+		AutoPart? autoPart = refundedPart.AutoPart;
 
 		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price || autoPart is null || autoPart.PriceInKzt * refund.RefundAmount - refundedPart.Discount != refund.RefundMoney) {
 			context.Result = new ObjectResult(

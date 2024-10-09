@@ -80,13 +80,14 @@ public class OrdersController : ControllerBase {
 			.Where(o => o.Id == refundModel.OrderId)
 			.SingleAsync();
 
+		AutoPartSoldAmount autoPart = order.AutoPartsSoldAmounts
+				.Where(ap => ap.AutoPartId == refundModel.AutoPartId)
+				.Single();
+
 		if (order.TotalPriceInKzt - refundModel.RefundMoney == 0) {
 			_appDbContext.Orders.Remove(order);
 		}
 		else {
-			AutoPartSoldAmount autoPart = order.AutoPartsSoldAmounts
-				.Where(ap => ap.AutoPartId == refundModel.AutoPartId)
-				.Single();
 
 			if (autoPart.SoldAmount - refundModel.RefundAmount == 0) {
 				order.AutoPartsSoldAmounts.Remove(autoPart);
@@ -94,19 +95,12 @@ public class OrdersController : ControllerBase {
 			else {
 				autoPart.SoldAmount -= refundModel.RefundAmount;
 				autoPart.Price -= refundModel.RefundMoney;
-				autoPart.AutoPart.Amount += refundModel.RefundAmount;
 			}
+			order.TotalPriceInKzt -= refundModel.RefundMoney;
 		}
+		autoPart.AutoPart.Amount += refundModel.RefundAmount;
+		await _appDbContext.SaveChangesAsync();
 
-
-		// Console.WriteLine("Refund Model:");
-		// Console.WriteLine($"Discount Percentage: {refundModel.Discount}");
-		// Console.WriteLine($"Auto Part Id: {refundModel.AutoPartId}");
-		// Console.WriteLine($"Order Id: {refundModel.OrderId}");
-		// Console.WriteLine($"Refund Amount: {refundModel.RefundAmount}");
-		// Console.WriteLine($"Refund Money: {refundModel.RefundMoney}");
-		// Console.WriteLine($"Sold Amount: {refundModel.SoldAmount}");
-		// Console.WriteLine($"Total Price: {refundModel.TotalPrice}");
 		return Ok();
 	}
 }
