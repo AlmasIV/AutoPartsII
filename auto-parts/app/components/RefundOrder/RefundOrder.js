@@ -25,7 +25,17 @@ export default function RefundOrder(
 		try {
 			setIsSending(true);
 			setError(null);
-			const refundMoney = refundAmount * soldPartDetails.soldPart.priceInKzt - soldPartDetails.discount;
+			let refundMoney = refundAmount * soldPartDetails.soldPart.priceInKzt;
+			if(refundMoney - soldPartDetails.discount > 0) {
+				refundMoney -= soldPartDetails.discount;
+				soldPartDetails.discount = 0;
+			}
+			else {
+				soldPartDetails.discount -= refundMoney;
+				refundMoney = 0;
+			}
+			//soldPartDetails.discount;
+
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
 				headers: {
@@ -150,26 +160,30 @@ export default function RefundOrder(
 						/> :
 						<Fragment>
 							<h3>Sold Amount: {soldAmount}</h3>
-							<NumberController
-								onIncrement={() => {
-									if(!isSending) {
-										if(soldAmount >= 1) {
-											setRefundAmount(refundAmount + 1);
-											setSoldAmount(soldAmount - 1);
+							<div
+								className="margin-top-2rem flex-container space-between"
+							>
+								<h3>Refunding Amount: {refundAmount}</h3>
+								<NumberController
+									onIncrement={() => {
+										if(!isSending) {
+											if(soldAmount >= 1) {
+												setRefundAmount(refundAmount + 1);
+												setSoldAmount(soldAmount - 1);
+											}
 										}
-									}
-								}}
-								onDecrement={() => {
-									if(!isSending) {
-										if(refundAmount >= 1) {
-											setRefundAmount(refundAmount - 1);
-											setSoldAmount(soldAmount + 1);
+									}}
+									onDecrement={() => {
+										if(!isSending) {
+											if(refundAmount >= 1) {
+												setRefundAmount(refundAmount - 1);
+												setSoldAmount(soldAmount + 1);
+											}
 										}
-									}
-								}}
-								value={refundAmount}
-								containerStyles="margin-top-2rem"
-							/>
+									}}
+									value={refundAmount}
+								/>
+							</div>
 						</Fragment>
 				}
 			</div>
