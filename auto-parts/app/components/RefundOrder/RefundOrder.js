@@ -188,6 +188,14 @@ export default function RefundOrder(
 									value={refundAmount}
 								/>
 							</div>
+							<div
+								className="margin-top-2rem flex-container space-between"
+							>
+								<h3>Refunding Money</h3>
+								{
+									// We need a component that can set refunding money. Also we need to compute its value based on discount and refunding amount automatically. If that is not what a user wants we need to be able to edit the value.
+								}
+							</div>
 						</Fragment>
 				}
 			</div>
