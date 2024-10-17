@@ -1,7 +1,7 @@
 "use client";
 
+import getInputValidator from "@/utils/validators/getInputValidator.js";
 import styles from "./input.module.css";
-import { isEmail } from "validator";
 import { useEffect, useState } from "react";
 
 export default function Input(
@@ -13,55 +13,7 @@ export default function Input(
 ) {
     const [value, setValue] = useState(defaultValue);
     const [warning, setWarning] = useState(null);
-    let validate;
-    switch(config.type) {
-        case "password":
-        case "text":
-            const minLength = config.required ? Math.max(config.minLength ?? 0, 0) : 0;
-            const maxLength = Math.max(config.maxLength ?? 1000, minLength + 10);
-            validate = (value) => {
-                if(typeof value === "string") {
-                    if(value.startsWith(" ") || value.endsWith(" ")) {
-                        setWarning("Text cannot start or end with the space.");
-                        return false;
-                    }
-                    if(value.length < minLength || value.length > maxLength) {
-                        setWarning(`Text's length must be between ${minLength}(inclusive) and ${maxLength}(inclusive).`);
-                        return false;
-                    }
-                    return true;
-                }
-                throw new TypeError(`The "value" must be a string. It was: "${typeof value}".`);
-            };
-            break;
-        case "email":
-            validate = (value) => {
-                if(!isEmail(value)) {
-                    setWarning("Please enter a valid email address.");
-                    return false;
-                }
-                return true;
-            };
-            break;
-        case "number":
-            const min = Math.max(config.min ?? 0, 0);
-            const max = Math.max(config.max ?? 999, min + 100);
-            validate = (value) => {
-                const num = Number(value);
-                if(isNaN(num)) {
-                    setWarning("Please enter a valid number.");
-                    return false;
-                }
-                if(num < min || num > max || !Number.isFinite(num)) {
-                    setWarning(`Number must be between ${min}(inclusive) and ${max}(inclusive).`);
-                    return false;
-                }
-                return true;
-            };
-            break;
-        default:
-            throw new TypeError("Unknown config type.");
-    }
+    const validate = getInputValidator(config, setWarning);
     function handleOnChange(event) {
         const value = event.target.value;
         setWarning(null);
