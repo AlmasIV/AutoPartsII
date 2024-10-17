@@ -16,7 +16,6 @@ export default function Input(
     const validate = getInputValidator(config, setWarning);
     function handleOnChange(event) {
         const value = event.target.value;
-        setWarning(null);
         setValue(value);
         if(!validate(value)) {
             validationErrorsState.setValidationErrors(prevErrors => new Set(prevErrors).add(config.name));

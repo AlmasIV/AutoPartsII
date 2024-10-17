@@ -16,6 +16,7 @@ export default function getInputValidator(config, setWarning) {
 						setWarning(`Text's length must be between ${minLength}(inclusive) and ${maxLength}(inclusive).`);
 						return false;
 					}
+					setWarning(null);
 					return true;
 				}
 				throw new TypeError(`The "value" must be a string. It was: "${typeof value}".`);
@@ -26,6 +27,7 @@ export default function getInputValidator(config, setWarning) {
 					setWarning("Please enter a valid email address.");
 					return false;
 				}
+				setWarning(null);
 				return true;
 			};
 		case "number":
@@ -41,6 +43,7 @@ export default function getInputValidator(config, setWarning) {
 					setWarning(`Number must be between ${min}(inclusive) and ${max}(inclusive).`);
 					return false;
 				}
+				setWarning(null);
 				return true;
 			};
 		default:

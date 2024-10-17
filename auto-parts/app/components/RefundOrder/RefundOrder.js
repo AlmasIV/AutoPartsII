@@ -6,6 +6,7 @@ import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Inde
 import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 import generateGUID from "@/utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
+import { KZTFormatter } from "@/utils/numberFormatters";
 
 export default function RefundOrder(
 	{
@@ -21,24 +22,32 @@ export default function RefundOrder(
 	const [refundAmount, setRefundAmount] = useState(0);
 	const [refundMoney, setRefundMoney] = useState(0);
 	const [error, setError] = useState(null);
+	
+	function calculateRefundingPrice(soldAmountVal) {
+		let refundMoneyValue = soldAmountVal * soldPartDetails.soldPart.priceInKzt;
+		console.log(`Refund Money equals to: ${refundMoneyValue}`);
+		if(refundMoneyValue - soldPartDetails.discount > 0) {
+			setRefundMoney(refundMoneyValue - soldPartDetails.discount);
+			soldPartDetails.discount = 0;
+			console.log(`Setting refund money to ${refundMoneyValue - soldPartDetails.discount}.`);
+		}
+		else if(soldPartDetails.discount / soldPartDetails.soldAmount > 0) {
+			setRefundMoney(refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount);
+			soldPartDetails.discount = refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount;
+			console.log(`Setting refund money to ${refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount}.`);
+		}
+		else {
+			setRefundMoney(0);
+			soldPartDetails.discount -= refundMoneyValue;
+			console.log("Setting refund money to 0.");
+		}
+	}
 
 	async function onConfirmation() {
 		try {
 			setIsSending(true);
 			setError(null);
 			setRefundMoney(refundAmount * soldPartDetails.soldPart.priceInKzt);
-			if(refundMoney - soldPartDetails.discount > 0) {
-				setRefundMoney(refundMoney - soldPartDetails.discount);
-				soldPartDetails.discount = 0;
-			}
-			else if(soldPartDetails.discount / soldPartDetails.soldAmount > 0) {
-				setRefundMoney(refundMoney - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount);
-				soldPartDetails.discount = refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount;
-			}
-			else {
-				setRefundMoney(0);
-				soldPartDetails.discount -= refundMoney;
-			}
 
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
@@ -165,7 +174,7 @@ export default function RefundOrder(
 						<Fragment>
 							<h3>Sold Amount: {soldAmount}</h3>
 							<div
-								className="margin-top-2rem flex-container space-between"
+								className="margin-top-05rem flex-container space-between"
 							>
 								<h3>Refunding Amount: {refundAmount}</h3>
 								<NumberController
@@ -174,6 +183,7 @@ export default function RefundOrder(
 											if(soldAmount >= 1) {
 												setRefundAmount(refundAmount + 1);
 												setSoldAmount(soldAmount - 1);
+												calculateRefundingPrice(soldAmount + 1);
 											}
 										}
 									}}
@@ -182,6 +192,7 @@ export default function RefundOrder(
 											if(refundAmount >= 1) {
 												setRefundAmount(refundAmount - 1);
 												setSoldAmount(soldAmount + 1);
+												calculateRefundingPrice(soldAmount + 1);
 											}
 										}
 									}}
@@ -189,12 +200,10 @@ export default function RefundOrder(
 								/>
 							</div>
 							<div
-								className="margin-top-2rem flex-container space-between"
+								className="margin-top-05rem flex-container space-between"
 							>
-								<h3>Refunding Money</h3>
-								{
-									// We need a component that can set refunding money. Also we need to compute its value based on discount and refunding amount automatically. If that is not what a user wants we need to be able to edit the value.
-								}
+								<h3>Refunding Money: {KZTFormatter.format(refundMoney)}</h3>
+								
 							</div>
 						</Fragment>
 				}
