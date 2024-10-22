@@ -1,9 +1,6 @@
 import "@/app/globals.css";
-import { Inter } from "next/font/google";
 
 import { NotificationBox } from "@/app/components/Index.js";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
 	title: "Auto-Parts",
@@ -19,9 +16,7 @@ export default function RootLayout(
 		<html
 			lang="en"
 		>
-			<body
-				className={inter.className}
-			>
+			<body>
 				<NotificationBox>
 					{children}
 				</NotificationBox>
