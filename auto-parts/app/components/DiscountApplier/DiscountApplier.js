@@ -8,40 +8,30 @@ export default function DiscountApplier(
 		selectedAutoPart
 	}
 ) {
-	function onIncrement() {
-		if(selectedAutoPart.discount <= selectedAutoPart.priceInKzt) {
-			const autoPart = {
-				...selectedAutoPart,
-				discount: selectedAutoPart.discount + 100 > selectedAutoPart.priceInKzt ? selectedAutoPart.priceInKzt : selectedAutoPart.discount + 100
-			};
-			saveAutoPart(autoPart);
-			setSelectedAutoParts(
-				[
-					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
-				]
-			);
-		}
-	}
 
-	function onDecrement() {
-		if(selectedAutoPart.discount >= 1) {
-			const autoPart = {
-				...selectedAutoPart,
-				discount: selectedAutoPart.discount - 100 < 0 ? 0 : selectedAutoPart.discount - 100
-			};
-			saveAutoPart(autoPart);
-			setSelectedAutoParts(
-				[
-					...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
-				]
-			);
+	function updateNumber(discount) {
+		if(discount > selectedAutoPart.priceInKzt) {
+			discount = selectedAutoPart.priceInKzt;
 		}
+		else if(discount < 0) {
+			discount = 0;
+		}
+		const autoPart = {
+			...selectedAutoPart,
+			discount: discount
+		};
+		saveAutoPart(autoPart);
+		setSelectedAutoParts(
+			[
+				...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+			]
+		);
 	}
 
 	return (
 		<NumberController
-			onIncrement={onIncrement}
-			onDecrement={onDecrement}
+			updater={updateNumber}
+			step={100}
 			value={selectedAutoPart.discount}
 		/>
 	);

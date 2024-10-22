@@ -1,42 +1,42 @@
-import getInputValidator from "@/utils/validators/getInputValidator";
 import styles from "./number-controller.module.css";
 
 export default function NumberController(
     {
-        onIncrement,
-        onDecrement,
+        updater,
+        step,
         value,
-        max,
-        min = 0,
         containerStyles = ""
     }
 ) {
-    const validate = getInputValidator(
-        {
-            type: "number",
-            min: min,
-            max: max
-        },
-        
-    );
     return (
         <div
             className={`${styles["container"]} ${containerStyles}`}
         >
             <div
                 className={`${styles["prev"]} ${styles["controller"]}`}
-                onClick={onDecrement}
+                onClick={() => {
+                    updater(value - step);
+                }}
             >
                 -
             </div>
             <div
                 className={styles["amount-box"]}
             >
-                {value}
+                <input
+                    onChange={(e) => {
+                        updater(e.currentTarget.value);
+                    }}
+                    value={value}
+                    type="number"
+                    step={step}
+                />
             </div>
             <div
                 className={`${styles["next"]} ${styles["controller"]}`}
-                onClick={onIncrement}
+                onClick={() => {
+                    updater(value + step);
+                }}
             >
                 +
             </div>
