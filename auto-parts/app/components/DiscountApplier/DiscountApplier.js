@@ -9,16 +9,16 @@ export default function DiscountApplier(
 	}
 ) {
 
-	function updateNumber(discount) {
-		if(discount > selectedAutoPart.priceInKzt) {
-			discount = selectedAutoPart.priceInKzt;
+	function updateDiscount(newDiscount) {
+		if(newDiscount > selectedAutoPart.priceInKzt) {
+			newDiscount = selectedAutoPart.priceInKzt;
 		}
-		else if(discount < 0) {
-			discount = 0;
+		else if(newDiscount <= 0) {
+			newDiscount = 0;
 		}
 		const autoPart = {
 			...selectedAutoPart,
-			discount: discount
+			discount: newDiscount
 		};
 		saveAutoPart(autoPart);
 		setSelectedAutoParts(
@@ -30,7 +30,7 @@ export default function DiscountApplier(
 
 	return (
 		<NumberController
-			updater={updateNumber}
+			updater={updateDiscount}
 			step={100}
 			value={selectedAutoPart.discount}
 		/>
