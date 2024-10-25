@@ -11,10 +11,10 @@
     overflow: hidden;
 
     @media screen and (hover: hover){
-        width: 6vw;
+        width: 9vw;
 
         &:hover{
-            width: 8.5vw;
+            width: 10.5vw;
         }
 
         &:hover .controller {
@@ -49,7 +49,9 @@
         font-weight: 600;
     }
 
+    /* It must be able to shrink or grow depending on the input's length. I need to achieve it. */
     .amount-box {
+        flex-grow: 2;
         color: var(--info);
         overflow: hidden;
 
