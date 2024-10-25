@@ -8,42 +8,31 @@ export default function AmountChanger(
         selectedAutoPart
     }
 ) {
-    function onIncrement() {
-        if(selectedAutoPart.amount > 0) {
-            const autoPart = {
-                ...selectedAutoPart,
-                amount: selectedAutoPart.amount - 1,
-                selectedAmount: selectedAutoPart.selectedAmount + 1
-            };
-            saveAutoPart(autoPart);
-            setSelectedAutoParts(
-                [
-                    ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
-                ]
-            );
+    const maxAmount = selectedAutoPart.amount + selectedAutoPart.selectedAmount;
+    function updateAmount(newAmount) {
+        if(newAmount <= 0) {
+            newAmount = 1;
         }
-    }
-
-    function onDecrement() {
-        if(selectedAutoPart.selectedAmount > 1) {
-            const autoPart = {
-                ...selectedAutoPart,
-                amount: selectedAutoPart.amount + 1,
-                selectedAmount: selectedAutoPart.selectedAmount - 1
-            };
-            saveAutoPart(autoPart);
-            setSelectedAutoParts(
-                [
-                    ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
-                ]
-            );
+        else if(newAmount > maxAmount) {
+            newAmount = maxAmount;
         }
+        const autoPart = {
+            ...selectedAutoPart,
+            amount: maxAmount - newAmount,
+            selectedAmount: newAmount
+        };
+        saveAutoPart(autoPart);
+        setSelectedAutoParts(
+            [
+                ...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+            ]
+        );
     }
 
     return (
         <NumberController
-            onIncrement={onIncrement}
-            onDecrement={onDecrement}
+            updater={updateAmount}
+            step={1}
             value={selectedAutoPart.selectedAmount}
         />
     );

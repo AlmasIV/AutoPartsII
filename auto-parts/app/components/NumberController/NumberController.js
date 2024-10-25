@@ -25,7 +25,7 @@ export default function NumberController(
             >
                 <input
                     onChange={(e) => {
-                        updater(e.currentTarget.value);
+                        updater(Number(e.currentTarget.value));
                     }}
                     value={value}
                     type="number"

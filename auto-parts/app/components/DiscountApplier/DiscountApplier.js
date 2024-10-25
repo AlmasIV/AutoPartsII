@@ -8,12 +8,11 @@ export default function DiscountApplier(
 		selectedAutoPart
 	}
 ) {
-
 	function updateDiscount(newDiscount) {
 		if(newDiscount > selectedAutoPart.priceInKzt) {
 			newDiscount = selectedAutoPart.priceInKzt;
 		}
-		else if(newDiscount <= 0) {
+		else if(newDiscount < 0) {
 			newDiscount = 0;
 		}
 		const autoPart = {
