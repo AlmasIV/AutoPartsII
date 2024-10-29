@@ -22,25 +22,27 @@ export default function RefundOrder(
 	const [refundAmount, setRefundAmount] = useState(0);
 	const [refundMoney, setRefundMoney] = useState(0);
 	const [error, setError] = useState(null);
-	
+	const [discountValue, setDiscountValue] = useState(0);
+	console.log(soldPartDetails);
 	function calculateRefundingPrice(soldAmountVal) {
 		let refundMoneyValue = soldAmountVal * soldPartDetails.soldPart.priceInKzt;
 		console.log(`Refund Money equals to: ${refundMoneyValue}`);
-		if(refundMoneyValue - soldPartDetails.discount > 0) {
-			setRefundMoney(refundMoneyValue - soldPartDetails.discount);
-			soldPartDetails.discount = 0;
-			console.log(`Setting refund money to ${refundMoneyValue - soldPartDetails.discount}.`);
-		}
-		else if(soldPartDetails.discount / soldPartDetails.soldAmount > 0) {
-			setRefundMoney(refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount);
-			soldPartDetails.discount = refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount;
-			console.log(`Setting refund money to ${refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount}.`);
-		}
-		else {
-			setRefundMoney(0);
-			soldPartDetails.discount -= refundMoneyValue;
-			console.log("Setting refund money to 0.");
-		}
+		let discountAmount = (soldPartDetails.discount / soldPartDetails.soldAmount) * soldAmountVal;
+		// if(refundMoneyValue - soldPartDetails.discount > 0) {
+		// 	setRefundMoney(refundMoneyValue - soldPartDetails.discount);
+		// 	soldPartDetails.discount = 0;
+		// 	console.log(`Setting refund money to ${refundMoneyValue - soldPartDetails.discount}.`);
+		// }
+		// else if(soldPartDetails.discount / soldPartDetails.soldAmount > 0) {
+		// 	setRefundMoney(refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount);
+		// 	soldPartDetails.discount = refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount;
+		// 	console.log(`Setting refund money to ${refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount}.`);
+		// }
+		// else {
+		// 	setRefundMoney(0);
+		// 	soldPartDetails.discount -= refundMoneyValue;
+		// 	console.log("Setting refund money to 0.");
+		// }
 	}
 
 	async function onConfirmation() {
@@ -178,25 +180,21 @@ export default function RefundOrder(
 							>
 								<h3>Refunding Amount: {refundAmount}</h3>
 								<NumberController
-									onIncrement={() => {
+									updater={(newRefundAmount) => {
 										if(!isSending) {
-											if(soldAmount >= 1) {
-												setRefundAmount(refundAmount + 1);
-												setSoldAmount(soldAmount - 1);
-												calculateRefundingPrice(soldAmount + 1);
+											if(newRefundAmount > soldPartDetails.soldAmount) {
+												newRefundAmount = soldPartDetails.soldAmount;
 											}
-										}
-									}}
-									onDecrement={() => {
-										if(!isSending) {
-											if(refundAmount >= 1) {
-												setRefundAmount(refundAmount - 1);
-												setSoldAmount(soldAmount + 1);
-												calculateRefundingPrice(soldAmount + 1);
+											else if(newRefundAmount < 1) {
+												newRefundAmount = 1;
 											}
+											setSoldAmount(soldPartDetails.soldAmount - newRefundAmount);
+											setRefundAmount(newRefundAmount);
+											calculateRefundingPrice(newRefundAmount);
 										}
 									}}
 									value={refundAmount}
+									step={1}
 								/>
 							</div>
 							<div
