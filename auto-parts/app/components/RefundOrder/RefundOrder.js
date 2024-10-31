@@ -23,33 +23,27 @@ export default function RefundOrder(
 	const [refundMoney, setRefundMoney] = useState(0);
 	const [error, setError] = useState(null);
 	const [discountValue, setDiscountValue] = useState(0);
-	console.log(soldPartDetails);
-	function calculateRefundingPrice(soldAmountVal) {
-		let refundMoneyValue = soldAmountVal * soldPartDetails.soldPart.priceInKzt;
-		console.log(`Refund Money equals to: ${refundMoneyValue}`);
-		let discountAmount = (soldPartDetails.discount / soldPartDetails.soldAmount) * soldAmountVal;
-		// if(refundMoneyValue - soldPartDetails.discount > 0) {
-		// 	setRefundMoney(refundMoneyValue - soldPartDetails.discount);
-		// 	soldPartDetails.discount = 0;
-		// 	console.log(`Setting refund money to ${refundMoneyValue - soldPartDetails.discount}.`);
-		// }
-		// else if(soldPartDetails.discount / soldPartDetails.soldAmount > 0) {
-		// 	setRefundMoney(refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount);
-		// 	soldPartDetails.discount = refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount;
-		// 	console.log(`Setting refund money to ${refundMoneyValue - refundAmount * soldPartDetails.discount / soldPartDetails.soldAmount}.`);
-		// }
-		// else {
-		// 	setRefundMoney(0);
-		// 	soldPartDetails.discount -= refundMoneyValue;
-		// 	console.log("Setting refund money to 0.");
-		// }
+	function calculateRefundingPrice(refundAmountVal) {
+		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
+		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmountVal;
+		setRefundMoney(refundMoneyValue);
+		setDiscountValue(discount);
+	}
+
+	function updateDiscount(newDiscountVal) {
+		if(newDiscountVal > discountValue + soldPartDetails.discount) {
+			newDiscountVal = discountValue + soldPartDetails.discount;
+		}
+		else if(newDiscountVal < 0) {
+			newDiscountVal = 0;
+		}
+		setDiscountValue(newDiscountVal);
 	}
 
 	async function onConfirmation() {
 		try {
 			setIsSending(true);
 			setError(null);
-			setRefundMoney(refundAmount * soldPartDetails.soldPart.priceInKzt);
 
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
@@ -61,8 +55,8 @@ export default function RefundOrder(
 						orderId: orderedParts.id,
 						autoPartId: soldPartDetails.soldPart.id,
 						refundAmount: refundAmount,
-						refundMoney: refundMoney,
-						discount: soldPartDetails.discount,
+						refundMoney: refundMoney - discountValue,
+						discount: discountValue,
 						totalPrice: soldPartDetails.price,
 						soldAmount: soldPartDetails.soldAmount
 					}
@@ -96,6 +90,7 @@ export default function RefundOrder(
 					...globalNotification.notifications
 				]
 			);
+			soldPartDetails.discount -= discountValue;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
 				if(orderedParts.totalPriceInKzt - refundMoney === 0) {
 					ordersState.setOrders(
@@ -200,7 +195,17 @@ export default function RefundOrder(
 							<div
 								className="margin-top-05rem flex-container space-between"
 							>
-								<h3>Refunding Money: {KZTFormatter.format(refundMoney)}</h3>
+								<h3>Retained Discount: {KZTFormatter.format(discountValue)}</h3>
+								<NumberController
+									updater={updateDiscount}
+									value={discountValue}
+									step={100}
+								/>
+							</div>
+							<div
+								className="margin-top-05rem flex-container space-between"
+							>
+								<h3>Refunding Money: {KZTFormatter.format(refundMoney - discountValue)}</h3>
 								
 							</div>
 						</Fragment>
