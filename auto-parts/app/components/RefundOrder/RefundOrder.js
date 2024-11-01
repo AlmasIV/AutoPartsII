@@ -46,7 +46,14 @@ export default function RefundOrder(
 		try {
 			setIsSending(true);
 			setError(null);
-
+			console.log(`
+				Sending Refund Model:
+					Order Id: ${orderedParts.id}
+					Sold Part Id: ${soldPartDetails.soldPart.id}
+					Refund Amount: ${refundAmount}
+					Refund Money: ${refundMoney - retainedDiscount}
+					Retained Discount: ${retainedDiscount}
+			`);
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
 				headers: {

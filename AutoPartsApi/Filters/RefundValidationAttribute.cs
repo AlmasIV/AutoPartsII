@@ -33,7 +33,11 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		Console.WriteLine(
 			$"""
 				Refund Model Received:
-					${refund.AutoPartId}
+					Auto Part Id: {refund.AutoPartId}
+					Order Id: {refund.OrderId}
+					Refund Amount: {refund.RefundAmount}
+					Refund Money: {refund.RefundMoney}
+					Retained Discount: {refund.RetainedDiscount}
 			"""
 		);
 
