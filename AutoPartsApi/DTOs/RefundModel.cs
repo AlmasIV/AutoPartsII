@@ -19,13 +19,5 @@ public class RefundModel {
 
 	[Required()]
 	[Range(0, 9999_9999.99)]
-	public decimal Discount { get; set; }
-
-	[Required()]
-	[Range(100, 9999_9999.99)]
-	public decimal TotalPrice { get; set; }
-
-	[Required()]
-	[Range(1, ushort.MaxValue)]
-	public ushort SoldAmount { get; set; }
+	public decimal RetainedDiscount { get; set; }
 }

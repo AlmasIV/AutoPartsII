@@ -30,64 +30,71 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		Order? order = await _appDbContext.Orders
-			.AsNoTracking()
-			.Include(o => o.AutoPartsSoldAmounts)
-				.ThenInclude(aps => aps.AutoPart)
-			.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
+		Console.WriteLine(
+			$"""
+				Refund Model Received:
+					${refund.AutoPartId}
+			"""
+		);
 
-		if (order is null) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Detail = "The requested order doesn't exist. Refresh the page and try again.",
-					Title = "Data inconsistency.",
-					Status = StatusCodes.Status400BadRequest,
-					Instance = "Internal error.",
-					Type = null
-				});
-			return;
-		}
+		// Order? order = await _appDbContext.Orders
+		// 	.AsNoTracking()
+		// 	.Include(o => o.AutoPartsSoldAmounts)
+		// 		.ThenInclude(aps => aps.AutoPart)
+		// 	.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
 
-		AutoPartSoldAmount? refundedPart = order!.AutoPartsSoldAmounts
-			.SingleOrDefault(ap => ap.AutoPartId == refund.AutoPartId);
+		// if (order is null) {
+		// 	context.Result = new ObjectResult(
+		// 		new ProblemDetails() {
+		// 			Detail = "The requested order doesn't exist. Refresh the page and try again.",
+		// 			Title = "Data inconsistency.",
+		// 			Status = StatusCodes.Status400BadRequest,
+		// 			Instance = "Internal error.",
+		// 			Type = null
+		// 		});
+		// 	return;
+		// }
 
-		if (refundedPart is null) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
-					Title = "Auto-part doesn't exist.",
-					Status = StatusCodes.Status400BadRequest,
-					Instance = "Internal error.",
-					Type = null
-				});
-			return;
-		}
+		// AutoPartSoldAmount? refundedPart = order!.AutoPartsSoldAmounts
+		// 	.SingleOrDefault(ap => ap.AutoPartId == refund.AutoPartId);
 
-		if (refund.TotalPrice > order.TotalPriceInKzt || refund.TotalPrice != refundedPart.Price || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
-					Title = "Data inconsistency.",
-					Status = StatusCodes.Status400BadRequest,
-					Instance = "Internal error.",
-					Type = null
-				});
-			return;
-		}
+		// if (refundedPart is null) {
+		// 	context.Result = new ObjectResult(
+		// 		new ProblemDetails() {
+		// 			Detail = "Requested auto-part wasn't found. Refresh the page and try again.",
+		// 			Title = "Auto-part doesn't exist.",
+		// 			Status = StatusCodes.Status400BadRequest,
+		// 			Instance = "Internal error.",
+		// 			Type = null
+		// 		});
+		// 	return;
+		// }
 
-		AutoPart? autoPart = refundedPart.AutoPart;
+		// if (refund.TotalPrice > order.TotalPriceInKzt || refund.TotalPrice != refundedPart.Price || refund.Discount != refundedPart!.Discount || refund.SoldAmount != refundedPart.SoldAmount) {
+		// 	context.Result = new ObjectResult(
+		// 		new ProblemDetails() {
+		// 			Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
+		// 			Title = "Data inconsistency.",
+		// 			Status = StatusCodes.Status400BadRequest,
+		// 			Instance = "Internal error.",
+		// 			Type = null
+		// 		});
+		// 	return;
+		// }
 
-		if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price || autoPart is null || autoPart.PriceInKzt * refund.RefundAmount - refundedPart.Discount != refund.RefundMoney) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
-					Title = "Data inconsistency.",
-					Status = StatusCodes.Status400BadRequest,
-					Instance = "Internal error.",
-					Type = null
-				});
-			return;
-		}
+		// AutoPart? autoPart = refundedPart.AutoPart;
+
+		// if(refund.RefundAmount > refundedPart!.SoldAmount || refund.RefundMoney > refundedPart.Price || autoPart is null || autoPart.PriceInKzt * refund.RefundAmount - refundedPart.Discount != refund.RefundMoney) {
+		// 	context.Result = new ObjectResult(
+		// 		new ProblemDetails() {
+		// 			Detail = "Provided data wasn't fresh. Try to refresh the page and try again.",
+		// 			Title = "Data inconsistency.",
+		// 			Status = StatusCodes.Status400BadRequest,
+		// 			Instance = "Internal error.",
+		// 			Type = null
+		// 		});
+		// 	return;
+		// }
 
 		await next();
 	}

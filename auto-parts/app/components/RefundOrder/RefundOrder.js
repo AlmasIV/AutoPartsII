@@ -58,9 +58,7 @@ export default function RefundOrder(
 						autoPartId: soldPartDetails.soldPart.id,
 						refundAmount: refundAmount,
 						refundMoney: refundMoney - retainedDiscount,
-						discount: retainedDiscount,
-						totalPrice: soldPartDetails.price,
-						soldAmount: soldPartDetails.soldAmount
+						retainedDiscount: retainedDiscount
 					}
 				)
 			});
