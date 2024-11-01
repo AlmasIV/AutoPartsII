@@ -7,6 +7,7 @@ import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
 import generateGUID from "@/utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { KZTFormatter } from "@/utils/numberFormatters";
+import { calculateInitialRetainedDiscount } from "./utils/calculateInitialRetainedDiscount.js";
 
 export default function RefundOrder(
 	{
@@ -19,25 +20,26 @@ export default function RefundOrder(
 	const ordersState = useContext(OrdersStateContext);
 	const [isSending, setIsSending] = useState(false);
 	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount);
-	const [refundAmount, setRefundAmount] = useState(0);
-	const [refundMoney, setRefundMoney] = useState(0);
+	const [refundAmount, setRefundAmount] = useState(1);
+	const [refundMoney, setRefundMoney] = useState(soldPartDetails.soldPart.priceInKzt);
 	const [error, setError] = useState(null);
-	const [discountValue, setDiscountValue] = useState(0);
+	const [retainedDiscount, setRetainedDiscount] = useState(() => calculateInitialRetainedDiscount(1, soldPartDetails));
+	
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
-		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmountVal;
+		let discount = calculateInitialRetainedDiscount(refundAmountVal, soldPartDetails);
 		setRefundMoney(refundMoneyValue);
-		setDiscountValue(discount);
+		setRetainedDiscount(discount);
 	}
 
 	function updateDiscount(newDiscountVal) {
-		if(newDiscountVal > discountValue + soldPartDetails.discount) {
-			newDiscountVal = discountValue + soldPartDetails.discount;
+		if(newDiscountVal > soldPartDetails.discount) {
+			newDiscountVal = soldPartDetails.discount;
 		}
 		else if(newDiscountVal < 0) {
 			newDiscountVal = 0;
 		}
-		setDiscountValue(newDiscountVal);
+		setRetainedDiscount(newDiscountVal);
 	}
 
 	async function onConfirmation() {
@@ -55,8 +57,8 @@ export default function RefundOrder(
 						orderId: orderedParts.id,
 						autoPartId: soldPartDetails.soldPart.id,
 						refundAmount: refundAmount,
-						refundMoney: refundMoney - discountValue,
-						discount: discountValue,
+						refundMoney: refundMoney - retainedDiscount,
+						discount: retainedDiscount,
 						totalPrice: soldPartDetails.price,
 						soldAmount: soldPartDetails.soldAmount
 					}
@@ -79,7 +81,6 @@ export default function RefundOrder(
 				);
 				return;
 			}
-			setRefundAmount(0);
 			globalNotification.setNotifications(
 				[
 					{
@@ -90,7 +91,7 @@ export default function RefundOrder(
 					...globalNotification.notifications
 				]
 			);
-			soldPartDetails.discount -= discountValue;
+			soldPartDetails.discount -= retainedDiscount;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
 				if(orderedParts.totalPriceInKzt - refundMoney === 0) {
 					ordersState.setOrders(
@@ -195,17 +196,17 @@ export default function RefundOrder(
 							<div
 								className="margin-top-05rem flex-container space-between"
 							>
-								<h3>Retained Discount: {KZTFormatter.format(discountValue)}</h3>
+								<h3>Retained Discount: {KZTFormatter.format(retainedDiscount)}</h3>
 								<NumberController
 									updater={updateDiscount}
-									value={discountValue}
+									value={retainedDiscount}
 									step={100}
 								/>
 							</div>
 							<div
 								className="margin-top-05rem flex-container space-between"
 							>
-								<h3>Refunding Money: {KZTFormatter.format(refundMoney - discountValue)}</h3>
+								<h3>Refunding Money: {KZTFormatter.format(refundMoney - retainedDiscount)}</h3>
 								
 							</div>
 						</Fragment>
