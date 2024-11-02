@@ -20,10 +20,10 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		if (refund is null) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Internal error. Something bad happened. Contact the devs.",
-					Instance = "Required data wasn't present.",
-					Status = StatusCodes.Status500InternalServerError,
-					Title = "Internal error.",
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Required data wasn't provided.",
+					Detail = "Required data wasn't provided. Pre-request modification possible. Refresh the page and try again.",
+					Instance = null,
 					Type = null
 				}
 			);
@@ -41,23 +41,24 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			"""
 		);
 
-		// Order? order = await _appDbContext.Orders
-		// 	.AsNoTracking()
-		// 	.Include(o => o.AutoPartsSoldAmounts)
-		// 		.ThenInclude(aps => aps.AutoPart)
-		// 	.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
+		Order? order = await _appDbContext.Orders
+			.AsNoTracking()
+			.Include(o => o.AutoPartsSoldAmounts
+					.Where(aps => aps.AutoPartId == refund.AutoPartId))
+				.ThenInclude(aps => aps.AutoPart)
+			.SingleOrDefaultAsync(o => o.Id == refund.OrderId);
 
-		// if (order is null) {
-		// 	context.Result = new ObjectResult(
-		// 		new ProblemDetails() {
-		// 			Detail = "The requested order doesn't exist. Refresh the page and try again.",
-		// 			Title = "Data inconsistency.",
-		// 			Status = StatusCodes.Status400BadRequest,
-		// 			Instance = "Internal error.",
-		// 			Type = null
-		// 		});
-		// 	return;
-		// }
+		if (order is null) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Data inconsistency.",
+					Detail = "The requested order doesn't exist. Pre-request modification possible. Refresh the page and try again.",
+					Instance = null,
+					Type = null
+				});
+			return;
+		}
 
 		// AutoPartSoldAmount? refundedPart = order!.AutoPartsSoldAmounts
 		// 	.SingleOrDefault(ap => ap.AutoPartId == refund.AutoPartId);
