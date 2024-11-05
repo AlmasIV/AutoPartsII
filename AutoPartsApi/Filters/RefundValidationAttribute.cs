@@ -105,6 +105,18 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
+		if(refund.RefundAmount == 1 && refund.RetainedDiscount != autoPartOrderInfo.Discount) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Retained discount does not match the original discount applied to the item.",
+					Detail = "For a full refund, the retained discount must equal the original discount applied at the time of purchase. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+		}
+
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
 
 		if(refund.RefundMoney != calculatedRefundMoney) {
