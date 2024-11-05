@@ -74,6 +74,17 @@ public class OrdersController : ControllerBase {
 	[Route("refund")]
 	[TypeFilter(typeof(RefundValidationAttribute))]
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
+		Console.WriteLine(
+			$"""
+				In The Controller.
+				Refund Model Received:
+					Auto Part Id: {refundModel.AutoPartId}
+					Order Id: {refundModel.OrderId}
+					Refund Amount: {refundModel.RefundAmount}
+					Refund Money: {refundModel.RefundMoney}
+					Retained Discount: {refundModel.RetainedDiscount}
+			"""
+		);
 		Order order = await _appDbContext.Orders
 			.Include(o => o.AutoPartsSoldAmounts)
 				.ThenInclude(aps => aps.AutoPart)
@@ -88,13 +99,13 @@ public class OrdersController : ControllerBase {
 			_appDbContext.Orders.Remove(order);
 		}
 		else {
-
 			if (autoPart.SoldAmount - refundModel.RefundAmount == 0) {
 				order.AutoPartsSoldAmounts.Remove(autoPart);
 			}
 			else {
 				autoPart.SoldAmount -= refundModel.RefundAmount;
 				autoPart.Price -= refundModel.RefundMoney;
+				autoPart.Discount -= refundModel.RetainedDiscount;
 			}
 			order.TotalPriceInKzt -= refundModel.RefundMoney;
 		}
