@@ -33,7 +33,7 @@ export default function RefundOrder(
 	}
 
 	function updateDiscount(newDiscountVal) {
-		if(newDiscountVal > soldPartDetails.discount) {
+		if(newDiscountVal > soldPartDetails.discount || refundAmount === soldPartDetails.soldAmount) {
 			newDiscountVal = soldPartDetails.discount;
 		}
 		else if(newDiscountVal < 0) {
