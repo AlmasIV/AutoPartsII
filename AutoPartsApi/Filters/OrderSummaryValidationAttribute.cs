@@ -21,10 +21,10 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 		if (orderSummary is null) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Internal error. Something bad happened. Contact the devs.",
-					Instance = "Required data wasn't present.",
-					Status = StatusCodes.Status500InternalServerError,
-					Title = "Internal error.",
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Required data wasn't present.",
+					Detail = "Information about the order wasn't present. Contact the devs.",
+					Instance = null,
 					Type = null
 				}
 			);
@@ -32,18 +32,16 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 		}
 
 		List<AutoPart>? originalInfo = await _appDbContext.AutoParts
-			.AsNoTracking()
 			.Where(ap => orderSummary.OrderedParts.Select(x => x.Id).Contains(ap.Id))
-			.Include(ap => ap.Orders)
 			.ToListAsync();
 
 		if (originalInfo is null || originalInfo.Count() != orderSummary.OrderedParts.Length) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Ordered parts are inconsistent with the data from the database. Refresh the page, and try again.",
-					Instance = $"IDs: {string.Join(", ", orderSummary.OrderedParts.Select(ap => ap.Name))}.",
 					Status = StatusCodes.Status400BadRequest,
-					Title = "Data inconsistency.",
+					Title = "Ordering inexistent auto-parts.",
+					Detail = "Some or all of the ordered auto-parts doesn't exist. Contact the devs.",
+					Instance = null,
 					Type = null
 				}
 			);
@@ -52,17 +50,17 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 
 		decimal calculatedPrice =
 			(from ap in orderSummary.OrderedParts
-			 let op = originalInfo!.Single(op => op.Id == ap.Id)
+			 let op = originalInfo.Single(op => op.Id == ap.Id)
 			 let price = ap.Amount * op.PriceInKzt
 			 select price - ap.Discount).Sum();
 
 		if (orderSummary.TotalPriceInKzt != calculatedPrice) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
-					Detail = "Computed price is inconsitent with the provided price. Prices might be modified. Try to reload the page, and reselect the items.",
-					Instance = $"Requested price: {orderSummary.TotalPriceInKzt}, computed price: {calculatedPrice}.",
 					Status = StatusCodes.Status400BadRequest,
 					Title = "Price inconsistency.",
+					Detail = "Computed price is inconsitent with the provided price. Contact the devs.",
+					Instance = null,
 					Type = null
 				}
 			);
@@ -75,10 +73,10 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 			if (!orderedPart.Equals(temp)) {
 				context.Result = new ObjectResult(
 					new ProblemDetails() {
-						Detail = "Fields of the requested data are inconsistent with the data from the database. Fields might be modified. Try to reload the page, and reselect the items.",
-						Instance = $"ID: {orderedPart.Id}.",
 						Status = StatusCodes.Status400BadRequest,
-						Title = "Field inconsistency.",
+						Title = "Data inconsistency.",
+						Detail = "Requested auto-parts are different from the original one. Contact the devs.",
+						Instance = null,
 						Type = null
 					}
 				);
@@ -87,10 +85,10 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 			else if (temp.Amount < orderedPart.Amount) {
 				context.Result = new ObjectResult(
 					new ProblemDetails() {
-						Detail = "Ordered more than we have. Amount might be modified. Try to reload the page, and reselect the items.",
-						Instance = $"ID: {orderedPart.Id}.",
 						Status = StatusCodes.Status400BadRequest,
-						Title = "Amount is outdated.",
+						Title = "Can't order more than we have.",
+						Detail = "Ordered more than we have. Contact the devs.",
+						Instance = null,
 						Type = null
 					}
 				);
