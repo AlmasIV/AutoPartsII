@@ -11,7 +11,6 @@ public class Order {
 	public List<AutoPart> AutoParts { get; set; } = null!;
 
 	[Required()]
-	[Range(100, 9999_9999.99)]
 	[Column(TypeName = "decimal(10, 2)")]
 	public decimal TotalPriceInKzt { get; set; }
 
