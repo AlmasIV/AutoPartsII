@@ -86,13 +86,12 @@ public class OrdersController : ControllerBase {
 			"""
 		);
 		Order order = await _appDbContext.Orders
-			.Include(o => o.AutoPartsSoldAmounts)
+			.Include(o => o.AutoPartsSoldAmounts
+					.Where(aps => aps.AutoPartId == refundModel.AutoPartId))
 				.ThenInclude(aps => aps.AutoPart)
-			.Where(o => o.Id == refundModel.OrderId)
-			.SingleAsync();
+			.SingleAsync(o => o.Id == refundModel.OrderId);
 
 		AutoPartSoldAmount autoPart = order.AutoPartsSoldAmounts
-				.Where(ap => ap.AutoPartId == refundModel.AutoPartId)
 				.Single();
 
 		if (order.TotalPriceInKzt - refundModel.RefundMoney == 0) {
