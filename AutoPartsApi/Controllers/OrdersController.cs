@@ -91,24 +91,24 @@ public class OrdersController : ControllerBase {
 				.ThenInclude(aps => aps.AutoPart)
 			.SingleAsync(o => o.Id == refundModel.OrderId);
 
-		AutoPartSoldAmount autoPart = order.AutoPartsSoldAmounts
+		AutoPartSoldAmount autoPartOrderInfo = order.AutoPartsSoldAmounts
 				.Single();
 
 		if (order.TotalPriceInKzt - refundModel.RefundMoney == 0) {
 			_appDbContext.Orders.Remove(order);
 		}
 		else {
-			if (autoPart.SoldAmount - refundModel.RefundAmount == 0) {
-				order.AutoPartsSoldAmounts.Remove(autoPart);
+			if (autoPartOrderInfo.SoldAmount - refundModel.RefundAmount == 0) {
+				order.AutoPartsSoldAmounts.Remove(autoPartOrderInfo);
 			}
 			else {
-				autoPart.SoldAmount -= refundModel.RefundAmount;
-				autoPart.Price -= refundModel.RefundMoney;
-				autoPart.Discount -= refundModel.RetainedDiscount;
+				autoPartOrderInfo.SoldAmount -= refundModel.RefundAmount;
+				autoPartOrderInfo.Price -= refundModel.RefundMoney;
+				autoPartOrderInfo.Discount -= refundModel.RetainedDiscount;
 			}
 			order.TotalPriceInKzt -= refundModel.RefundMoney;
 		}
-		autoPart.AutoPart.Amount += refundModel.RefundAmount;
+		autoPartOrderInfo.AutoPart.Amount += refundModel.RefundAmount;
 		await _appDbContext.SaveChangesAsync();
 
 		return Ok();
