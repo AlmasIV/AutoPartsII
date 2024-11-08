@@ -105,7 +105,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RefundAmount == 1 && refund.RetainedDiscount != autoPartOrderInfo.Discount) {
+		if(refund.RefundAmount == autoPartOrderInfo.SoldAmount && refund.RetainedDiscount != autoPartOrderInfo.Discount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -115,6 +115,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 					Type = null
 				}
 			);
+			return;
 		}
 
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
