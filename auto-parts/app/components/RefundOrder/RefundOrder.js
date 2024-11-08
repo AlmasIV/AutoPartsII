@@ -54,6 +54,7 @@ export default function RefundOrder(
 					Refund Money: ${refundMoney - retainedDiscount}
 					Retained Discount: ${retainedDiscount}
 			`);
+			const computedRefundMoney = (refundMoney - retainedDiscount) < 0 ? 0 : (refundMoney - retainedDiscount);
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
 				headers: {
@@ -64,7 +65,7 @@ export default function RefundOrder(
 						orderId: orderedParts.id,
 						autoPartId: soldPartDetails.soldPart.id,
 						refundAmount: refundAmount,
-						refundMoney: refundMoney - retainedDiscount,
+						refundMoney: computedRefundMoney,
 						retainedDiscount: retainedDiscount
 					}
 				)
@@ -98,7 +99,7 @@ export default function RefundOrder(
 			);
 			soldPartDetails.discount -= retainedDiscount;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
-				if(orderedParts.totalPriceInKzt - refundMoney - retainedDiscount === 0) {
+				if(orderedParts.totalPriceInKzt - computedRefundMoney === 0) {
 					ordersState.setOrders(
 						[
 							...ordersState.orders.filter((o) => o.id !== orderedParts.id)
@@ -109,7 +110,7 @@ export default function RefundOrder(
 					setOrderedParts(
 						{
 							...orderedParts,
-							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney - retainedDiscount,
+							totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney,
 							soldParts: orderedParts.soldParts.filter((spd) => spd.soldPart.id !== soldPartDetails.soldPart.id)
 						}
 					);
@@ -120,7 +121,7 @@ export default function RefundOrder(
 							}),
 							{
 								...ordersState.orders.find((o) => o.id === orderedParts.id),
-								totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney - retainedDiscount
+								totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney
 							}
 						].sort((o1, o2) => o2.id - o1.id)
 					);
@@ -130,10 +131,10 @@ export default function RefundOrder(
 				setOrderedParts(
 					{
 						...orderedParts,
-						totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney - retainedDiscount,
+						totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney,
 						soldParts: [...orderedParts.soldParts.filter((sp) => {
 							return sp.soldPart.id !== soldPartDetails.soldPart.id;
-						}), { ...soldPartDetails, price: soldPartDetails.price - refundMoney - retainedDiscount, soldAmount: soldPartDetails.soldAmount - refundAmount, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
+						}), { ...soldPartDetails, price: soldPartDetails.price - computedRefundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
 					}
 				);
 				ordersState.setOrders(
@@ -143,7 +144,7 @@ export default function RefundOrder(
 						}),
 						{
 							...ordersState.orders.find((o) => o.id === orderedParts.id),
-							totalPriceInKzt: orderedParts.totalPriceInKzt - refundMoney - retainedDiscount
+							totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney
 						}
 					].sort((o1, o2) => o2.id - o1.id)
 				);
