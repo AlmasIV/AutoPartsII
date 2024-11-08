@@ -60,11 +60,11 @@ public class OrdersController : ControllerBase {
 
 		if (result is null) {
 			return BadRequest(new ProblemDetails() {
-				Type = null,
 				Status = StatusCodes.Status400BadRequest,
-				Title = "Not found.",
-				Detail = "The requested resource wasn't found. Possibly removed from the database.",
-				Instance = null
+				Title = "Requesting inexistent order.",
+				Detail = "The requested resource wasn't found. Contact the devs.",
+				Instance = null,
+				Type = null
 			});
 		}
 		return result;
