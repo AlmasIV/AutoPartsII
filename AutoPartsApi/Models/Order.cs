@@ -8,9 +8,6 @@ public class Order {
 	public int Id { get; set; }
 
 	[Required()]
-	public List<AutoPart> AutoParts { get; set; } = null!;
-
-	[Required()]
 	[Column(TypeName = "decimal(10, 2)")]
 	public decimal TotalPriceInKzt { get; set; }
 

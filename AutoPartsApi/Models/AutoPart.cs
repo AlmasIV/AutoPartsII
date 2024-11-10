@@ -36,9 +36,6 @@ public class AutoPart : IEquatable<AutoPart> {
 	public decimal Discount { get; set; }
 
 	[JsonIgnore()]
-	public List<Order>? Orders { get; set; }
-
-	[JsonIgnore()]
 	public List<Image>? Images { get; set; }
 
 	public bool Equals(AutoPart? other) {
