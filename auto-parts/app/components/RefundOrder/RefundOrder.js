@@ -19,7 +19,7 @@ export default function RefundOrder(
 	const globalNotification = useContext(NotificationBoxContext);
 	const ordersState = useContext(OrdersStateContext);
 	const [isSending, setIsSending] = useState(false);
-	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount);
+	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount - 1);
 	const [refundAmount, setRefundAmount] = useState(1);
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.soldPart.priceInKzt);
 	const [error, setError] = useState(null);
@@ -102,6 +102,7 @@ export default function RefundOrder(
 				setRefundAmount(0);
 				setRetainedDiscount(0);
 				setRefundMoney(0);
+				setSoldAmount(0);
 				if(orderedParts.totalPriceInKzt - computedRefundMoney === 0) {
 					ordersState.setOrders(
 						[
@@ -132,6 +133,7 @@ export default function RefundOrder(
 			}
 			else {
 				setRefundAmount(1);
+				setSoldAmount(soldPartDetails.soldAmount - 1);
 				calculateRefundingPrice(1);
 				setOrderedParts(
 					{
