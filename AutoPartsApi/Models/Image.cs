@@ -9,6 +9,7 @@ public class Image {
 	public byte[] Data { get; set; } = null!;
 	public string ContentType { get; set; } = null!;
 
+	[Required()]
 	[JsonIgnore()]
 	public int AutoPartId { get; set; }
 

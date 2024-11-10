@@ -17,6 +17,13 @@ public class AutoPartSoldAmount {
 	[JsonIgnore()]
 	public AutoPart AutoPart { get; set; } = null!;
 
+	[Required()]
+	public int OrderId { get; set; }
+
+	[Required()]
+	[JsonIgnore()]
+	public Order Order { get; set; } = null!;
+
 	[Range(1, ushort.MaxValue)]
 	public ushort SoldAmount { get; set; }
 
