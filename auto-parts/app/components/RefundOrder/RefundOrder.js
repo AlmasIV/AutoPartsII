@@ -99,6 +99,9 @@ export default function RefundOrder(
 			);
 			soldPartDetails.discount -= retainedDiscount;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
+				setRefundAmount(0);
+				setRetainedDiscount(0);
+				setRefundMoney(0);
 				if(orderedParts.totalPriceInKzt - computedRefundMoney === 0) {
 					ordersState.setOrders(
 						[
@@ -128,6 +131,8 @@ export default function RefundOrder(
 				}
 			}
 			else {
+				setRefundAmount(1);
+				calculateRefundingPrice(1);
 				setOrderedParts(
 					{
 						...orderedParts,
