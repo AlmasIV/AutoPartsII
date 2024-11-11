@@ -118,6 +118,19 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
+		if(refund.RefundMoney > autoPartOrderInfo.Price) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Refund money cannot be greater than the overall price.",
+					Detail = "Refund money cannot exceed the total price. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+			return;
+		}
+
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
 
 		if(refund.RefundMoney != calculatedRefundMoney) {
