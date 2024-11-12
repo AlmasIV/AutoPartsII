@@ -122,12 +122,26 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
 
+
 		if(refund.RefundMoney != calculatedRefundMoney) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
-					Title = "The calculated refunding money is not equal to the incoming value.",
-					Detail = "The calculated refunding money is not equal to the incoming value. Contact the devs.",
+					Title = "The calculated refund money is not equal to the incoming value.",
+					Detail = "The calculated refund money is not equal to the incoming value. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+			return;
+		}
+
+		if(calculatedRefundMoney < 0) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "The refund money cannot be negative.",
+					Detail = "The refund money was negative. Contact the devs.",
 					Instance = null,
 					Type = null
 				}
