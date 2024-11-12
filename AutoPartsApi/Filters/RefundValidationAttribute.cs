@@ -15,6 +15,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		_appDbContext = appDbContext;
 	}
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
+		// Improve validation more.
 		RefundModel? refund = context.ActionArguments["refundModel"] as RefundModel;
 
 		if (refund is null) {
@@ -22,25 +23,13 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
 					Title = "Required data wasn't provided.",
-					Detail = "Required data wasn't provided. Pre-request modification possible. Refresh the page and try again.",
+					Detail = "Required data wasn't provided. Contact the devs.",
 					Instance = null,
 					Type = null
 				}
 			);
 			return;
 		}
-
-		Console.WriteLine(
-			$"""
-				In The Filter.
-				Refund Model Received:
-					Auto Part Id: {refund.AutoPartId}
-					Order Id: {refund.OrderId}
-					Refund Amount: {refund.RefundAmount}
-					Refund Money: {refund.RefundMoney}
-					Retained Discount: {refund.RetainedDiscount}
-			"""
-		);
 
 		Order? order = await _appDbContext.Orders
 			.Include(o => o.AutoPartsSoldAmounts
@@ -53,7 +42,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
 					Title = "Data inconsistency.",
-					Detail = "The requested order doesn't exist. Pre-request modification possible. Refresh the page and try again.",
+					Detail = "The requested order doesn't exist. Contact the devs.",
 					Instance = null,
 					Type = null
 				}
@@ -71,7 +60,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
 					Title = "Auto-part inexistence.",
-					Detail = "The requested auto-part doesn't exist. Pre-request modification is possible. Contact the devs.",
+					Detail = "The requested auto-part doesn't exist. Contact the devs.",
 					Instance = null,
 					Type = null
 				}
@@ -84,7 +73,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
 					Title = "The refunding amount cannot be greater than the sold-amount.",
-					Detail = "The refunding amount is greater than the sold-amount. Pre-request modification is possible. Contact the devs.",
+					Detail = "The refunding amount is greater than the sold-amount.  Contact the devs.",
 					Instance = null,
 					Type = null
 				}
@@ -109,8 +98,8 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
-					Title = "Retained discount does not match the original discount applied to the item.",
-					Detail = "For a full refund, the retained discount must equal the original discount applied at the time of purchase. Contact the devs.",
+					Title = "Retained discount does not match the original discount applied to the item(s).",
+					Detail = "For a full refund, the retained discount must be equal the original discount applied at the time of purchase. Contact the devs.",
 					Instance = null,
 					Type = null
 				}
