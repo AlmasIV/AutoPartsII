@@ -19,11 +19,15 @@ export default function RefundOrder(
 	const globalNotification = useContext(NotificationBoxContext);
 	const ordersState = useContext(OrdersStateContext);
 	const [isSending, setIsSending] = useState(false);
+	const [error, setError] = useState(null);
+
 	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount - 1);
 	const [refundAmount, setRefundAmount] = useState(1);
-	const [refundMoney, setRefundMoney] = useState(soldPartDetails.soldPart.priceInKzt);
-	const [error, setError] = useState(null);
 	const [retainedDiscount, setRetainedDiscount] = useState(() => calculateInitialRetainedDiscount(1, soldPartDetails));
+
+	// You cannot refund more money, if you applied a 100% discount for example.
+	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
+	
 	
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
@@ -33,10 +37,13 @@ export default function RefundOrder(
 	}
 
 	function updateDiscount(newDiscountVal) {
+		if(soldPartDetails.price < refundMoney - newDiscountVal || soldPartDetails.price === 0) {
+			return;
+		}
 		if(newDiscountVal > soldPartDetails.discount || refundAmount === soldPartDetails.soldAmount) {
 			newDiscountVal = soldPartDetails.discount;
 		}
-		else if(newDiscountVal < 0) {
+		if(newDiscountVal < 0) {
 			newDiscountVal = 0;
 		}
 		setRetainedDiscount(newDiscountVal);
@@ -46,14 +53,6 @@ export default function RefundOrder(
 		try {
 			setIsSending(true);
 			setError(null);
-			console.log(`
-				Sending Refund Model:
-					Order Id: ${orderedParts.id}
-					Sold Part Id: ${soldPartDetails.soldPart.id}
-					Refund Amount: ${refundAmount}
-					Refund Money: ${refundMoney - retainedDiscount}
-					Retained Discount: ${retainedDiscount}
-			`);
 			const computedRefundMoney = (refundMoney - retainedDiscount) < 0 ? 0 : (refundMoney - retainedDiscount);
 			const response = await fetch("/api/authenticated/orders/refund", {
 				method: "POST",
@@ -171,7 +170,6 @@ export default function RefundOrder(
 			openButtonClass={`${isSending ? "disabled-btn" : "danger-btn"} margin-top-05rem margin-bottom-05rem`}
 			closeButtonClass="secondary-btn width-full"
 			dialogType="adaptive-modal"
-			onOpenButtonClick={() => {}}
 			isDisabled={isSending}
 		>
 			<div
@@ -219,7 +217,7 @@ export default function RefundOrder(
 							<div
 								className="margin-top-05rem flex-container space-between"
 							>
-								<h3>Refunding Money: {KZTFormatter.format(refundMoney - retainedDiscount)}</h3>
+								<h3>Refunding Money: {KZTFormatter.format(refundMoney - retainedDiscount > 0 ? refundMoney - retainedDiscount : 0)}</h3>
 								
 							</div>
 						</Fragment>
