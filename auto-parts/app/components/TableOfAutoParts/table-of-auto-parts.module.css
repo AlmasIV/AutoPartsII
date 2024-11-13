@@ -19,9 +19,23 @@
         transition: var(--global-transition);
     }
 
+    & tbody tr td:nth-child(2) {
+        text-decoration: underline 0.1rem var(--main-green);
+    }
+
     @media screen and (hover: hover){
         & tbody tr:hover {
             background-color: var(--info);
+
+            & td:nth-child(2) {
+                text-decoration-color: var(--main-lightish);
+            }
+        }
+
+        & tbody tr td:nth-child(2):hover {
+            background-color: var(--main-green);
+            color: var(--main-lightish);
+            text-decoration-color: var(--main-lightish);
         }
     }
 }
