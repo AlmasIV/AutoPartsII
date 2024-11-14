@@ -12,7 +12,6 @@ export default function Modal(
         openButtonClass,
         closeButtonClass,
         dialogType,
-        dialogClass = "",
         onOpenButtonClick = null,
         onCloseButtonClick = null,
         isDisabled = false,
@@ -26,16 +25,16 @@ export default function Modal(
         >
             <dialog
                 ref={modalRef}
-                className={`${styles[dialogType]} ${dialogClass}`}
+                className={`${styles[dialogType]}`}
             >
                 {children}
                 <Button
                     title={closeButtonTitle}
                     className={closeButtonClass}
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
                         modalRef.current.close();
-                        onCloseButtonClick && onCloseButtonClick();
+                        onCloseButtonClick && onCloseButtonClick(e);
                     }}
                 />
             </dialog>
@@ -44,9 +43,9 @@ export default function Modal(
                 className={openButtonClass}
                 type="button"
                 isDisabled={isDisabled}
-                onClick={() => {
+                onClick={(e) => {
                     modalRef.current.showModal();
-                    onOpenButtonClick && onOpenButtonClick();
+                    onOpenButtonClick && onOpenButtonClick(e);
                 }}
             />
         </div>
