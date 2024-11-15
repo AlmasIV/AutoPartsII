@@ -11,7 +11,7 @@ import { Modal, AutoPartForm } from "@/app/components/Index.js";
 
 export default function TableOfAutoParts(
     {
-        autoPartCollection,
+        autoPartsState,
         selectedAutoParts,
         setSelectedAutoParts
     }
@@ -43,7 +43,7 @@ export default function TableOfAutoParts(
                 </thead>
                 <tbody>
                     {
-                        autoPartCollection.map((autoPart) => (
+                        autoPartsState.autoParts.map((autoPart) => (
                             <tr
                                 key={autoPart.id}
                                 onClick={(e) => {
@@ -92,9 +92,15 @@ export default function TableOfAutoParts(
                                                         }}
                                                     >
                                                         <div
-                                                            className="flex-container space-between"
+                                                            className="flex-container space-between flex-column"
                                                         >
-                                                            <AutoPartForm />
+                                                            <AutoPartForm
+                                                                formTitle="Current Info"
+                                                                submitButtonTitle="Update"
+                                                                onSubmit={() => {}}
+                                                                autoPartsState={autoPartsState}
+                                                                autoPart={autoPart}
+                                                            />
                                                         </div>
                                                     </Modal>
                                                     : autoPart[config.name]

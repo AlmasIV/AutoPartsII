@@ -143,7 +143,7 @@ export default function HomePage() {
                                         className="width-full overflow-auto"
                                     >
                                         <TableOfAutoParts
-                                            autoPartCollection={autoParts}
+                                            autoPartsState={{ autoParts, setAutoParts }}
                                             selectedAutoParts={selectedAutoParts}
                                             setSelectedAutoParts={setSelectedAutoParts}
                                         />
