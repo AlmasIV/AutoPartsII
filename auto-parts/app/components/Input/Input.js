@@ -8,10 +8,10 @@ export default function Input(
     {
         config,
         validationErrorsState,
-        defaultValue = ""
+        defaultValue = null
     }
 ) {
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(defaultValue ?? "");
     const [warning, setWarning] = useState(null);
     const validate = getInputValidator(config, setWarning);
     function handleOnChange(event) {
