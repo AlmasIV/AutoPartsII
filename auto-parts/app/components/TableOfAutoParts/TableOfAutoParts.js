@@ -7,6 +7,7 @@ import { KZTFormatter, RUBFormatter } from "@/utils/numberFormatters/index.js";
 import onSelect from "./event-handlers/onSelect.js";
 import styles from "./table-of-auto-parts.module.css";
 import generateGUID from "@/utils/GUID/generateGUID.js";
+import { Modal, AutoPartForm } from "@/app/components/Index.js";
 
 export default function TableOfAutoParts(
     {
@@ -17,6 +18,7 @@ export default function TableOfAutoParts(
 ) {
     const globalNotification = useContext(NotificationBoxContext);
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
+    let isDescriptionOpen = false;
     return (
         <Fragment>
             <table
@@ -46,20 +48,22 @@ export default function TableOfAutoParts(
                                 key={autoPart.id}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if(autoPart.amount > 0) {
-                                        onSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
-                                    }
-                                    else {
-                                        globalNotification.setNotifications(
-                                            [
-                                                {
-                                                    message: `Cannot add, 0 in stock: ${autoPart.name}.`,
-                                                    level: "danger",
-                                                    key: generateGUID()
-                                                },
-                                                ...globalNotification.notifications
-                                            ]
-                                        );
+                                    if(!isDescriptionOpen) {
+                                        if(autoPart.amount > 0) {
+                                            onSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
+                                        }
+                                        else {
+                                            globalNotification.setNotifications(
+                                                [
+                                                    {
+                                                        message: `Cannot add, 0 in stock: ${autoPart.name}.`,
+                                                        level: "danger",
+                                                        key: generateGUID()
+                                                    },
+                                                    ...globalNotification.notifications
+                                                ]
+                                            );
+                                        }
                                     }
                                 }}
                                 className={selectedAutoParts.some(ap => Number(ap.id) === autoPart.id) ? "selected" : ""}
@@ -68,10 +72,32 @@ export default function TableOfAutoParts(
                                     tableConfigs.map((config) => (
                                         <td
                                             key={config.labelName}
-                                            className={`${config.name === "amount" ? autoPart.amount <= 0 ? "color-danger" : "" : ""} text-center`}
+                                            className={`${config.name === "amount" && autoPart.amount <= 0 ? "color-danger" : config.name === "name" ? "" : ""} text-center`}
                                         >
                                             {
-                                                config.name === "priceInRub" ? RUBFormatter.format(autoPart[config.name]) : config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : autoPart[config.name]
+                                                config.name === "priceInRub" ? RUBFormatter.format(autoPart[config.name]) : config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : config.name === "name" ?
+                                                    <Modal
+                                                        openButtonTitle={autoPart[config.name]}
+                                                        closeButtonTitle="Back"
+                                                        openButtonClass=""
+                                                        closeButtonClass="secondary-btn width-full margin-top-05rem"
+                                                        dialogType="adaptive-modal"
+                                                        onOpenButtonClick={(e) => {
+                                                            isDescriptionOpen = true;
+                                                            e.stopPropagation();
+                                                        }}
+                                                        onClose={(e) => {
+                                                            isDescriptionOpen = false;
+                                                            e.stopPropagation();
+                                                        }}
+                                                    >
+                                                        <div
+                                                            className="flex-container space-between"
+                                                        >
+                                                            <AutoPartForm />
+                                                        </div>
+                                                    </Modal>
+                                                    : autoPart[config.name]
                                             }
                                         </td>
                                     ))

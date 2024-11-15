@@ -13,7 +13,7 @@ export default function Modal(
         closeButtonClass,
         dialogType,
         onOpenButtonClick = null,
-        onCloseButtonClick = null,
+        onClose = null,
         isDisabled = false,
         containerClass = ""
     }
@@ -26,6 +26,9 @@ export default function Modal(
             <dialog
                 ref={modalRef}
                 className={`${styles[dialogType]}`}
+                onClose={(e) => {
+                    onClose && onClose(e);
+                }}
             >
                 {children}
                 <Button
@@ -34,7 +37,7 @@ export default function Modal(
                     type="button"
                     onClick={(e) => {
                         modalRef.current.close();
-                        onCloseButtonClick && onCloseButtonClick(e);
+                        onClose && onClose(e);
                     }}
                 />
             </dialog>

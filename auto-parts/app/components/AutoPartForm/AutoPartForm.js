@@ -10,7 +10,9 @@ export default function AutoPartForm(
         formTitle,
         submitButtonTitle,
         onSubmit,
-        autoPartsState
+        autoPartsState,
+        autoPart = null,
+        isDisabled = false
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
@@ -42,6 +44,7 @@ export default function AutoPartForm(
                                 key={autoPartConfig.labelName}
                                 config={autoPartConfig}
                                 validationErrorsState={{ validationErrors, setValidationErrors }}
+                                defaultValue={autoPart && autoPart[autoPartConfig.name]}
                             />
                         )
                     )
@@ -54,9 +57,9 @@ export default function AutoPartForm(
                 />
                 <Button
                     title={submitButtonTitle}
-                    className={`${(isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
+                    className={`${(isDisabled || isSubmitting || validationErrors.size > 0) ? "disabled-btn" : "primary-btn"} margin-top-2rem`}
                     type="submit"
-                    isDisabled={isSubmitting || validationErrors.size > 0}
+                    isDisabled={isDisabled || isSubmitting || validationErrors.size > 0}
                 />
             </Form>
         </Fragment>

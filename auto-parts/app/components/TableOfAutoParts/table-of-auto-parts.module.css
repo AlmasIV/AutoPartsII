@@ -2,7 +2,8 @@
     border-collapse: collapse;
     width: 100%;
 
-    & td, & th {
+    & td,
+    & th {
         padding: 1rem;
         user-select: none;
     }
@@ -20,22 +21,35 @@
     }
 
     & tbody tr td:nth-child(2) {
-        text-decoration: underline 0.1rem var(--main-green);
+        padding: 0;
+
+        & div > button:first-of-type {
+            cursor: pointer;
+            font: inherit;
+            background-color: inherit;
+            outline: none;
+            border: none;
+            text-decoration: underline;
+        }
     }
 
-    @media screen and (hover: hover){
+    @media screen and (hover: hover) {
         & tbody tr:hover {
             background-color: var(--info);
-
-            & td:nth-child(2) {
-                text-decoration-color: var(--main-lightish);
-            }
         }
 
-        & tbody tr td:nth-child(2):hover {
-            background-color: var(--main-green);
+        & tbody tr td:nth-child(2) div > button:first-of-type:hover {
             color: var(--main-lightish);
-            text-decoration-color: var(--main-lightish);
+        }
+    }
+
+    @media screen and (hover: none) {
+        & tbody tr:active {
+            background-color: var(--info);
+        }
+
+        & tbody tr td:nth-child(2) div > button:first-of-type:active {
+            color: var(--main-lightish);
         }
     }
 }
