@@ -16,10 +16,6 @@ public class AutoPart : IEquatable<AutoPart> {
 
 	public string? Company { get; set; }
 
-	[Range(0, 9999_9999.99)]
-	[Column(TypeName = "decimal(10, 2)")]
-	public decimal? PriceInRub { get; set; }
-
 	[Required()]
 	[Range(100, 9999_9999.99)]
 	[Column(TypeName = "decimal(10, 2)")]
@@ -48,7 +44,6 @@ public class AutoPart : IEquatable<AutoPart> {
 			Name == other.Name &&
 			Applicability == other.Applicability &&
 			Company == other.Company &&
-			PriceInRub == other.PriceInRub &&
 			PriceInKzt == other.PriceInKzt
 		);
 	}
@@ -58,6 +53,6 @@ public class AutoPart : IEquatable<AutoPart> {
 	}
 
 	public override int GetHashCode() {
-		return HashCode.Combine(Id, Name, Applicability, Company, PriceInRub, PriceInKzt);
+		return HashCode.Combine(Id, Name, Applicability, Company, PriceInKzt);
 	}
 }
