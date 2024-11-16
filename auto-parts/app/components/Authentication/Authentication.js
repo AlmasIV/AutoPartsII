@@ -3,9 +3,9 @@
 import { useState, useContext } from "react";
 import { Input, Form, Modal, Button } from "@/app/components/Index.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import userConfigs from "@/configurations/user-configuration.json";
 import onAuthenticationSubmit from "./event-handlers/onAuthenticationSubmit.js";
 import styles from "./authentication.module.css";
+import EmailAndPasswordInputs from "./internally-unique-components/EmailAndPasswordInputs/EmailAndPasswordInputs.js";
 
 export default function Authentication() {
     const globalNotification = useContext(NotificationBoxContext);
@@ -62,22 +62,25 @@ export default function Authentication() {
                             );
                         }}
                     >
-                        {
-                            userConfigs.map((config) => {
-                                return (
-                                    <Input
-                                        key={config.name}
-                                        config={config}
-                                        validationErrorsState={
-                                            {
-                                                validationErrors: signUpValidationErrors,
-                                                setValidationErrors: setSignUpValidationErrors
-                                            }
-                                        }
-                                    />
-                                );
-                            })
-                        }
+                        <EmailAndPasswordInputs
+                            validationErrorsState={{
+                                validationErrors: signUpValidationErrors,
+                                setValidationErrors: setSignUpValidationErrors
+                            }}
+                        />
+                        <Input
+                            config={{
+                                labelName: "Password Confirmation",
+                                name: "passwordConfirmation",
+                                type: "password",
+                                required: true,
+                                minLength: 8
+                            }}
+                            validationErrorsState={{
+                                validationErrors: signUpValidationErrors,
+                                setValidationErrors: setSignUpValidationErrors
+                            }}
+                        />
                         <Button
                             title="Sign Up"
                             className={`${(isSending || signUpValidationErrors.size > 0) ? "disabled-btn" : "primary-btn"} width-full margin-top-2rem`}
@@ -131,20 +134,12 @@ export default function Authentication() {
                         }}
                     >
                         {
-                            userConfigs.map((config) => {
-                                if(config.name !== "passwordConfirmation") {
-                                    return (
-                                        <Input
-                                            key={config.name}
-                                            config={config}
-                                            validationErrorsState={{
-                                                validationErrors: logInValidationErrors,
-                                                setValidationErrors: setLogInValidationErrors
-                                            }}
-                                        />
-                                    );
-                                }
-                            })
+                            <EmailAndPasswordInputs
+                                validationErrorsState={{
+                                    validationErrors: logInValidationErrors,
+                                    setValidationErrors: setLogInValidationErrors
+                                }}
+                            />
                         }
                         <Button
                             title="Log In"
