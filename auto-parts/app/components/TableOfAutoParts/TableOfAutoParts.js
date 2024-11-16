@@ -92,15 +92,22 @@ export default function TableOfAutoParts(
                                                         }}
                                                     >
                                                         <div
-                                                            className="flex-container space-between flex-column"
+                                                            className="flex-container space-between"
                                                         >
-                                                            <AutoPartForm
-                                                                formTitle="Current Info"
-                                                                submitButtonTitle="Update"
-                                                                onSubmit={() => {}}
-                                                                autoPartsState={autoPartsState}
-                                                                autoPart={autoPart}
-                                                            />
+                                                            <div
+                                                                className="flex-container space-between flex-column flex-grow-1"
+                                                            >
+                                                                <AutoPartForm
+                                                                    formTitle="Current Info"
+                                                                    submitButtonTitle="Update"
+                                                                    onSubmit={() => {}}
+                                                                    autoPartsState={autoPartsState}
+                                                                    autoPart={autoPart}
+                                                                />
+                                                            </div>
+                                                            <div
+                                                                className="flex-container space-between flex-grow-1"
+                                                            ></div>
                                                         </div>
                                                     </Modal>
                                                     : autoPart[config.name]
