@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
 import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
-import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger.js";
+import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);

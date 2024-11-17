@@ -1,5 +1,5 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
-import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger.js";
+import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
 import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 /*

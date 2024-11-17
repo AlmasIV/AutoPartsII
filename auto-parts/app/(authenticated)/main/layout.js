@@ -1,9 +1,9 @@
 "use client";
 
-import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext";
+import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { useState, useEffect } from "react";
-import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger";
-import { Loading, ErrorBox } from "@/app/components/Index";
+import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
+import { Loading, ErrorBox } from "@/app/components/Index.js";
 import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 
 export default function MainFunctionalityLayout(
