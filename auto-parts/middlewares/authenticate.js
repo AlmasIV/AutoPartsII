@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-import { redirectToLogIn } from "@/global-utils/middleware/redirectToLogIn.js";
+import { redirectToLogIn } from "./utils/redirectToLogIn.js";
 
 /*
 	1) Suppose a "token" is a random string, then you get a loop, the server will be dead.
