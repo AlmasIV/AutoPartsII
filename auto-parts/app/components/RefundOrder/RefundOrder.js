@@ -6,7 +6,7 @@ import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Inde
 import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
-import { KZTFormatter } from "@/global-utils/numberFormatters";
+import { KZTFormatter } from "@/global-utils/number-formatters";
 import { calculateInitialRetainedDiscount } from "./utils/calculateInitialRetainedDiscount.js";
 
 export default function RefundOrder(
@@ -27,8 +27,8 @@ export default function RefundOrder(
 
 	// You cannot refund more money, if you applied a 100% discount for example.
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
-	
-	
+
+
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
 		let discount = calculateInitialRetainedDiscount(refundAmountVal, soldPartDetails);
@@ -218,7 +218,7 @@ export default function RefundOrder(
 								className="margin-top-05rem flex-container space-between"
 							>
 								<h3>Refunding Money: {KZTFormatter.format(refundMoney - retainedDiscount > 0 ? refundMoney - retainedDiscount : 0)}</h3>
-								
+
 							</div>
 						</Fragment>
 				}

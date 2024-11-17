@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Form, ProductBox, Button } from "@/app/components/Index.js";
-import { KZTFormatter } from "@/global-utils/numberFormatters/index.js";
+import { KZTFormatter } from "@/global-utils/number-formatters/index.js";
 import onSell from "@/app/components/ShoppingCart/event-handlers/onSell.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";

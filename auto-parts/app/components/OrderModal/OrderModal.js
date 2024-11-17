@@ -6,7 +6,7 @@ import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
 import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan";
-import { KZTFormatter } from "@/global-utils/numberFormatters/KZTFormatter.js";
+import { KZTFormatter } from "@/global-utils/number-formatters/KZTFormatter.js";
 
 export default function OrderModal(
     {
@@ -58,17 +58,17 @@ export default function OrderModal(
                             <ErrorBox
                                 error={error}
                             />
-                        ) : isLoading ? 
-                        (
-                            <Loading
-                                size="medium"
-                                containerClass="medium-container"
-                            />
-                        ) : (
-                            <OrderDetails
-                                details={details}
-                            />
-                        )
+                        ) : isLoading ?
+                            (
+                                <Loading
+                                    size="medium"
+                                    containerClass="medium-container"
+                                />
+                            ) : (
+                                <OrderDetails
+                                    details={details}
+                                />
+                            )
                     }
                     <Button
                         title="Close"
