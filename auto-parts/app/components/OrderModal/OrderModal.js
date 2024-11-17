@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useRef, useState } from "react";
-import { LocalDataFormatter } from "@/utils/dateFormatters/LocalDateFormatter.js";
+import { LocalDataFormatter } from "@/utils/date-formatters/LocalDateFormatter.js";
 import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
