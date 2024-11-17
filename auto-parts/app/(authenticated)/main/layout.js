@@ -4,7 +4,7 @@ import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext";
 import { useState, useEffect } from "react";
 import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger";
 import { Loading, ErrorBox } from "@/app/components/Index";
-import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
 
 export default function MainFunctionalityLayout(
 	{

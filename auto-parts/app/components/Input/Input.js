@@ -1,6 +1,6 @@
 "use client";
 
-import getInputValidator from "@/utils/validators/getInputValidator.js";
+import getInputValidator from "@/global-utils/validators/getInputValidator.js";
 import styles from "./input.module.css";
 import { useEffect, useState } from "react";
 

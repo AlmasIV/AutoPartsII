@@ -1,12 +1,12 @@
 "use client";
 
 import { Fragment, useRef, useState } from "react";
-import { LocalDataFormatter } from "@/utils/date-formatters/LocalDateFormatter.js";
+import { LocalDataFormatter } from "@/global-utils/date-formatters/LocalDateFormatter.js";
 import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
-import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
-import { KZTFormatter } from "@/utils/numberFormatters/KZTFormatter.js";
+import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan";
+import { KZTFormatter } from "@/global-utils/numberFormatters/KZTFormatter.js";
 
 export default function OrderModal(
     {

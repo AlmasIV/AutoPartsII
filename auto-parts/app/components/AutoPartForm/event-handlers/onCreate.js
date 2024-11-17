@@ -1,5 +1,5 @@
-import generateGUID from "@/utils/GUID/generateGUID.js";
-import redirectIfCan from "@/utils/responseHelpers/redirectIfCan";
+import generateGUID from "@/global-utils/GUID/generateGUID.js";
+import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan";
 
 export default async function onCreate(event, globalNotification, autoPartsState) {
     const formData = new FormData(event.target);

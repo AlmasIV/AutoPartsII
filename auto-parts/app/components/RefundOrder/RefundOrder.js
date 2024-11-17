@@ -3,10 +3,10 @@
 import { useState, useContext, Fragment } from "react";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Index.js";
-import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
-import generateGUID from "@/utils/GUID/generateGUID.js";
+import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
+import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
-import { KZTFormatter } from "@/utils/numberFormatters";
+import { KZTFormatter } from "@/global-utils/numberFormatters";
 import { calculateInitialRetainedDiscount } from "./utils/calculateInitialRetainedDiscount.js";
 
 export default function RefundOrder(

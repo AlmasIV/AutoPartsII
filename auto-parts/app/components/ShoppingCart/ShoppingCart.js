@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Form, ProductBox, Button } from "@/app/components/Index.js";
-import { KZTFormatter } from "@/utils/numberFormatters/index.js";
+import { KZTFormatter } from "@/global-utils/numberFormatters/index.js";
 import onSell from "@/app/components/ShoppingCart/event-handlers/onSell.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
@@ -22,14 +22,14 @@ export default function ShoppingCart(
     const [isSubmitting, setIsSubmitting] = useState(false);
     useEffect(() => {
         let isIgnore = false;
-        if(!isIgnore){
+        if(!isIgnore) {
             setTotalPriceKzt(selectedAutoParts.reduce((accumulator, ap) => {
                 let price = ap.selectedAmount * Number(ap.priceInKzt) - ap.discount;
                 return accumulator + price;
             }, 0));
         }
 
-        return () => { isIgnore = true };
+        return () => { isIgnore = true; };
     }, [selectedAutoParts]);
     async function handleOnSubmit(event) {
         event.preventDefault();

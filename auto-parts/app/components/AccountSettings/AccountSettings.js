@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ErrorBox, Form, Input, Loading, Button } from "@/app/components/Index.js";
-import redirectIfCan from "@/utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
 
 /*
     This is the least important component. That's why the work is stopped here.

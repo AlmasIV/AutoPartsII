@@ -1,6 +1,6 @@
 "use client";
 
-import { KZTFormatter } from "@/utils/numberFormatters/index.js";
+import { KZTFormatter } from "@/global-utils/numberFormatters/index.js";
 import styles from "./order-details.module.css";
 import { AutoPartDescription, RefundOrder } from "@/app/components/Index.js";
 import { useState } from "react";
