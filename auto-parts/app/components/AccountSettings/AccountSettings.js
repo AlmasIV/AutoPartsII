@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ErrorBox, Form, Input, Loading, Button } from "@/app/components/Index.js";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 
 /*
     This is the least important component. That's why the work is stopped here.
@@ -30,7 +30,7 @@ export default function AccountSettings() {
                 setUser(bodyData.data);
             }
             catch(error) {
-                if(error.name !== "AbortError"){
+                if(error.name !== "AbortError") {
                     setError(new Error("Something went wrong."));
                 }
             }

@@ -5,7 +5,7 @@ import { LocalDataFormatter } from "@/global-utils/date-formatters/LocalDateForm
 import { ErrorBox, Loading, OrderDetails } from "@/app/components/Index.js";
 import { Button } from "@/app/components/Index.js";
 import styles from "./order-modal.module.css";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan";
 import { KZTFormatter } from "@/global-utils/number-formatters/KZTFormatter.js";
 
 export default function OrderModal(

@@ -3,7 +3,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 import isPositiveInteger from "@/app/api/authenticated/utils/isPositiveInteger/isPositiveInteger.js";
 
 export default function HomePage() {
@@ -41,7 +41,7 @@ export default function HomePage() {
                 setAutoParts(bodyData.data);
             }
             catch(error) {
-                if(error.name !== "AbortError"){
+                if(error.name !== "AbortError") {
                     setError(new Error("Something went wrong. The requested page couldn't load."));
                 }
             }
@@ -79,7 +79,7 @@ export default function HomePage() {
                 setTotalAutoParts(bodyData.data);
             }
             catch(error) {
-                if(error.name !== "AbortError"){
+                if(error.name !== "AbortError") {
                     setError(new Error("Couldn't get the total number of auto-parts."));
                 }
             }

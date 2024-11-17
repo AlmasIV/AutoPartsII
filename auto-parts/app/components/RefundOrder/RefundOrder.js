@@ -3,7 +3,7 @@
 import { useState, useContext, Fragment } from "react";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Index.js";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { KZTFormatter } from "@/global-utils/number-formatters";

@@ -1,7 +1,7 @@
 "use client";
 
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 
 export default async function onAuthenticationSubmit(
     bodyObject,

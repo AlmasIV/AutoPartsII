@@ -1,5 +1,5 @@
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
-import redirectIfCan from "@/global-utils/responseHelpers/redirectIfCan";
+import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
     const orderSummary = {
