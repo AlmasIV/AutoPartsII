@@ -21,9 +21,7 @@ export default function useFetch(url) {
 					setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
 					return;
 				}
-				else {
-					setData(bodyData.data);
-				}
+				setData(bodyData.data);
 			}
 			catch(error) {
 				if(error.name !== "AbortError") {
