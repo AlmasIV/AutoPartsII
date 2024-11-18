@@ -3,15 +3,11 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
-import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
 import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
+import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);
-    const [autoParts, setAutoParts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [totalAutoParts, setTotalAutoParts] = useState(0);
     const [selectedPage, setSelectedPage] = useState(1);
 
     useEffect(() => {
@@ -25,37 +21,6 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
-        const abortController = new AbortController();
-        const fetchPage = async () => {
-            setError(null);
-            try {
-                const response = await fetch(`/api/authenticated/auto-parts/page/${selectedPage}`, {
-                    signal: abortController.signal
-                });
-                redirectIfCan(response);
-                const bodyData = await response.json();
-                if(!response.ok) {
-                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
-                    return;
-                }
-                setAutoParts(bodyData.data);
-            }
-            catch(error) {
-                if(error.name !== "AbortError") {
-                    setError(new Error("Something went wrong. The requested page couldn't load."));
-                }
-            }
-            finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchPage();
-
-        return () => abortController.abort();
-    }, [selectedPage]);
-
-    useEffect(() => {
         setSelectedAutoParts(
             Object.keys(localStorage)
                 .filter(key => key.includes("ap"))
@@ -63,35 +28,23 @@ export default function HomePage() {
         );
     }, []);
 
-    useEffect(() => {
-        const abortController = new AbortController();
-        const fetchCount = async () => {
-            try {
-                const response = await fetch("/api/authenticated/auto-parts/count", {
-                    signal: abortController.signal
-                });
-                redirectIfCan(response);
-                const bodyData = await response.json();
-                if(!response.ok) {
-                    setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
-                    return;
-                }
-                setTotalAutoParts(bodyData.data);
-            }
-            catch(error) {
-                if(error.name !== "AbortError") {
-                    setError(new Error("Couldn't get the total number of auto-parts."));
-                }
-            }
-            finally {
-                setIsLoading(false);
-            }
-        };
+    const {
+        data: autoParts,
+        setData: setAutoParts,
+        isPending: isAutoPartsPending,
+        error: autoPartsFetchError
+    } = useFetch(`/api/authenticated/auto-parts/page/${selectedPage}`);
 
-        fetchCount();
+    const {
+        data: totalAutoParts,
+        setData: setTotalAutoParts,
+        isPending: isTotalAutoPartsPending,
+        error: totalAutoPartsFetchError
+    } = useFetch("/api/authenticated/auto-parts/count");
 
-        return () => abortController.abort();
-    }, []);
+    const error = autoPartsFetchError || totalAutoPartsFetchError;
+    const isPending = isAutoPartsPending || isTotalAutoPartsPending;
+
     return (
         <Fragment>
             <div
@@ -100,10 +53,10 @@ export default function HomePage() {
                 <Modal
                     openButtonTitle="Create"
                     closeButtonTitle="Close"
-                    openButtonClass={`${(error || isLoading) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
+                    openButtonClass={`${(error || isPending) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
                     closeButtonClass="secondary-btn width-full margin-top-05rem"
                     dialogType="form-modal"
-                    isDisabled={error || isLoading}
+                    isDisabled={error || isPending}
                     containerClass="flex-grow-1"
                 >
                     <AutoPartForm
@@ -116,10 +69,10 @@ export default function HomePage() {
                 <Modal
                     openButtonTitle="Shopping Cart"
                     closeButtonTitle="Exit"
-                    openButtonClass={`${(error || isLoading) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
+                    openButtonClass={`${(error || isPending) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
                     closeButtonClass="secondary-btn width-full margin-top-05rem"
                     dialogType="shopping-cart-modal"
-                    isDisabled={error || isLoading}
+                    isDisabled={error || isPending}
                     containerClass="flex-grow-1"
                 >
                     <ShoppingCart
@@ -132,9 +85,9 @@ export default function HomePage() {
             </div>
             <Fragment>
                 {
-                    isLoading ? <Loading /> : error ?
+                    isPending ? <Loading /> : error ?
                         <ErrorBox
-                            error={error}
+                            error={autoPartsFetchError || totalAutoPartsFetchError}
                             errorBoxClassName="margin-top-2rem"
                         /> : autoParts.length > 0 ?
                             (
