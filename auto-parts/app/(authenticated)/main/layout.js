@@ -21,18 +21,21 @@ export default function MainFunctionalityLayout(
 	}, []);
 
 	const {
+		data: orders,
+		setData: setOrders,
+		isPending: isOrdersPending,
+		error: ordersFetchError
+	} = useFetch(`/api/authenticated/orders/pages/${selectedPage}`);
+
+	const {
 		data: totalOrdersCount,
 		setData: setTotalOrdersCount,
 		isPending: isTotalOrdersCountPending,
 		error: totalOrdersCountFetchError
 	} = useFetch("/api/authenticated/orders/count");
 
-	const {
-		data: orders,
-		setData: setOrders,
-		isPending: isOrdersPending,
-		error: ordersFetchError
-	} = useFetch(`/api/authenticated/orders/pages/${selectedPage}`);
+	const isPending = isOrdersPending || isTotalOrdersCountPending;
+	const error = ordersFetchError || totalOrdersCountFetchError;
 
 	return (
 		<OrdersStateContext.Provider
@@ -48,14 +51,10 @@ export default function MainFunctionalityLayout(
 			}
 		>
 			{
-				(isTotalOrdersCountPending || isOrdersPending) ? <Loading /> : (totalOrdersCountFetchError || ordersFetchError) ? (
-					totalOrdersCountFetchError ? 
-						<ErrorBox
-							error={totalOrdersCountFetchError}
-						/> : 
-						<ErrorBox
-							error={ordersFetchError}
-						/>
+				isPending ? <Loading /> : error ? (
+					<ErrorBox
+						error={ordersFetchError || totalOrdersCountFetchError}
+					/>
 				) : children
 			}
 		</OrdersStateContext.Provider>
