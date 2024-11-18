@@ -17,7 +17,7 @@ export default function ShoppingCart(
     }
 ) {
     const globalNotification = useContext(NotificationBoxContext);
-    const { orders, setOrders, totalOrders, setTotalOrders } = useContext(OrdersStateContext);
+    const { orders, setOrders, totalOrdersCount, setTotalOrdersCount } = useContext(OrdersStateContext);
     const [totalPriceKzt, setTotalPriceKzt] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     useEffect(() => {
@@ -34,7 +34,7 @@ export default function ShoppingCart(
     async function handleOnSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
-        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrders, setTotalOrders });
+        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrdersCount, setTotalOrdersCount });
         setIsSubmitting(false);
     }
     return selectedAutoParts.length > 0 ? (

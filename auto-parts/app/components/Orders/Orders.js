@@ -9,7 +9,7 @@ import { OrdersStateContext } from "./OrdersStateContext.js";
 */
 
 export default function Orders() {
-    const { orders, selectedPage, setSelectedPage, totalOrders } = useContext(OrdersStateContext);
+    const { orders, selectedPage, setSelectedPage, totalOrdersCount } = useContext(OrdersStateContext);
 
     return (
         <div>
@@ -32,7 +32,7 @@ export default function Orders() {
                             })
                         }
                         <PageSelector
-                            count={totalOrders}
+                            count={totalOrdersCount}
                             selected={selectedPage}
                             setSelected={setSelectedPage}
                             selectorType="orderPageNum"

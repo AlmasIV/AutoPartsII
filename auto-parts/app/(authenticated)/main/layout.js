@@ -4,87 +4,36 @@ import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.j
 import { useState, useEffect } from "react";
 import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
 import { Loading, ErrorBox } from "@/app/components/Index.js";
-import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
+import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 
 export default function MainFunctionalityLayout(
 	{
 		children
 	}
 ) {
-	const [orders, setOrders] = useState([]);
 	const [selectedPage, setSelectedPage] = useState(1);
-	const [totalOrders, setTotalOrders] = useState(0);
-	const [error, setError] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const orderPage = Number(localStorage.getItem("orderPageNum"));
 		if(isPositiveInteger(orderPage)) {
 			setSelectedPage(orderPage);
 		}
-	});
-
-	useEffect(() => {
-		const abortController = new AbortController();
-		const fetchCount = async () => {
-			setError(null);
-			try {
-				const response = await fetch("/api/authenticated/orders/count", {
-					signal: abortController.signal
-				});
-				redirectIfCan(response);
-				const bodyData = await response.json();
-				if(!response.ok) {
-					setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
-					return;
-				}
-				setTotalOrders(bodyData.data);
-			}
-			catch(error) {
-				if(error.name !== "AbortError") {
-					setError(new Error("Something went wrong."));
-				}
-			}
-			finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchCount();
-
-		return () => abortController.abort();
 	}, []);
 
-	useEffect(() => {
-		const abortController = new AbortController();
-		async function fetchOrders() {
-			setError(null);
-			try {
-				const response = await fetch(`/api/authenticated/orders/pages/${selectedPage}`, {
-					signal: abortController.signal
-				});
-				redirectIfCan(response);
-				const bodyData = await response.json();
-				if(!response.ok) {
-					setError(new Error(bodyData.data || `${response.status} ${response.statusText}`));
-					return;
-				}
-				setOrders(bodyData.data);
-			}
-			catch(error) {
-				if(error.name !== "AbortError") {
-					setError(new Error("Something went wrong."));
-				}
-			}
-			finally {
-				setIsLoading(false);
-			}
-		}
+	const {
+		data: totalOrdersCount,
+		setData: setTotalOrdersCount,
+		isPending: isTotalOrdersCountPending,
+		error: totalOrdersCountError
+	} = useFetch("/api/authenticated/orders/count");
 
-		fetchOrders();
+	const {
+		data: orders,
+		setData: setOrders,
+		isPending: isOrdersPending,
+		error: ordersError
+	} = useFetch(`/api/authenticated/orders/pages/${selectedPage}`);
 
-		return () => abortController.abort();
-	}, [selectedPage]);
 	return (
 		<OrdersStateContext.Provider
 			value={
@@ -93,16 +42,21 @@ export default function MainFunctionalityLayout(
 					setOrders,
 					selectedPage,
 					setSelectedPage,
-					totalOrders,
-					setTotalOrders
+					totalOrdersCount,
+					setTotalOrdersCount
 				}
 			}
 		>
 			{
-				isLoading && !error ? <Loading /> : error ?
-					<ErrorBox
-						error={error}
-					/> : children
+				(isTotalOrdersCountPending || isOrdersPending) ? <Loading /> : (totalOrdersCountError || ordersError) ? (
+					totalOrdersCountError ? 
+						<ErrorBox
+							error={totalOrdersCountError}
+						/> : 
+						<ErrorBox
+							error={ordersError}
+						/>
+				) : children
 			}
 		</OrdersStateContext.Provider>
 	);
