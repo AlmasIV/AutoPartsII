@@ -11,8 +11,8 @@ export default function MainFunctionalityLayout(
 	}
 ) {
 	const {
-		pageNumber: selectedPage,
-		setPageNumber: setSelectedPage
+		selectedPage,
+		setSelectedPage
 	} = useLocalStoragePage("orderPageNum");
 
 	const {

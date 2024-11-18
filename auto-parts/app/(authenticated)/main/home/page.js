@@ -3,22 +3,11 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
-import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
+import useLocalStoragePage from "@/global-utils/custom-hooks/useLocalStoragePage";
 
 export default function HomePage() {
     const [selectedAutoParts, setSelectedAutoParts] = useState([]);
-    const [selectedPage, setSelectedPage] = useState(1);
-
-    useEffect(() => {
-        const sp = localStorage.getItem("pageNum");
-        /*
-            1) Maybe add a config file that sets the total product count displayed on the page? If so we need to create some kind of configuration mechanism. We could limit the upper bound for the "pageNum".
-        */
-        if(canBeCastedToPositiveInteger(sp)) {
-            setSelectedPage(sp);
-        }
-    }, []);
 
     useEffect(() => {
         setSelectedAutoParts(
@@ -27,6 +16,11 @@ export default function HomePage() {
                 .map(key => JSON.parse(localStorage.getItem(key)))
         );
     }, []);
+
+    const {
+        selectedPage,
+        setSelectedPage
+    } = useLocalStoragePage("pageNum");
 
     const {
         data: autoParts,
