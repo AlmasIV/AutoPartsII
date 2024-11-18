@@ -1,8 +1,6 @@
 "use client";
 
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
-import { useState, useEffect } from "react";
-import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import { Loading, ErrorBox } from "@/app/components/Index.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 import useLocalStoragePage from "@/global-utils/custom-hooks/useLocalStoragePage";
