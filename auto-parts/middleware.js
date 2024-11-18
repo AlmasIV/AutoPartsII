@@ -1,4 +1,4 @@
-import { authenticate } from "@/middlewares/authenticate.js";
+import authenticate from "@/middlewares/authenticate.js";
 
 export async function middleware(request) {
     const response = await authenticate(request);
