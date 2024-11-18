@@ -3,7 +3,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
 import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
-import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
+import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 
 export default function HomePage() {
@@ -15,7 +15,7 @@ export default function HomePage() {
         /*
             1) Maybe add a config file that sets the total product count displayed on the page? If so we need to create some kind of configuration mechanism. We could limit the upper bound for the "pageNum".
         */
-        if(isPositiveInteger(sp)) {
+        if(canBeCastedToPositiveInteger(sp)) {
             setSelectedPage(sp);
         }
     }, []);

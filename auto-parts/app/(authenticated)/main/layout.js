@@ -2,7 +2,7 @@
 
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { useState, useEffect } from "react";
-import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
+import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import { Loading, ErrorBox } from "@/app/components/Index.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 
@@ -14,8 +14,8 @@ export default function MainFunctionalityLayout(
 	const [selectedPage, setSelectedPage] = useState(1);
 
 	useEffect(() => {
-		const orderPage = Number(localStorage.getItem("orderPageNum"));
-		if(isPositiveInteger(orderPage)) {
+		const orderPage = localStorage.getItem("orderPageNum");
+		if(canBeCastedToPositiveInteger(orderPage)) {
 			setSelectedPage(orderPage);
 		}
 	}, []);

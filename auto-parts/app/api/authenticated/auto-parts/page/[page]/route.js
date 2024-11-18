@@ -1,5 +1,5 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
-import isPositiveInteger from "@/global-utils/validators/isPositiveInteger.js";
+import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 /*
@@ -7,7 +7,7 @@ import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 */
 
 export async function GET(request, { params }) {
-    if(isPositiveInteger(params.page)) {
+    if(canBeCastedToPositiveInteger(params.page)) {
         return await getProtected(`${process.env.API_URL}/auto-parts/page/${params.page}`, request);
     }
     else {
