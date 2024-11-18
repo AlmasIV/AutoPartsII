@@ -24,14 +24,14 @@ export default function MainFunctionalityLayout(
 		data: totalOrdersCount,
 		setData: setTotalOrdersCount,
 		isPending: isTotalOrdersCountPending,
-		error: totalOrdersCountError
+		error: totalOrdersCountFetchError
 	} = useFetch("/api/authenticated/orders/count");
 
 	const {
 		data: orders,
 		setData: setOrders,
 		isPending: isOrdersPending,
-		error: ordersError
+		error: ordersFetchError
 	} = useFetch(`/api/authenticated/orders/pages/${selectedPage}`);
 
 	return (
@@ -48,13 +48,13 @@ export default function MainFunctionalityLayout(
 			}
 		>
 			{
-				(isTotalOrdersCountPending || isOrdersPending) ? <Loading /> : (totalOrdersCountError || ordersError) ? (
-					totalOrdersCountError ? 
+				(isTotalOrdersCountPending || isOrdersPending) ? <Loading /> : (totalOrdersCountFetchError || ordersFetchError) ? (
+					totalOrdersCountFetchError ? 
 						<ErrorBox
-							error={totalOrdersCountError}
+							error={totalOrdersCountFetchError}
 						/> : 
 						<ErrorBox
-							error={ordersError}
+							error={ordersFetchError}
 						/>
 				) : children
 			}
