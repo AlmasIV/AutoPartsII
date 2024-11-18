@@ -5,20 +5,17 @@ import { useState, useEffect } from "react";
 import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import { Loading, ErrorBox } from "@/app/components/Index.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
+import useLocalStoragePage from "@/global-utils/custom-hooks/useLocalStoragePage";
 
 export default function MainFunctionalityLayout(
 	{
 		children
 	}
 ) {
-	const [selectedPage, setSelectedPage] = useState(1);
-
-	useEffect(() => {
-		const orderPage = localStorage.getItem("orderPageNum");
-		if(canBeCastedToPositiveInteger(orderPage)) {
-			setSelectedPage(orderPage);
-		}
-	}, []);
+	const {
+		pageNumber: selectedPage,
+		setPageNumber: setSelectedPage
+	} = useLocalStoragePage("orderPageNum");
 
 	const {
 		data: orders,
