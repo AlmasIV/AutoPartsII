@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 
 export default function useLocalStoragePage(localStorageKey) {
-	const [pageNumber, setPageNumber] = useState(1);
+	const [selectedPage, setSelectedPage] = useState(1);
 
 	useEffect(() => {
-		const selectedPage = localStorage.getItem(localStorageKey);
-		if(canBeCastedToPositiveInteger(selectedPage)) {
-			setPageNumber(selectedPage);
+		const sp = localStorage.getItem(localStorageKey);
+		if(canBeCastedToPositiveInteger(sp)) {
+			setSelectedPage(sp);
 		}
 	}, [localStorageKey]);
 
-	return { pageNumber, setPageNumber };
+	return { selectedPage, setSelectedPage };
 }
