@@ -89,7 +89,7 @@ export default function HomePage() {
                         <ErrorBox
                             error={autoPartsFetchError || totalAutoPartsFetchError}
                             errorBoxClassName="margin-top-2rem"
-                        /> : autoParts.length > 0 ?
+                        /> : autoParts?.length > 0 ?
                             (
                                 <Fragment>
                                     <div
