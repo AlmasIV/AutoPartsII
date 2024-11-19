@@ -6,12 +6,12 @@ export default async function SettingsPage() {
         <div
             className={`${styles["settings-panel"]} margin-top-2rem`}
         >
-            <AccountSettings />
             <section>
                 <h2>Site Settings</h2>
+                <p>Under Construction</p>
                 <div>
                     {
-                        // Implement! Through this is not an urgent thing to do.
+                        // Implement! Though this is not an urgent thing to do.
                     }
                 </div>
             </section>
