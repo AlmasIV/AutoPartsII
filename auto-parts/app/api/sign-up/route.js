@@ -1,4 +1,4 @@
-import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
+import credentialsAssertion from "@/global-utils/validators/credentialsAssertion.js";
 import authenticate from "@/global-utils/validators/authenticate.js";
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
