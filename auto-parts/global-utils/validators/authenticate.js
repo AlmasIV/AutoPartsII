@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server.js";
-import getResponse from "@/app/api/utils/getResponse/getResponse.js";
+import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
 export default async function authenticate(user, url, isLogIn = false) {
     try {

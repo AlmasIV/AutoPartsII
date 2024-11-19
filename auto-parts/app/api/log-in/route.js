@@ -1,6 +1,6 @@
 import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
 import authenticate from "@/global-utils/validators/authenticate.js";
-import getResponse from "@/app/api/utils/getResponse/getResponse.js";
+import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
 export async function POST(request) {
     const credentials = await request.json();

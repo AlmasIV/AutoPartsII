@@ -1,4 +1,4 @@
-import getResponse from "@/app/api/utils/getResponse/getResponse.js";
+import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
 export async function postProtected(url, request, isFormData = false, isReturnResult = false) {
     try {
@@ -8,7 +8,7 @@ export async function postProtected(url, request, isFormData = false, isReturnRe
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token.value}`,
-                ...(isFormData ? {} : {"Content-Type": "application/json"})
+                ...(isFormData ? {} : { "Content-Type": "application/json" })
             },
             body: isFormData ? body : JSON.stringify(body)
         });

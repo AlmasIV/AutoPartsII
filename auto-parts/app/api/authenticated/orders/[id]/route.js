@@ -1,6 +1,6 @@
 import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
 import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
-import getResponse from "@/app/api/utils/getResponse/getResponse.js";
+import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
 export async function GET(request, { params }) {
     if(canBeCastedToPositiveInteger(params.id)) {
