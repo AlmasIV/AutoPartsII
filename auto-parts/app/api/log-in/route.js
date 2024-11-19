@@ -1,5 +1,5 @@
 import credentialsAssertion from "@/app/api/utils/credentialsAssertion/credentialsAssertion.js";
-import authenticate from "@/app/api/utils/authenticate/authenticate.js";
+import authenticate from "@/global-utils/validators/authenticate.js";
 import getResponse from "@/app/api/utils/getResponse/getResponse.js";
 
 export async function POST(request) {
