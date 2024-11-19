@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import redirectIfCan from "@/global-utils/response-helpers/redirectIfCan.js";
+import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 
 export default function useFetch(url) {
 	const [data, setData] = useState(null);
@@ -31,7 +31,7 @@ export default function useFetch(url) {
 			finally {
 				setIsPending(false);
 			}
-		}
+		};
 		fetchData();
 		return () => abortController.abort();
 	}, [url]);
