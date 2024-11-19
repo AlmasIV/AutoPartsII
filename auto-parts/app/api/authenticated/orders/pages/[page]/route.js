@@ -1,4 +1,4 @@
-import getProtected from "@/app/api/authenticated/utils/HTTP-fetch/getProtected.js";
+import getProtected from "@/global-utils/HTTP-fetch/getProtected.js";
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 
