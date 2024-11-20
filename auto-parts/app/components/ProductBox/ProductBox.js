@@ -61,7 +61,6 @@ export default function ProductBox(
                 className="flex-container flex-column space-between flex-grow-1 align-end"
             >
                 <AmountChanger
-                    selectedAutoParts={selectedAutoParts}
                     setSelectedAutoParts={setSelectedAutoParts}
                     selectedAutoPart={autoPart}
                 />
