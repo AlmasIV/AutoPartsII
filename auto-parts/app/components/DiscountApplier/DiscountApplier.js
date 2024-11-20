@@ -1,5 +1,5 @@
 import { NumberController } from "@/app/components/Index.js";
-import { saveAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
+import saveAutoPart from "@/global-utils/client-side-storage/saveAutoPart.js";
 
 export default function DiscountApplier(
 	{

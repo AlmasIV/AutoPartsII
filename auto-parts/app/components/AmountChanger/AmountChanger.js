@@ -1,4 +1,4 @@
-import { saveAutoPart } from "@/app/components/TableOfAutoParts/event-handlers/onSelect.js";
+import saveAutoPart from "@/global-utils/client-side-storage/saveAutoPart.js";
 import { NumberController } from "@/app/components/Index.js";
 
 export default function AmountChanger(
