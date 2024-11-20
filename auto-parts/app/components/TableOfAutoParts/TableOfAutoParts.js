@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { KZTFormatter, RUBFormatter } from "@/global-utils/number-formatters/index.js";
-import onSelect from "./event-handlers/onSelect.js";
+import onAutoPartSelect from "@/global-utils/component-event-handlers/onAutoPartSelect.js";
 import styles from "./table-of-auto-parts.module.css";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { Modal, AutoPartForm } from "@/app/components/Index.js";
@@ -50,7 +50,7 @@ export default function TableOfAutoParts(
                                     e.stopPropagation();
                                     if(!isDescriptionOpen) {
                                         if(autoPart.amount > 0) {
-                                            onSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
+                                            onAutoPartSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
                                         }
                                         else {
                                             globalNotification.setNotifications(
