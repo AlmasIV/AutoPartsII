@@ -1,5 +1,5 @@
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
     const orderSummary = {
@@ -27,28 +27,10 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
         });
         redirectIfCan(response);
         if(!response.ok) {
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: `Failed to sell: ${orderSummary.orderAutoParts.length} auto parts.`,
-                        level: "danger",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
+            notify(globalNotification, `Failed to sell: ${orderSummary.orderAutoParts.length} auto parts.`, "danger");
         }
         else {
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: `Successfully sold: ${orderSummary.orderedParts.length} auto parts.`,
-                        level: "success",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
+            notify(globalNotification, `Successfully sold: ${orderSummary.orderedParts.length} auto parts.`, "success");
             const soldParts = autoPartsState.autoParts.filter((ap) => orderSummary.orderedParts.some((op) => op.id === ap.id));
             orderSummary.orderedParts.forEach((autoPart) => {
                 localStorage.removeItem(autoPart.id + "ap");
@@ -82,13 +64,6 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
         }
     }
     catch {
-        globalNotification.setNotifications([
-            {
-                message: "Something went wrong.",
-                level: "danger",
-                key: generateGUID()
-            },
-            ...globalNotification.notifications
-        ]);
+        notify(globalNotification, "Something went wrong.", "danger");
     }
 }

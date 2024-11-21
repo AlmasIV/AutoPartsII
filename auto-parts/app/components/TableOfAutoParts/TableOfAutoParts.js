@@ -6,8 +6,8 @@ import { NotificationBoxContext } from "@/app/components/NotificationBox/Notific
 import { KZTFormatter, RUBFormatter } from "@/global-utils/number-formatters/index.js";
 import onAutoPartSelect from "@/global-utils/component-event-handlers/onAutoPartSelect.js";
 import styles from "./table-of-auto-parts.module.css";
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { Modal, AutoPartForm } from "@/app/components/Index.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default function TableOfAutoParts(
     {
@@ -53,16 +53,7 @@ export default function TableOfAutoParts(
                                             onAutoPartSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
                                         }
                                         else {
-                                            globalNotification.setNotifications(
-                                                [
-                                                    {
-                                                        message: `Cannot add, 0 in stock: ${autoPart.name}.`,
-                                                        level: "danger",
-                                                        key: generateGUID()
-                                                    },
-                                                    ...globalNotification.notifications
-                                                ]
-                                            );
+                                            notify(globalNotification, `Cannot add, 0 in stock: ${autoPart.name}.`, "danger");
                                         }
                                     }
                                 }}

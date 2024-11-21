@@ -4,10 +4,10 @@ import { useState, useContext, Fragment } from "react";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Index.js";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { KZTFormatter } from "@/global-utils/number-formatters";
 import { calculateInitialRetainedDiscount } from "./utils/calculateInitialRetainedDiscount.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default function RefundOrder(
 	{
@@ -74,28 +74,10 @@ export default function RefundOrder(
 			if(!response.ok) {
 				const message = bodyData.data || `${response.status} ${response.statusText}`;
 				setError(new Error(message));
-				globalNotification.setNotifications(
-					[
-						{
-							message: message,
-							level: "danger",
-							key: generateGUID()
-						},
-						...globalNotification.notifications
-					]
-				);
+				notify(globalNotification, message, "danger");
 				return;
 			}
-			globalNotification.setNotifications(
-				[
-					{
-						message: `${refundAmount} of ${soldPartDetails.soldPart.name} was refunded.`,
-						level: "success",
-						key: generateGUID()
-					},
-					...globalNotification.notifications
-				]
-			);
+			notify(globalNotification, `${refundAmount} of ${soldPartDetails.soldPart.name} was refunded.`, "success");
 			soldPartDetails.discount -= retainedDiscount;
 			if(soldPartDetails.soldAmount - refundAmount === 0) {
 				setRefundAmount(0);

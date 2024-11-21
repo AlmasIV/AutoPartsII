@@ -1,5 +1,5 @@
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import saveAutoPart from "@/global-utils/client-side-storage/saveAutoPart.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default function selectAutoPart(autoPart, selectedState, globalNotification) {
 	autoPart = {
@@ -13,14 +13,5 @@ export default function selectAutoPart(autoPart, selectedState, globalNotificati
 	selectedState.setSelectedAutoParts(
 		[...sortedArray]
 	);
-	globalNotification.setNotifications(
-		[
-			{
-				message: `Added to shopping cart: ${autoPart.name}.`,
-				level: "info",
-				key: generateGUID()
-			},
-			...globalNotification.notifications
-		]
-	);
+	notify(globalNotification, `Added to shopping cart: ${autoPart.name}.`);
 }

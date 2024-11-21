@@ -1,7 +1,7 @@
 "use client";
 
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default async function onAuthenticationSubmit(
     bodyObject,
@@ -26,42 +26,15 @@ export default async function onAuthenticationSubmit(
             if(!response.ok) {
                 const responseObj = await response.json();
                 setError(responseObj.data);
-                globalNotification.setNotifications(
-                    [
-                        {
-                            message: responseObj.data,
-                            level: "danger",
-                            key: generateGUID()
-                        },
-                        ...globalNotification.notifications
-                    ]
-                );
+                notify(globalNotification, responseObj.data, "danger");
             }
             else {
-                globalNotification.setNotifications(
-                    [
-                        {
-                            message: "Successfully authenticated.",
-                            level: "success",
-                            key: generateGUID()
-                        },
-                        ...globalNotification.notifications
-                    ]
-                );
+                notify(globalNotification, "Successfully authenticated.", "success");
             }
         }
         catch(error) {
             setError("Something went wrong.");
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: "Something went wrong.",
-                        level: "danger",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
+            notify(globalNotification, "Something went wrong.", "danger");
         }
         finally {
             setIsSending(false);

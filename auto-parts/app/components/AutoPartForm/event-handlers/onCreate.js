@@ -1,5 +1,5 @@
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default async function onCreate(event, globalNotification, autoPartsState) {
     const formData = new FormData(event.target);
@@ -15,28 +15,10 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
         redirectIfCan(response);
         const bodyData = await response.json();
         if(!response.ok) {
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: bodyData.data || `${response.status} ${response.statusText}`,
-                        level: "danger",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
+            notify(globalNotification, bodyData.data || `${response.status} ${response.statusText}`, "danger");
         }
         else {
-            globalNotification.setNotifications(
-                [
-                    {
-                        message: `${bodyData.data.name} was successfully created.`,
-                        level: "success",
-                        key: generateGUID()
-                    },
-                    ...globalNotification.notifications
-                ]
-            );
+            notify(globalNotification, `${bodyData.data.name} was successfully created.`, "success");
             if(autoPartsState.autoParts.length < 99) {
                 autoPartsState.setAutoParts(
                     [
@@ -49,15 +31,6 @@ async function submitAutoPart(formData, globalNotification, autoPartsState) {
         }
     }
     catch(error) {
-        globalNotification.setNotifications(
-            [
-                {
-                    message: "Something went wrong.",
-                    level: "danger",
-                    key: generateGUID()
-                },
-                ...globalNotification.notifications
-            ]
-        );
+        notify(globalNotification, "Something went wrong.", "danger");
     }
 }
