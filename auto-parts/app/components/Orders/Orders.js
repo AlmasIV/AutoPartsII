@@ -4,10 +4,6 @@ import { Fragment, useContext } from "react";
 import { OrderModal, PageSelector } from "@/app/components/Index.js";
 import { OrdersStateContext } from "./OrdersStateContext.js";
 
-/*
-    useEffects are updating the same error state. Maybe I shall define an error  state for each useEffect? But the current state provides a simple solution, and a generic error.
-*/
-
 export default function Orders() {
     const { orders, selectedPage, setSelectedPage, totalOrdersCount } = useContext(OrdersStateContext);
 
