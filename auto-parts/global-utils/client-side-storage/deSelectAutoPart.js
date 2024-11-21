@@ -1,18 +1,7 @@
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default function deSelectAutoPart(autoPart, selectedState, globalNotification) {
 	localStorage.removeItem(autoPart.id + "ap");
-	selectedState.setSelectedAutoParts(
-		[...selectedState.selectedAutoParts.filter((ap) => ap.id !== autoPart.id)]
-	);
-	globalNotification.setNotifications(
-		[
-			{
-				message: `Removed from shopping cart: ${autoPart.name}.`,
-				level: "warning",
-				key: generateGUID()
-			},
-			...globalNotification.notifications
-		]
-	);
+	selectedState.setSelectedAutoParts((prevSelectedAutoParts) => prevSelectedAutoParts.filter((ap) => ap.id !== autoPart.id));
+	notify(globalNotification, `Removed from shopping cart: ${autoPart.name}.`, "warning");
 }
