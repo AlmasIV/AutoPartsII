@@ -13,8 +13,6 @@ export async function postProtected(url, request, isFormData = false, isReturnRe
             body: isFormData ? body : JSON.stringify(body)
         });
         if(!response.ok) {
-            const err = await response.json();
-            console.error(err);
             return getResponse("Couldn't post the data.", 500, "Internal Server Error");
         }
         else {
