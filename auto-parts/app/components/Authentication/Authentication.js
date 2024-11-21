@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useContext } from "react";
-import { Input, Form, Modal, Button } from "@/app/components/Index.js";
+import { Input, Form, Modal, Button, EmailAndPasswordInputs } from "@/app/components/Index.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import onAuthenticationSubmit from "./event-handlers/onAuthenticationSubmit.js";
+import onAuthenticationSubmit from "@/global-utils/component-event-handlers/onAuthenticationSubmit.js";
 import styles from "./authentication.module.css";
-import EmailAndPasswordInputs from "./internally-unique-components/EmailAndPasswordInputs/EmailAndPasswordInputs.js";
 
 export default function Authentication() {
     const globalNotification = useContext(NotificationBoxContext);
