@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useEffect } from "react";
 import { TableOfAutoParts, Modal, AutoPartForm, ShoppingCart, Loading, ErrorBox, PageSelector } from "@/app/components/Index.js";
-import onCreate from "@/app/components/AutoPartForm/event-handlers/onCreate.js";
+import onAutoPartCreate from "@/global-utils/component-event-handlers/onAutoPartCreate.js";
 import useFetch from "@/global-utils/custom-hooks/useFetch.js";
 import useLocalStoragePage from "@/global-utils/custom-hooks/useLocalStoragePage";
 
@@ -56,7 +56,7 @@ export default function HomePage() {
                     <AutoPartForm
                         formTitle="Create a new auto-part"
                         submitButtonTitle="Create"
-                        onSubmit={onCreate}
+                        onSubmit={onAutoPartCreate}
                         autoPartsState={{ autoParts, setAutoParts, setTotalAutoParts }}
                     />
                 </Modal>
