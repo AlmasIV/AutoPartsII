@@ -15,7 +15,7 @@ export default function Orders() {
                 Order History
             </h2>
             {
-                orders.length > 0 ? (
+                orders?.length > 0 ? (
                     <Fragment>
                         {
                             orders.map((o) => {
