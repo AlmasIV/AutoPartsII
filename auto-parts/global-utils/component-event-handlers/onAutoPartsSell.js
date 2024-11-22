@@ -1,7 +1,7 @@
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
 import notify from "@/global-utils/notifications/notify.js";
 
-export default async function onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
+export default async function onAutoPartsSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
     const orderSummary = {
         totalPriceInKzt: 0,
         orderedParts: []

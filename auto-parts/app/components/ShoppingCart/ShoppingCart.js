@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Form, ProductBox, Button } from "@/app/components/Index.js";
 import { KZTFormatter } from "@/global-utils/number-formatters/index.js";
-import onSell from "@/app/components/ShoppingCart/event-handlers/onSell.js";
+import onAutoPartsSell from "@/global-utils/component-event-handlers/onAutoPartsSell.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import styles from "./shopping-cart.module.css";
@@ -28,13 +28,12 @@ export default function ShoppingCart(
                 return accumulator + price;
             }, 0));
         }
-
         return () => { isIgnore = true; };
     }, [selectedAutoParts]);
     async function handleOnSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
-        await onSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrdersCount, setTotalOrdersCount });
+        await onAutoPartsSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrdersCount, setTotalOrdersCount });
         setIsSubmitting(false);
     }
     return selectedAutoParts.length > 0 ? (
