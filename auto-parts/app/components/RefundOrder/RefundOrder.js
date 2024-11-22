@@ -22,7 +22,7 @@ export default function RefundOrder(
 
 	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount - 1);
 	const [refundAmount, setRefundAmount] = useState(1);
-	const [retainedDiscount, setRetainedDiscount] = useState(() => (soldPartDetails.discount / soldPartDetails.soldAmount) * refundingAmount);
+	const [retainedDiscount, setRetainedDiscount] = useState(() => (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmount);
 
 	// You cannot refund more money, if you applied a 100% discount for example.
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
@@ -30,7 +30,7 @@ export default function RefundOrder(
 
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
-		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundingAmount;
+		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmount;
 		setRefundMoney(refundMoneyValue);
 		setRetainedDiscount(discount);
 	}
