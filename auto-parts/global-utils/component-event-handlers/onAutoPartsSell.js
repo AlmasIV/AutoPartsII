@@ -51,7 +51,7 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             setSelectedAutoParts([]);
 
             // Update the history page data.
-            historyPageState.setTotalOrders(historyPageState.totalOrders + 1);
+            historyPageState.setTotalOrdersCount(historyPageState.totalOrdersCount + 1);
             if(historyPageState.orders.length < 100) {
                 const order = await response.json();
                 historyPageState.setOrders(
