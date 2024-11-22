@@ -6,7 +6,6 @@ import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Inde
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
 import { KZTFormatter } from "@/global-utils/number-formatters";
-import { calculateInitialRetainedDiscount } from "./utils/calculateInitialRetainedDiscount.js";
 import notify from "@/global-utils/notifications/notify.js";
 
 export default function RefundOrder(
@@ -23,7 +22,7 @@ export default function RefundOrder(
 
 	const [soldAmount, setSoldAmount] = useState(soldPartDetails.soldAmount - 1);
 	const [refundAmount, setRefundAmount] = useState(1);
-	const [retainedDiscount, setRetainedDiscount] = useState(() => calculateInitialRetainedDiscount(1, soldPartDetails));
+	const [retainedDiscount, setRetainedDiscount] = useState(() => (soldPartDetails.discount / soldPartDetails.soldAmount) * refundingAmount);
 
 	// You cannot refund more money, if you applied a 100% discount for example.
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
@@ -31,7 +30,7 @@ export default function RefundOrder(
 
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
-		let discount = calculateInitialRetainedDiscount(refundAmountVal, soldPartDetails);
+		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundingAmount;
 		setRefundMoney(refundMoneyValue);
 		setRetainedDiscount(discount);
 	}
