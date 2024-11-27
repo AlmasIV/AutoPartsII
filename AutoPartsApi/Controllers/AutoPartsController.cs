@@ -20,7 +20,7 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("page/{page:int}")]
+	[Route("page/{page:int:range(1, 1000)}")]
 	public async Task<IEnumerable<AutoPart>> GetPage(int page) {
 		int contentCount = 100;
 		return await _appDbContext.AutoParts
@@ -40,7 +40,7 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("{id:int}")]
+	[Route("{id:int:min(1)}")]
 	public async Task<IActionResult> GetAutoPartImages(int id) {
 		/*
 			1) Implement memroy streaming, don't hold images in the memory.

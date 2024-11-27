@@ -19,7 +19,7 @@ public class OrdersController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("pages/{page:int}")]
+	[Route("pages/{page:int:range(1, 1000)}")]
 	public async Task<IEnumerable<ClientOrderModel>> GetOrders(int page) {
 		int contentCount = 100;
 		return await _appDbContext.Orders
@@ -40,7 +40,7 @@ public class OrdersController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("{id:int}")]
+	[Route("{id:int:min(1)}")]
 	public async Task<Object> GetOrder(int id) {
 		var result = await _appDbContext.Orders
 			.Where(order => order.Id == id)
