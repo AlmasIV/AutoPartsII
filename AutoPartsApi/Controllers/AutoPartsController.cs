@@ -42,14 +42,10 @@ public class AutoPartsController : ControllerBase {
 	[HttpGet()]
 	[Route("{id:int:min(1)}")]
 	public async Task<IActionResult> GetAutoPartImages(int id) {
-		/*
-			1) Implement memroy streaming, don't hold images in the memory.
-			2) Improve error-recoverability.
-		*/
-		IEnumerable<Image>? images = _appDbContext.Images
+		List<Image>? images = await _appDbContext.Images
 			.AsNoTracking()
 			.Where(im => im.AutoPartId == id)
-			.Select(im => im);
+			.ToListAsync();
 		if (images is null) {
 			return NotFound();
 		}

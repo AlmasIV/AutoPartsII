@@ -8,6 +8,10 @@ import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.j
 import { KZTFormatter } from "@/global-utils/number-formatters";
 import notify from "@/global-utils/notifications/notify.js";
 
+/*
+	This is a headache. Now, I get it. I understand why tests matter. Thank God that the only person that works with this mess is just me. I hope it will be me forever, because I wish no struggle to others.
+*/
+
 export default function RefundOrder(
 	{
 		soldPartDetails,
@@ -26,7 +30,6 @@ export default function RefundOrder(
 
 	// You cannot refund more money, if you applied a 100% discount for example.
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
-
 
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
@@ -112,6 +115,7 @@ export default function RefundOrder(
 				}
 			}
 			else {
+				soldPartDetails.soldAmount -= refundAmount;
 				setRefundAmount(1);
 				setSoldAmount(soldPartDetails.soldAmount - 1);
 				calculateRefundingPrice(1);
@@ -121,7 +125,7 @@ export default function RefundOrder(
 						totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney,
 						soldParts: [...orderedParts.soldParts.filter((sp) => {
 							return sp.soldPart.id !== soldPartDetails.soldPart.id;
-						}), { ...soldPartDetails, price: soldPartDetails.price - computedRefundMoney, soldAmount: soldPartDetails.soldAmount - refundAmount, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
+						}), { ...soldPartDetails, price: soldPartDetails.price - computedRefundMoney, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
 					}
 				);
 				ordersState.setOrders(
