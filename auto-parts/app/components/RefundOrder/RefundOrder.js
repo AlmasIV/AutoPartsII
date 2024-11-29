@@ -33,7 +33,7 @@ export default function RefundOrder(
 
 	function calculateRefundingPrice(refundAmountVal) {
 		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
-		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmount;
+		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmountVal;
 		setRefundMoney(refundMoneyValue);
 		setRetainedDiscount(discount);
 	}
@@ -173,13 +173,7 @@ export default function RefundOrder(
 								<h3>Refunding Amount: {refundAmount}</h3>
 								<NumberController
 									updater={(newRefundAmount) => {
-										if(!isSending) {
-											if(newRefundAmount > soldPartDetails.soldAmount) {
-												newRefundAmount = soldPartDetails.soldAmount;
-											}
-											else if(newRefundAmount < 1) {
-												newRefundAmount = 1;
-											}
+										if(!isSending && newRefundAmount <= soldPartDetails.soldAmount && newRefundAmount > 0) {
 											setSoldAmount(soldPartDetails.soldAmount - newRefundAmount);
 											setRefundAmount(newRefundAmount);
 											calculateRefundingPrice(newRefundAmount);
