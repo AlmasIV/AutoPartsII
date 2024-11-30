@@ -129,15 +129,7 @@ export default function RefundOrder(
 					}
 				);
 				ordersState.setOrders(
-					[
-						...ordersState.orders.filter((o) => {
-							return o.id !== orderedParts.id;
-						}),
-						{
-							...ordersState.orders.find((o) => o.id === orderedParts.id),
-							totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney
-						}
-					].sort((o1, o2) => o2.id - o1.id)
+					ordersState.orders.map((o) => o.id === orderedParts.id ? { ...o, totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney } : o)
 				);
 			}
 		}
