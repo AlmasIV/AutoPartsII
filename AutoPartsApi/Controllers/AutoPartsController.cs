@@ -65,11 +65,6 @@ public class AutoPartsController : ControllerBase {
 	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
-		/*
-			1) Compress images, if so then I also need to decompress them.
-			2) Sanitize file names, and add GUIDs to file names.
-			3) Check files with anti-virus systems.
-		*/
 		List<Image> autoPartImages = new List<Image>();
 		Image? image = null;
 		foreach (IFormFile file in images) {
