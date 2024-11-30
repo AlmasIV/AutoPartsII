@@ -74,17 +74,6 @@ public class OrdersController : ControllerBase {
 	[Route("refund")]
 	[TypeFilter(typeof(RefundValidationAttribute))]
 	public async Task<IActionResult> RefundAutoPart(RefundModel refundModel) {
-		Console.WriteLine(
-			$"""
-				In The Controller.
-				Refund Model Received:
-					Auto Part Id: {refundModel.AutoPartId}
-					Order Id: {refundModel.OrderId}
-					Refund Amount: {refundModel.RefundAmount}
-					Refund Money: {refundModel.RefundMoney}
-					Retained Discount: {refundModel.RetainedDiscount}
-			"""
-		);
 		Order order = await _appDbContext.Orders
 			.Include(o => o.AutoPartsSoldAmounts
 					.Where(aps => aps.AutoPartId == refundModel.AutoPartId))

@@ -12,6 +12,9 @@ export async function postProtected(url, request, isFormData = false, isReturnRe
             },
             body: isFormData ? body : JSON.stringify(body)
         });
+        const res = await response.json();
+        console.log("In the TRY:");
+        console.log(res);
         if(!response.ok) {
             return getResponse("Couldn't post the data.", 500, "Internal Server Error");
         }
@@ -20,6 +23,8 @@ export async function postProtected(url, request, isFormData = false, isReturnRe
         }
     }
     catch(error) {
+        console.log("In the CATCH:");
+        console.log(response);
         return getResponse("Something went wrong.", 500, "Internal Server Error");
     }
 }

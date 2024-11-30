@@ -122,8 +122,18 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
 
+		Console.WriteLine($"""
+			Refund Model:
+				Refund Amount: {refund.RefundAmount}
+				Retained Discount: {refund.RetainedDiscount}
+		""");
 
-		if(refund.RefundMoney != calculatedRefundMoney) {
+		Console.WriteLine($"""
+			The Refund Money: {refund.RefundMoney}
+			Calculated Refund Monay: {calculatedRefundMoney}
+		""");
+
+		if(refund.RefundMoney != Math.Round(calculatedRefundMoney, 2)) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
