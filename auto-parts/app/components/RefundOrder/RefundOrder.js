@@ -5,7 +5,7 @@ import { NotificationBoxContext } from "@/app/components/NotificationBox/Notific
 import { Modal, ErrorBox, NumberController, Button } from "@/app/components/Index.js";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.js";
-import { KZTFormatter } from "@/global-utils/number-formatters";
+import { KZTFormatter, roundNumberToTwoDecimalPoints } from "@/global-utils/number-formatters/index.js";
 import notify from "@/global-utils/notifications/notify.js";
 
 /*
@@ -32,7 +32,7 @@ export default function RefundOrder(
 	const [refundMoney, setRefundMoney] = useState(soldPartDetails.price > 0 ? soldPartDetails.soldPart.priceInKzt : 0);
 
 	function calculateRefundingPrice(refundAmountVal) {
-		let refundMoneyValue = refundAmountVal * soldPartDetails.soldPart.priceInKzt;
+		let refundMoneyValue = roundNumberToTwoDecimalPoints(refundAmountVal * soldPartDetails.soldPart.priceInKzt);
 		let discount = (soldPartDetails.discount / soldPartDetails.soldAmount) * refundAmountVal;
 		setRefundMoney(refundMoneyValue);
 		setRetainedDiscount(discount);
