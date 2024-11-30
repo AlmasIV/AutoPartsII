@@ -123,9 +123,7 @@ export default function RefundOrder(
 					{
 						...orderedParts,
 						totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney,
-						soldParts: [...orderedParts.soldParts.filter((sp) => {
-							return sp.soldPart.id !== soldPartDetails.soldPart.id;
-						}), { ...soldPartDetails, price: soldPartDetails.price - computedRefundMoney, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } }].sort((a, b) => a.soldPart.id - b.soldPart.id)
+						soldParts: orderedParts.soldParts.map((sp) => sp.soldPart.id === soldPartDetails.soldPart.id ? { ...soldPartDetails, price: soldPartDetails.price - computedRefundMoney, soldPart: { ...soldPartDetails.soldPart, amount: soldPartDetails.soldPart.amount + refundAmount } } : sp)
 					}
 				);
 				ordersState.setOrders(
