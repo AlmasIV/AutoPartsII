@@ -1,4 +1,4 @@
-using System.IO.Compression;
+using System.Text;
 
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Filters;
@@ -41,24 +41,27 @@ public class AutoPartsController : ControllerBase {
 
 	[HttpGet()]
 	[Route("{id:int:min(1)}")]
-	public async Task<IActionResult> GetAutoPartImages(int id) {
-		List<Image>? images = await _appDbContext.Images
-			.AsNoTracking()
-			.Where(im => im.AutoPartId == id)
-			.ToListAsync();
-		if (images is null) {
-			return NotFound();
+	public async Task GetAutoPartImages(int id) {
+		bool isAnyImage = await _appDbContext.Images
+			.Where(i => i.AutoPartId == id)
+			.AnyAsync();
+		
+		if(!isAnyImage) {
+			Response.StatusCode = StatusCodes.Status204NoContent;
+			return;
 		}
-		using (MemoryStream memoryStream = new MemoryStream()) {
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true)) {
-				foreach (Image image in images) {
-					ZipArchiveEntry entry = archive.CreateEntry(image.Title, CompressionLevel.Fastest);
-					using (Stream entryStream = entry.Open()) {
-						await entryStream.WriteAsync(image.Data, 0, image.Data.Length);
-					}
-				}
-			}
-			return File(memoryStream.ToArray(), "application/zip", "images/zip");
+
+		Response.ContentType = "application/octet-stream";
+
+		IAsyncEnumerable<Image> images = _appDbContext.Images
+			.AsNoTracking()
+			.Where(i => i.AutoPartId == id)
+			.AsAsyncEnumerable();
+
+		await foreach(Image image in images) {
+			byte[] headerBytes = Encoding.UTF8.GetBytes($"{image.Title}\n");
+			await Response.Body.WriteAsync(headerBytes, 0, headerBytes.Length);
+			await Response.Body.WriteAsync(image.Data, 0, image.Data.Length);
 		}
 	}
 
@@ -71,7 +74,7 @@ public class AutoPartsController : ControllerBase {
 			using (MemoryStream memoryStream = new MemoryStream()) {
 				await file.CopyToAsync(memoryStream);
 				image = new Image() {
-					Title = file.FileName,
+					Title = Path.GetFileName(file.FileName),
 					Data = memoryStream.ToArray(),
 					ContentType = file.ContentType
 				};
