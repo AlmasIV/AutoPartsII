@@ -24,6 +24,7 @@ import NumberController from "./NumberController/NumberController.js";
 import DiscountApplier from "./DiscountApplier/DiscountApplier.js";
 import RefundOrder from "./RefundOrder/RefundOrder.js";
 import EmailAndPasswordInputs from "./EmailAndPasswordInputs/EmailAndPasswordInputs.js";
+import AutoPartImageViewer from "./AutoPartImageViewer/AutoPartImageViewer.js";
 
 export {
     NavBar,
@@ -51,5 +52,6 @@ export {
     NumberController,
     DiscountApplier,
     RefundOrder,
-    EmailAndPasswordInputs
+    EmailAndPasswordInputs,
+    AutoPartImageViewer
 };

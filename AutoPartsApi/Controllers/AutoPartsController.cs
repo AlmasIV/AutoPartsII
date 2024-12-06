@@ -42,14 +42,18 @@ public class AutoPartsController : ControllerBase {
 	[HttpGet()]
 	[Route("{id:int:min(1)}")]
 	public async Task GetAutoPartImages(int id) {
+		Console.WriteLine($"The action handler starts for the {id}.");
 		bool isAnyImage = await _appDbContext.Images
 			.Where(i => i.AutoPartId == id)
 			.AnyAsync();
 		
 		if(!isAnyImage) {
 			Response.StatusCode = StatusCodes.Status204NoContent;
+			Console.WriteLine($"No Images For The {id}.");
 			return;
 		}
+
+		Console.WriteLine($"Starting The Stream For The {id}.");
 
 		Response.ContentType = "application/octet-stream";
 
@@ -63,6 +67,7 @@ public class AutoPartsController : ControllerBase {
 			await Response.Body.WriteAsync(headerBytes, 0, headerBytes.Length);
 			await Response.Body.WriteAsync(image.Data, 0, image.Data.Length);
 		}
+		Console.WriteLine($"Stream has ended successfully.");
 	}
 
 	[HttpPost()]
