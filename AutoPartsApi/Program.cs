@@ -27,6 +27,8 @@ public class Program {
 
 		builder.Services.AddControllers();
 
+		builder.Services.AddProblemDetails();
+
 		builder.Services.AddHttpLogging(options => { });
 
 		builder.Services.AddCors(options => {
