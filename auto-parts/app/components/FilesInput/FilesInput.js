@@ -16,7 +16,7 @@ export default function FilesInput(
 ) {
 	const [files, setFiles] = useState([]);
 	function handleFilesChange(event) {
-		const validFiles = event.target.files.filter((file) => accept.includes(file.type) && !files.some((f) => f.name === file.name && f.size === file.size && f.lastModified === file.lastModified));
+		const validFiles = Array.from(event.target.files).filter((file) => accept.includes(file.type) && !files.some((f) => f.name === file.name && f.size === file.size && f.lastModified === file.lastModified));
 		if(validFiles.length > 0) {
 			setFiles([...files, ...validFiles]);
 		}
