@@ -88,22 +88,17 @@ public class Program {
 
 		builder.Services.AddSingleton<AbstractTokenGenerator, TokenGenerator>();
 
-		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddSwaggerGen();
-
 		var app = builder.Build();
 
 		app.UseHttpLogging();
 
-		if (app.Environment.IsDevelopment()) {
-			app.UseSwagger();
-			app.UseSwaggerUI();
+		app.UseExceptionHandler();
+
+		if(app.Environment.IsDevelopment()) {
 			app.UseDeveloperExceptionPage();
 		}
-		else {
-			// Remember to add it.
-			app.UseExceptionHandler("/error");
-		}
+
+		app.UseStatusCodePages();
 
 		//app.UseHttpsRedirection();
 
