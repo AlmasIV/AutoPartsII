@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
@@ -6,6 +7,7 @@ using AutoPartsApi.Utils;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +25,6 @@ namespace AutoPartsApi;
 public class Program {
 	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
-
-		builder.Services.AddProblemDetails();
 
 		builder.WebHost.ConfigureKestrel(options => {
 			options.Limits.MaxRequestBodySize = 15 * 1024 * 1024;
@@ -93,17 +93,39 @@ public class Program {
 
 		var app = builder.Build();
 
-		app.UseExceptionHandler();
+		app.UseExceptionHandler(errorApp => {
+			errorApp.Run(async context => {
+				ILogger logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+				Exception? exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
 
-		app.UseStatusCodePages(async appBuilder => {
-			HttpResponse response = appBuilder.HttpContext.Response;
+				ProblemDetails problemDetails = new ProblemDetails() {
+					Title = "An unexpected error occurred.",
+					Status = StatusCodes.Status500InternalServerError,
+					Detail = "This was an unexpected error, please contact the developers.",
+					Instance = context.Request.Path
+				};
+
+				string traceId = Activity.Current?.TraceId.ToString() ?? context.TraceIdentifier ?? "No Trace Identifier";
+
+				logger.LogError(exception, "Something went wrong. Trace Identifier:  {traceId}.", traceId);
+
+				context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				context.Response.ContentType = "application/problem+json";
+
+				await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+			});
+		});
+
+		app.UseStatusCodePages(async context => {
+			ILogger logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+			HttpResponse response = context.HttpContext.Response;
 			ProblemDetails problemDetails = new ProblemDetails() {
 				Status = response.StatusCode,
 				Title = HttpStatusTextProvider.GetHttpStatusText(response.StatusCode),
-				Instance = appBuilder.HttpContext.Request.Path
+				Instance = context.HttpContext.Request.Path
 			};
-
-			problemDetails.Extensions["traceId"] = appBuilder.HttpContext.TraceIdentifier;
+			string traceId = Activity.Current?.TraceId.ToString() ?? context.HttpContext.TraceIdentifier ?? "No Trace Identifier";
+			problemDetails.Extensions["traceId"] = traceId;
 
 			response.ContentType = "application/problem+json";
 
@@ -112,11 +134,9 @@ public class Program {
 
 		//app.UseHttpLogging();
 
-
 		if (app.Environment.IsDevelopment()) {
 			app.UseDeveloperExceptionPage();
 		}
-
 
 		//app.UseHttpsRedirection();
 
@@ -125,6 +145,10 @@ public class Program {
 		app.UseAuthentication();
 
 		app.UseAuthorization();
+
+		app.Map("throw", (handler) => {
+			throw new Exception("OOPPPS");
+		});
 
 		app.MapControllers();
 
