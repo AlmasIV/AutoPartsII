@@ -1,10 +1,13 @@
 using System.Text;
+using System.Text.Json;
 
 using AutoPartsApi.Services;
+using AutoPartsApi.Utils;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,13 +24,13 @@ public class Program {
 	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
 
+		builder.Services.AddProblemDetails();
+
 		builder.WebHost.ConfigureKestrel(options => {
 			options.Limits.MaxRequestBodySize = 15 * 1024 * 1024;
 		});
 
 		builder.Services.AddControllers();
-
-		builder.Services.AddProblemDetails();
 
 		builder.Services.AddHttpLogging(options => { });
 
@@ -90,15 +93,30 @@ public class Program {
 
 		var app = builder.Build();
 
-		app.UseHttpLogging();
-
 		app.UseExceptionHandler();
 
-		if(app.Environment.IsDevelopment()) {
+		app.UseStatusCodePages(async appBuilder => {
+			HttpResponse response = appBuilder.HttpContext.Response;
+			ProblemDetails problemDetails = new ProblemDetails() {
+				Status = response.StatusCode,
+				Title = HttpStatusTextProvider.GetHttpStatusText(response.StatusCode),
+				Instance = appBuilder.HttpContext.Request.Path
+			};
+
+			problemDetails.Extensions["traceId"] = appBuilder.HttpContext.TraceIdentifier;
+
+			response.ContentType = "application/problem+json";
+
+			await response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+		});
+
+		//app.UseHttpLogging();
+
+
+		if (app.Environment.IsDevelopment()) {
 			app.UseDeveloperExceptionPage();
 		}
 
-		app.UseStatusCodePages();
 
 		//app.UseHttpsRedirection();
 
