@@ -23,10 +23,8 @@ export default function AutoPartImageViewer(
 				});
 				redirectIfCan(response);
 				if(!response.ok) {
-					console.log("The response is not ok!");
 					const resultJson = await response.json();
-					console.log(resultJson);
-					setError(new Error("The response is not ok!"));
+					setError(new Error(resultJson));
 				}
 				const reader = response.body.getReader();
 				const decoder = new TextDecoder("utf-8");
@@ -61,7 +59,7 @@ export default function AutoPartImageViewer(
 						}
 					}
 				}
-				if(imageChunks.length > 0 && titleBuffer.trim()) {
+				if(imageChunks.length > 0) {
 					const blob = new Blob([new Uint8Array(imageChunks)], { type: "image/jpeg" });
 					imageObjs.push({ src: URL.createObjectURL(blob), altText: titleBuffer.trim() });
 				}
@@ -79,7 +77,6 @@ export default function AutoPartImageViewer(
 		fetchImages();
 		return () => abortController.abort();
 	}, [autoPartId]);
-
 	return (
 		<Fragment>
 			{

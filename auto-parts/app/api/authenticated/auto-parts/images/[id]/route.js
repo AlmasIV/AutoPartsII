@@ -3,7 +3,6 @@ import getResponse from "@/global-utils/response-initializer/getResponse.js";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
-	console.log("GET WAS CALLED");
 	if(canBeCastedToPositiveInteger(params.id)) {
 		try {
 			const token = request.cookies.get("jwt");
@@ -15,20 +14,15 @@ export async function GET(request, { params }) {
 				}
 			});
 			if(!result.ok) {
-				console.log("The result is not ok!");
-				const errorJson = await result.json();
-				console.log(errorJson);
 				return getResponse("Couldn't get the data.", 500, "Internal Server Error");
 			}
 			else {
 				if(result.status === 204) {
-					console.log("You've got no images!");
 					return new Response(null, {
 						status: 204,
 						statusText: "No Content"
 					});
 				}
-				console.log("STREAMING!");
 				return new NextResponse(result.body, {
 					status: result.status,
 					statusText: result.statusText,
@@ -39,8 +33,6 @@ export async function GET(request, { params }) {
 			}
 		}
 		catch(error) {
-			console.log("Catched an error:");
-			console.log(error);
 			return getResponse("Something went wrong.", 500, "Internal Server Error");
 		}
 	}
