@@ -41,23 +41,28 @@ export default function TableOfAutoParts(
                         }
                     </tr>
                 </thead>
-                <tbody>
+                <tbody
+                    onClick={(e) => {
+                        if(!isDescriptionOpen) {
+                            const autoPartRow = e.target.closest("tr");
+                            const autoPartId = autoPartRow?.querySelector("td")?.textContent;
+                            if(autoPartId) {
+                                const autoPart = autoPartsState.autoParts.find((ap) => ap.id === Number(autoPartId));
+                                if(autoPart.amount > 0) {
+                                    onAutoPartSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
+                                }
+                                else {
+                                    notify(globalNotification, `Cannot add, 0 in stock: ${autoPart.name}.`, "danger");
+                                }
+                            }
+                        }
+                    }}
+                >
                     {
                         autoPartsState.autoParts.map((autoPart) => (
                             <tr
                                 key={autoPart.id}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if(!isDescriptionOpen) {
-                                        if(autoPart.amount > 0) {
-                                            onAutoPartSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
-                                        }
-                                        else {
-                                            notify(globalNotification, `Cannot add, 0 in stock: ${autoPart.name}.`, "danger");
-                                        }
-                                    }
-                                }}
-                                className={selectedAutoParts.some(ap => Number(ap.id) === autoPart.id) ? "selected" : ""}
+                                className={selectedAutoParts.some((sp) => sp.id === autoPart.id) ? "selected" : ""}
                             >
                                 {
                                     tableConfigs.map((config) => (
