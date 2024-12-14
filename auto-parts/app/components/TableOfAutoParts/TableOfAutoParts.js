@@ -77,7 +77,7 @@ export default function TableOfAutoParts(
                                                         closeButtonTitle="Back"
                                                         openButtonClass=""
                                                         closeButtonClass="secondary-btn width-full margin-top-05rem"
-                                                        dialogType="adaptive-modal"
+                                                        dialogType="shopping-cart-modal"
                                                         onOpenButtonClick={(e) => {
                                                             isDescriptionOpen = true;
                                                             e.stopPropagation();
@@ -91,7 +91,7 @@ export default function TableOfAutoParts(
                                                             className="flex-container space-between"
                                                         >
                                                             <div
-                                                                className="flex-container space-between flex-column flex-grow-1"
+                                                                className=""
                                                             >
                                                                 <AutoPartForm
                                                                     formTitle="Current Info"
@@ -102,7 +102,7 @@ export default function TableOfAutoParts(
                                                                 />
                                                             </div>
                                                             <div
-                                                                className="flex-container space-between flex-grow-1"
+                                                                className="flex-grow-2"
                                                             >
                                                                 <AutoPartImageViewer
                                                                     autoPartId={autoPart.id}
