@@ -3,6 +3,7 @@
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
 import { Fragment, useEffect, useState } from "react";
 import { Loading } from "@/app/components/Index.js";
+import styles from "./auto-part-image-viewer.module.css";
 
 export default function AutoPartImageViewer(
 	{
@@ -80,7 +81,15 @@ export default function AutoPartImageViewer(
 	return (
 		<Fragment>
 			{
-				error ? <p>Something bad has happened</p> : isPending ? <Loading /> : imageObjects.map((obj) => <img key={obj.altText} src={obj.src} alt={obj.altText} />)
+				error ? <p>Something bad has happened</p> : 
+				isPending ? <Loading /> : 
+				imageObjects.length === 0 ? 
+					<p
+						className={styles["no-image-message"]}
+					>
+						No images were provided.
+					</p> : 
+				imageObjects.map((obj) => <img key={obj.altText} src={obj.src} alt={obj.altText} />)
 			}
 		</Fragment>
 	);
