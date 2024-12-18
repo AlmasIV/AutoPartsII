@@ -6,7 +6,7 @@ import { NotificationBoxContext } from "@/app/components/NotificationBox/Notific
 import { KZTFormatter, RUBFormatter } from "@/global-utils/number-formatters/index.js";
 import onAutoPartSelect from "@/global-utils/component-event-handlers/onAutoPartSelect.js";
 import styles from "./table-of-auto-parts.module.css";
-import { Modal, AutoPartForm, AutoPartImageViewer } from "@/app/components/Index.js";
+import { Modal, AutoPartForm } from "@/app/components/Index.js";
 import notify from "@/global-utils/notifications/notify.js";
 
 export default function TableOfAutoParts(
@@ -87,28 +87,13 @@ export default function TableOfAutoParts(
                                                             e.stopPropagation();
                                                         }}
                                                     >
-                                                        <div
-                                                            className="flex-container space-between"
-                                                        >
-                                                            <div
-                                                                className=""
-                                                            >
-                                                                <AutoPartForm
-                                                                    formTitle="Current Info"
-                                                                    submitButtonTitle="Update"
-                                                                    onSubmit={() => {}}
-                                                                    autoPartsState={autoPartsState}
-                                                                    autoPart={autoPart}
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                className="flex-grow-2"
-                                                            >
-                                                                <AutoPartImageViewer
-                                                                    autoPartId={autoPart.id}
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        <AutoPartForm
+                                                            formTitle="Current Info"
+                                                            submitButtonTitle="Update"
+                                                            onSubmit={() => {}}
+                                                            autoPartsState={autoPartsState}
+                                                            autoPart={autoPart}
+                                                        />
                                                     </Modal>
                                                     : autoPart[config.name]
                                             }
