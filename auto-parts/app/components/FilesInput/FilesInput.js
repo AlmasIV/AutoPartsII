@@ -11,7 +11,8 @@ export default function FilesInput(
 		capture="environment",
 		isMultiple = false,
 		isRequired = false,
-		isDisabled = false
+		isDisabled = false,
+		autoPartId = 0
 	}
 ) {
 	const [files, setFiles] = useState([]);
