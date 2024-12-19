@@ -68,6 +68,7 @@ public class AutoPartsController : ControllerBase {
 	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
+		// Implement a hash comparison to compare files. Should I forbid duplicates?
 		List<Image> autoPartImages = new List<Image>();
 		Image? image = null;
 		foreach (IFormFile file in images) {
