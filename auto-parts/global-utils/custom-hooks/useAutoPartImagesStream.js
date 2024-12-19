@@ -60,13 +60,11 @@ export default function useAutoPartImageStream(autoPartId) {
 								titleBuffer = "";
 								isReadingTitle = false;
 								if(imageChunks.length > 0) {
-									const blob = new Blob([new Uint8Array(imageChunks)], { type: "image/jpeg" });
-									imageObjs.push({ src: URL.createObjectURL(blob), title: title });
+									imageObjs.push(createImageObject(imageChunks, title));
 									imageChunks = [];
 								}
 							}
 							else {
-								// Isn't it better to just collect bytes, and then decode all of it at once?
 								titleBuffer += decoder.decode(new Uint8Array([byte]), { stream: true });
 							}
 						}
@@ -77,8 +75,7 @@ export default function useAutoPartImageStream(autoPartId) {
 				}
 				
 				if(imageChunks.length > 0) {
-					const blob = new Blob([new Uint8Array(imageChunks)], { type: "image/jpeg" });
-					imageObjs.push({ src: URL.createObjectURL(blob), title: titleBuffer.trim() });
+					imageObjs.push(createImageObject(imageChunks, titleBuffer));
 				}
 
 				setImageObjects(imageObjs);
@@ -99,4 +96,11 @@ export default function useAutoPartImageStream(autoPartId) {
 	}, [autoPartId]);
 
 	return { imageObjects, isPending, error };
+}
+
+function createImageObject(imageChunks, title) {
+	return {
+		src: URL.createObjectURL(new Blob([new Uint8Array(imageChunks)], { type: "image/jpeg" })),
+		title: title
+	};
 }
