@@ -77,7 +77,7 @@ export default function TableOfAutoParts(
                                                         closeButtonTitle="Back"
                                                         openButtonClass=""
                                                         closeButtonClass="secondary-btn width-full margin-top-05rem"
-                                                        dialogType="shopping-cart-modal"
+                                                        dialogType="form-modal"
                                                         onOpenButtonClick={(e) => {
                                                             isDescriptionOpen = true;
                                                             e.stopPropagation();
