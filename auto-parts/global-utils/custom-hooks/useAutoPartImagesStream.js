@@ -3,7 +3,10 @@ import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 
 export default function useAutoPartImageStream(autoPartId) {
 	if(!autoPartId) {
-		throw new TypeError("The auto-part-id cannot be a falsy value.");
+		return {
+			imageObjects: null,
+			isPending: false
+		};
 	}
 
 	const [imageObjects, setImageObjects] = useState([]);
