@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Button } from "@/app/components/Index.js";
+import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
 
 export default function FilesInput(
 	{
@@ -16,12 +17,23 @@ export default function FilesInput(
 	}
 ) {
 	const [files, setFiles] = useState([]);
-	function handleFilesChange(event) {
-		const validFiles = Array.from(event.target.files).filter((file) => accept.includes(file.type) && !files.some((f) => f.name === file.name && f.size === file.size && f.lastModified === file.lastModified));
+	function handleFilesChange(filesArray) {
+		const validFiles = filesArray.filter((file) => accept.includes(file.type));
 		if(validFiles.length > 0) {
 			setFiles([...files, ...validFiles]);
 		}
 	}
+
+	const {
+		files: streamedImages,
+		isPending: isStreamingImagesPending,
+		error: streamError
+	} = useFilesStream(`/api/authenticated/auto-parts/images/${autoPartId}`);
+
+	if(streamedImages && !streamError) {
+		handleFilesChange(Array.from(streamedImages));
+	}
+
 	return (
 		<Fragment>
 			<p
@@ -45,7 +57,9 @@ export default function FilesInput(
 					capture={capture}
 					name={name}
 					required={isRequired}
-					onChange={handleFilesChange}
+					onChange={(e) => {
+						handleFilesChange(Array.from(e.target.files));
+					}}
 					disabled={isDisabled}
 					className="display-none"
 				/>

@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 
-export default function useAutoPartImageStream(autoPartId) {
+export default function useFilesStream(url) {
 	if(!autoPartId) {
 		return {
-			imageObjects: null,
-			isPending: false
+			files: null,
+			isPending: false,
+			error: null
 		};
 	}
 
-	const [imageObjects, setImageObjects] = useState([]);
+	const [files, setFiles] = useState([]);
 	const [isPending, setIsPending] = useState(true);
 	const [error, setError] = useState(null);
 
@@ -20,7 +21,7 @@ export default function useAutoPartImageStream(autoPartId) {
 			setError(null);
 			setIsPending(true);
 			try {
-				const response = await fetch(`/api/authenticated/auto-parts/images/${autoPartId}`, {
+				const response = await fetch(url, {
 					signal: abortController.signal
 				});
 				redirectIfCan(response);
@@ -63,7 +64,7 @@ export default function useAutoPartImageStream(autoPartId) {
 								titleBuffer = "";
 								isReadingTitle = false;
 								if(imageChunks.length > 0) {
-									imageObjs.push(createImageObject(imageChunks, title));
+									imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)])], title));
 									imageChunks = [];
 								}
 							}
@@ -78,10 +79,10 @@ export default function useAutoPartImageStream(autoPartId) {
 				}
 				
 				if(imageChunks.length > 0) {
-					imageObjs.push(createImageObject(imageChunks, titleBuffer));
+					imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)])], title));
 				}
 
-				setImageObjects(imageObjs);
+				setFiles(imageObjs);
 			}
 			catch(streamError) {
 				if(streamError.name !== "AbortError") {
@@ -98,12 +99,5 @@ export default function useAutoPartImageStream(autoPartId) {
 		return () => abortController.abort();
 	}, [autoPartId]);
 
-	return { imageObjects, isPending, error };
-}
-
-function createImageObject(imageChunks, title) {
-	return {
-		src: URL.createObjectURL(new Blob([new Uint8Array(imageChunks)], { type: "image/jpeg" })),
-		title: title
-	};
+	return { files, isPending, error };
 }
