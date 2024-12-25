@@ -18,7 +18,7 @@ import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
 import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
-import FilesInput from "./FilesInput/FilesInput.js";
+import ImagesInput from "./ImagesInput/ImagesInput.js";
 import AutoPartDescription from "./AutoPartDescription/AutoPartDescription.js";
 import NumberController from "./NumberController/NumberController.js";
 import DiscountApplier from "./DiscountApplier/DiscountApplier.js";
@@ -46,7 +46,7 @@ export {
     Loading,
     AccountSettings,
     PageSelector,
-    FilesInput,
+    ImagesInput,
     AutoPartDescription,
     NumberController,
     DiscountApplier,

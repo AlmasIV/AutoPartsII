@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 
-export default function useFilesStream(url) {
-	if(!autoPartId) {
+export default function useFilesStream(url, type) {
+	if(!url) {
 		return {
-			files: null,
+			files: [],
 			isPending: false,
-			error: null
+			streamError: null
 		};
 	}
 
 	const [files, setFiles] = useState([]);
 	const [isPending, setIsPending] = useState(true);
-	const [error, setError] = useState(null);
+	const [streamError, setStreamError] = useState(null);
 
 	useEffect(() => {
 		const abortController = new AbortController();
 
 		const streamImages = async () => {
-			setError(null);
+			setStreamError(null);
 			setIsPending(true);
 			try {
 				const response = await fetch(url, {
@@ -39,15 +39,15 @@ export default function useFilesStream(url) {
 							errorMessage = "Something went wrong while parsing the negative response for images stream.";
 						}
 					}
-					setError(new Error(errorMessage));
+					setStreamError(new Error(errorMessage));
 					return;
 				}
-
 				const reader = response.body.getReader();
 				const decoder = new TextDecoder("utf-8");
 				const imageObjs = [];
 				let imageChunks = [];
 				let titleBuffer = "";
+				let title = "";
 				let isReadingTitle = true;
 
 				while(true) {
@@ -55,16 +55,17 @@ export default function useFilesStream(url) {
 					if(done) {
 						break;
 					}
-
 					for(let i = 0; i < value.length; i ++) {
 						const byte = value[i];
 						if(isReadingTitle) {
 							if(byte === 10) {
-								const title = titleBuffer.trim();
+								title = titleBuffer.trim();
 								titleBuffer = "";
 								isReadingTitle = false;
 								if(imageChunks.length > 0) {
-									imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)])], title));
+									imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
+										type: type
+									}));
 									imageChunks = [];
 								}
 							}
@@ -79,14 +80,16 @@ export default function useFilesStream(url) {
 				}
 				
 				if(imageChunks.length > 0) {
-					imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)])], title));
+					imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
+						type: type
+					}));
 				}
 
 				setFiles(imageObjs);
 			}
 			catch(streamError) {
 				if(streamError.name !== "AbortError") {
-					setError(new Error("Something unexpected happened while streaming data."));
+					setStreamError(new Error("Something unexpected happened while streaming data."));
 				}
 			}
 			finally {
@@ -97,7 +100,7 @@ export default function useFilesStream(url) {
 		streamImages();
 
 		return () => abortController.abort();
-	}, [autoPartId]);
+	}, [url, type]);
 
-	return { files, isPending, error };
+	return { files, isPending, streamError };
 }

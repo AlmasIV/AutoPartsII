@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useContext, useState } from "react";
-import { Input, Button, Form, FilesInput } from "@/app/components/Index.js";
+import { Input, Button, Form, ImagesInput } from "@/app/components/Index.js";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 
@@ -49,11 +49,12 @@ export default function AutoPartForm(
                         )
                     )
                 }
-                <FilesInput
+                <ImagesInput
                     title="Add Images"
                     name="images"
                     accept={["image/jpeg", "image/jpg"]}
                     isMultiple={true}
+                    autoPartId={autoPart?.id}
                 />
                 <Button
                     title={submitButtonTitle}
