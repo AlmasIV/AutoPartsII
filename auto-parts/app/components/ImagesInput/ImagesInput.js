@@ -18,9 +18,6 @@ export default function ImagesInput(
 ) {
 	const [files, setFiles] = useState([]);
 	function handleFilesChange(filesArray) {
-		if(autoPartId === 20) {
-			
-		}
 		const validFiles = filesArray.filter((file) => accept.includes(file.type));
 		if(validFiles.length > 0) {
 			setFiles([...files, ...validFiles]);
@@ -32,10 +29,6 @@ export default function ImagesInput(
 		isPending: isStreamingImagesPending,
 		streamError: streamError
 	} = useFilesStream(autoPartId ? `/api/authenticated/auto-parts/images/${autoPartId}` : "", "image/jpeg");
-
-	if(isStreamingImagesPending && !streamError && files.length > 0) {
-		handleFilesChange(streamedImages);
-	}
 
 	return (
 		<Fragment>
@@ -71,24 +64,16 @@ export default function ImagesInput(
 				className="flex-container flex-wrap overflow-auto small-text"
 			>
 				{
-					files.map((file) => {
+					Array.from([...files, ...(streamError ? [] : streamedImages)]).map((file) => {
 						return (
 							<div
 								key={file.name + file.lastModified + file.size}
 							>
-								{
-									file.type.startsWith("image/") ?
-										<img
-											src={URL.createObjectURL(file)}
-											className="width-full margin-top-05rem"
-											alt={file.name}
-										/> :
-										<p
-											className="margin-top-05rem"
-										>
-											{file.name}
-										</p>
-								}
+								<img
+									src={URL.createObjectURL(file)}
+									className="width-full margin-top-05rem"
+									alt={file.name}
+								/>
 								<Button
 									title="Remove"
 									className="width-full secondary-btn text-center"
