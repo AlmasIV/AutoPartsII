@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
+import generateGUID from "@/global-utils/GUID/generateGUID.js";
 
 export default function useFilesStream(url, type) {
 	if(!url) {
@@ -55,7 +56,7 @@ export default function useFilesStream(url, type) {
 					if(done) {
 						break;
 					}
-					for(let i = 0; i < value.length; i ++) {
+					for(let i = 0; i < value.length; i++) {
 						const byte = value[i];
 						if(isReadingTitle) {
 							if(byte === 10) {
@@ -63,9 +64,13 @@ export default function useFilesStream(url, type) {
 								titleBuffer = "";
 								isReadingTitle = false;
 								if(imageChunks.length > 0) {
-									imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
-										type: type
-									}));
+									imageObjs.push({
+										file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
+											type: type
+										}),
+										id: generateGUID(),
+										isStreamed: true
+									});
 									imageChunks = [];
 								}
 							}
@@ -78,11 +83,15 @@ export default function useFilesStream(url, type) {
 						}
 					}
 				}
-				
+
 				if(imageChunks.length > 0) {
-					imageObjs.push(new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
-						type: type
-					}));
+					imageObjs.push({
+						file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
+							type: type
+						}),
+						id: generateGUID(),
+						isStreamed: true
+					});
 				}
 
 				setFiles(imageObjs);

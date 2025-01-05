@@ -1,8 +1,9 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@/app/components/Index.js";
 import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
+import generateGUID from "@/global-utils/GUID/generateGUID.js";
 
 export default function ImagesInput(
 	{
@@ -18,7 +19,13 @@ export default function ImagesInput(
 ) {
 	const [files, setFiles] = useState([]);
 	function handleFilesChange(filesArray) {
-		const validFiles = filesArray.filter((file) => accept.includes(file.type));
+		const validFiles = filesArray.filter((file) => accept.includes(file.type)).map((fileObj) => {
+			return {
+				file: fileObj,
+				id: generateGUID(),
+				isStreamed: false
+			};
+		});
 		if(validFiles.length > 0) {
 			setFiles([...files, ...validFiles]);
 		}
@@ -65,6 +72,8 @@ export default function ImagesInput(
 			>
 				{
 					Array.from([...files, ...(streamError ? [] : streamedImages)]).map((file) => {
+						console.log("Array from was called with the file: ");
+						console.log(file);
 						return (
 							<div
 								key={file.name + file.lastModified + file.size}
