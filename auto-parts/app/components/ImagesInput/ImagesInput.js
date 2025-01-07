@@ -1,9 +1,11 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState, useContext } from "react";
 import { Button } from "@/app/components/Index.js";
 import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
+import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
+import notify from "@/global-utils/notifications/notify.js";
 
 export default function ImagesInput(
 	{
@@ -18,8 +20,10 @@ export default function ImagesInput(
 	}
 ) {
 	const [files, setFiles] = useState([]);
+	const globalNotification = useContext(NotificationBoxContext);
 	function handleFilesChange(filesArray) {
 		const validFiles = filesArray.filter((file) => accept.includes(file.type)).map((fileObj) => {
+			notify(globalNotification, `The file '${fileObj.name}' was added successfully.`, "success");
 			return {
 				file: fileObj,
 				id: generateGUID(),
@@ -33,6 +37,7 @@ export default function ImagesInput(
 	
 	const {
 		files: streamedImages,
+		setFiles: setStreamedFiles,
 		isPending: isStreamingImagesPending,
 		streamError: streamError
 	} = useFilesStream(autoPartId ? `/api/authenticated/auto-parts/images/${autoPartId}` : "", "image/jpeg");
@@ -71,24 +76,32 @@ export default function ImagesInput(
 				className="flex-container flex-wrap overflow-auto small-text"
 			>
 				{
-					Array.from([...files, ...(streamError ? [] : streamedImages)]).map((file) => {
-						console.log("Array from was called with the file: ");
-						console.log(file);
+					Array.from([...files, ...(streamError ? [] : streamedImages)]).map((fileObj) => {
 						return (
 							<div
-								key={file.name + file.lastModified + file.size}
+								key={fileObj.id}
 							>
 								<img
-									src={URL.createObjectURL(file)}
+									src={URL.createObjectURL(fileObj.file)}
 									className="width-full margin-top-05rem"
-									alt={file.name}
+									alt={fileObj.file.name}
 								/>
 								<Button
 									title="Remove"
 									className="width-full secondary-btn text-center"
 									type="button"
 									onClick={() => {
-										setFiles(files.filter((f) => f.name !== file.name && f.size !== file.size && f.lastModified !== file.lastModified));
+										if(fileObj.isStreamed) {
+											try {
+											}
+											catch {
+												notify(globalNotification, "Something went wrong with the deletion request.", "danger");
+											}
+											setStreamedFiles(streamedImages.filter((f) => f.id !== fileObj.id));
+										}
+										else {
+											setFiles(files.filter((f) => f.id !== fileObj.id));
+										}
 									}}
 								/>
 							</div>
