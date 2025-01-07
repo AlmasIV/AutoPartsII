@@ -6,8 +6,7 @@ export default function useFilesStream(url, type) {
 	if(!url) {
 		return {
 			files: [],
-			isPending: false,
-			streamError: null
+			isPending: false
 		};
 	}
 
@@ -47,8 +46,7 @@ export default function useFilesStream(url, type) {
 				const decoder = new TextDecoder("utf-8");
 				const imageObjs = [];
 				let imageChunks = [];
-				let titleBuffer = "";
-				let title = "";
+				let titleBuffer = "", title = "", imageId = "";
 				let isReadingTitle = true;
 
 				while(true) {
@@ -60,7 +58,8 @@ export default function useFilesStream(url, type) {
 						const byte = value[i];
 						if(isReadingTitle) {
 							if(byte === 10) {
-								title = titleBuffer.trim();
+								imageId = titleBuffer.substring(titleBuffer.lastIndexOf("-") + 1);
+								title = titleBuffer.substring(0, titleBuffer.lastIndexOf("-"));
 								titleBuffer = "";
 								isReadingTitle = false;
 								if(imageChunks.length > 0) {
@@ -68,7 +67,7 @@ export default function useFilesStream(url, type) {
 										file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
 											type: type
 										}),
-										id: generateGUID(),
+										id: imageId,
 										isStreamed: true
 									});
 									imageChunks = [];
@@ -89,7 +88,7 @@ export default function useFilesStream(url, type) {
 						file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
 							type: type
 						}),
-						id: generateGUID(),
+						id: imageId,
 						isStreamed: true
 					});
 				}
@@ -111,5 +110,5 @@ export default function useFilesStream(url, type) {
 		return () => abortController.abort();
 	}, [url, type]);
 
-	return { files, isPending, streamError };
+	return { files, setFiles, isPending, streamError };
 }
