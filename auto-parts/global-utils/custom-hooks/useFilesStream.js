@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
-import generateGUID from "@/global-utils/GUID/generateGUID.js";
 
 export default function useFilesStream(url, type) {
 	if(!url) {
