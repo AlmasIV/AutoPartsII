@@ -1,6 +1,6 @@
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
-export async function postProtected(url, request, isFormData = false, isReturnResult = false) {
+export default async function postProtected(url, request, isFormData = false, isReturnResult = false) {
     try {
         const token = request.cookies.get("jwt");
         const body = isFormData ? (await request.formData()) : (await request.json());
