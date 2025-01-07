@@ -59,7 +59,7 @@ public class AutoPartsController : ControllerBase {
 			.AsAsyncEnumerable();
 
 		await foreach(Image image in images) {
-			byte[] headerBytes = Encoding.UTF8.GetBytes($"{image.Title}\n");
+			byte[] headerBytes = Encoding.UTF8.GetBytes($"{image.Title + "-" + image.Id}\n");
 			await Response.Body.WriteAsync(headerBytes, 0, headerBytes.Length);
 			await Response.Body.WriteAsync(image.Data, 0, image.Data.Length);
 		}
