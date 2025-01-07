@@ -66,6 +66,12 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpPost()]
+	[Route("images/delete/{id:int:min(1)}")]
+	public async Task<IActionResult> DeleteImage(int id) {
+		throw new NotImplementedException();
+	}
+
+	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
 		// Implement a hash comparison to compare files. Should I forbid duplicates?
