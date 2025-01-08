@@ -68,8 +68,8 @@ public class AutoPartsController : ControllerBase {
 	[HttpPost()]
 	[Route("images/delete/{id:int:min(1)}")]
 	public async Task<IActionResult> DeleteImage(int id) {
-		Image? image = await _appDbContext.Images.Where(image => image.Id == id).SingleOrDefaultAsync();
-		if(image is null) {
+		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
+		if(!doesExist) {
 			return BadRequest(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -80,7 +80,9 @@ public class AutoPartsController : ControllerBase {
 				}
 			);
 		}
-		_appDbContext.Remove(image);
+		Image image = new Image() { Id = id };
+		_appDbContext.Entry(image).State = EntityState.Deleted;
+		await _appDbContext.SaveChangesAsync();
 		return Ok();
 	}
 
