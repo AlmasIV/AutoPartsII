@@ -69,13 +69,15 @@ public class UsersController : ControllerBase {
 		IdentityUser? user = await _userManager.FindByEmailAsync(logInModel.Email);
 
 		if (user is null || !(await _userManager.CheckPasswordAsync(user, logInModel.Password))) {
-			return BadRequest(new ProblemDetails() {
-				Title = "User log in failed.",
-				Status = StatusCodes.Status400BadRequest,
-				Detail = "User log in failed.",
-				Instance = HttpContext.Request.Path,
-				Type = null
-			});
+			return BadRequest(
+				new ProblemDetails() {
+					Title = "User log in failed.",
+					Status = StatusCodes.Status400BadRequest,
+					Detail = "User log in failed.",
+					Instance = HttpContext.Request.Path,
+					Type = null
+				}
+			);
 		}
 
 		await _SetTokens(user, Response);
@@ -111,13 +113,15 @@ public class UsersController : ControllerBase {
 		}
 
 		if (savedToken is null || DateTime.Now >= savedToken.ExpirationDateTime) {
-			return BadRequest(new ProblemDetails() {
-				Title = "Refresh token invalid.",
-				Status = StatusCodes.Status400BadRequest,
-				Detail = "Refresh token that was provided is invalid. Try to log-in again.",
-				Instance = HttpContext.Request.Path,
-				Type = null
-			});
+			return BadRequest(
+				new ProblemDetails() {
+					Title = "Refresh token invalid.",
+					Status = StatusCodes.Status400BadRequest,
+					Detail = "Refresh token that was provided is invalid. Try to log-in again.",
+					Instance = HttpContext.Request.Path,
+					Type = null
+				}
+			);
 		}
 
 		await _SetTokens(savedToken.User, Response);

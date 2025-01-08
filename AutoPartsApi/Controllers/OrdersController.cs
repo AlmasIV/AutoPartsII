@@ -59,13 +59,15 @@ public class OrdersController : ControllerBase {
 			.SingleOrDefaultAsync();
 
 		if (result is null) {
-			return BadRequest(new ProblemDetails() {
-				Status = StatusCodes.Status400BadRequest,
-				Title = "Requesting inexistent order.",
-				Detail = "The requested resource wasn't found. Contact the devs.",
-				Instance = null,
-				Type = null
-			});
+			return BadRequest(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "Requesting inexistent order.",
+					Detail = "The requested resource wasn't found. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
 		}
 		return result;
 	}

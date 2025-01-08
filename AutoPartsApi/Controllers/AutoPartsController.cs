@@ -68,7 +68,20 @@ public class AutoPartsController : ControllerBase {
 	[HttpPost()]
 	[Route("images/delete/{id:int:min(1)}")]
 	public async Task<IActionResult> DeleteImage(int id) {
-		throw new NotImplementedException();
+		Image? image = await _appDbContext.Images.Where(image => image.Id == id).SingleOrDefaultAsync();
+		if(image is null) {
+			return BadRequest(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "The image doesn't exist.",
+					Detail = "The requested resource wasn't found. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+		}
+		_appDbContext.Remove(image);
+		return Ok();
 	}
 
 	[HttpPost()]
