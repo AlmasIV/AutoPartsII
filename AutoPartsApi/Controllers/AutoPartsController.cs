@@ -65,7 +65,7 @@ public class AutoPartsController : ControllerBase {
 		}
 	}
 
-	[HttpPost()]
+	[HttpDelete()]
 	[Route("images/delete/{id:int:min(1)}")]
 	public async Task<IActionResult> DeleteImage(int id) {
 		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);

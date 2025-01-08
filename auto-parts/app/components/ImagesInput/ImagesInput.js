@@ -94,7 +94,9 @@ export default function ImagesInput(
 									onClick={async () => {
 										if(fileObj.isStreamed) {
 											try {
-												const response = await fetch(`/api/authenticated/auto-parts/images/delete/${fileObj.id}`);
+												const response = await fetch(`/api/authenticated/auto-parts/images/delete/${fileObj.id}`, {
+													method: "DELETE"
+												});
 												redirectIfCan(response);
 												if(!response.ok) {
 													notify(globalNotification, `Something went wrong. Couldn't delete the image.`, "danger");
