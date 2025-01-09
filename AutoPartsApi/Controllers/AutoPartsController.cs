@@ -65,27 +65,6 @@ public class AutoPartsController : ControllerBase {
 		}
 	}
 
-	[HttpDelete()]
-	[Route("images/delete/{id:int:min(1)}")]
-	public async Task<IActionResult> DeleteImage(int id) {
-		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
-		if(!doesExist) {
-			return BadRequest(
-				new ProblemDetails() {
-					Status = StatusCodes.Status400BadRequest,
-					Title = "The image doesn't exist.",
-					Detail = "The requested resource wasn't found. Contact the devs.",
-					Instance = null,
-					Type = null
-				}
-			);
-		}
-		Image image = new Image() { Id = id };
-		_appDbContext.Entry(image).State = EntityState.Deleted;
-		await _appDbContext.SaveChangesAsync();
-		return Ok();
-	}
-
 	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
@@ -107,6 +86,13 @@ public class AutoPartsController : ControllerBase {
 		await _appDbContext.AutoParts.AddAsync(autoPart);
 		await _appDbContext.SaveChangesAsync();
 		return Ok(autoPart);
+	}
+
+	[HttpPut()]
+	[Route("update/{id:int:min(1)}")]
+	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
+		
+		throw new NotImplementedException();
 	}
 
 	[HttpPost()]
