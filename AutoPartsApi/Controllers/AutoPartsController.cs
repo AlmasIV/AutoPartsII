@@ -45,8 +45,8 @@ public class AutoPartsController : ControllerBase {
 		bool isAnyImage = await _appDbContext.Images
 			.Where(i => i.AutoPartId == id)
 			.AnyAsync();
-		
-		if(!isAnyImage) {
+
+		if (!isAnyImage) {
 			Response.StatusCode = StatusCodes.Status204NoContent;
 			return;
 		}
@@ -58,7 +58,7 @@ public class AutoPartsController : ControllerBase {
 			.Where(i => i.AutoPartId == id)
 			.AsAsyncEnumerable();
 
-		await foreach(Image image in images) {
+		await foreach (Image image in images) {
 			byte[] headerBytes = Encoding.UTF8.GetBytes($"{image.Title + "-" + image.Id}\n");
 			await Response.Body.WriteAsync(headerBytes, 0, headerBytes.Length);
 			await Response.Body.WriteAsync(image.Data, 0, image.Data.Length);
@@ -94,6 +94,26 @@ public class AutoPartsController : ControllerBase {
 	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
 
 		throw new NotImplementedException();
+	}
+	[HttpDelete()]
+	[Route("images/delete/{id:int:min(1)}")]
+	public async Task<IActionResult> DeleteImage(int id) {
+		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
+		if (!doesExist) {
+			return BadRequest(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "The image doesn't exist.",
+					Detail = "The requested resource wasn't found. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+		}
+		Image image = new Image() { Id = id };
+		_appDbContext.Entry(image).State = EntityState.Deleted;
+		await _appDbContext.SaveChangesAsync();
+		return Ok();
 	}
 
 	[HttpPost()]

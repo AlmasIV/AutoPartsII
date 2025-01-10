@@ -6,13 +6,14 @@ import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import notify from "@/global-utils/notifications/notify.js";
+import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
 
 export default function ImagesInput(
 	{
 		title,
 		name,
 		accept,
-		capture="environment",
+		capture = "environment",
 		isMultiple = false,
 		isRequired = false,
 		isDisabled = false,
@@ -34,7 +35,7 @@ export default function ImagesInput(
 			setFiles([...files, ...validFiles]);
 		}
 	}
-	
+
 	const {
 		files: streamedImages,
 		setFiles: setStreamedFiles,
@@ -90,14 +91,27 @@ export default function ImagesInput(
 									title="Remove"
 									className="width-full secondary-btn text-center"
 									type="button"
-									onClick={() => {
+									onClick={async () => {
 										if(fileObj.isStreamed) {
-											setStreamedFiles(streamedImages.filter((f) => f.id !== fileObj.id));
+											try {
+												const response = await fetch(`/api/authenticated/auto-parts/images/delete/${fileObj.id}`, {
+													method: "DELETE"
+												});
+												redirectIfCan(response);
+												if(!response.ok) {
+													notify(globalNotification, "Something went wrong. The deletion request was unsuccessful.", "danger");
+													return;
+												}
+												setStreamedFiles(streamedImages.filter((f) => f.id !== fileObj.id));
+												notify(globalNotification, `The image was successfully deleted from the database.`, "warning");
+											}
+											catch {
+												notify(globalNotification, "Something went wrong with the deletion request.", "danger");
+											}
 										}
 										else {
 											setFiles(files.filter((f) => f.id !== fileObj.id));
 										}
-										notify(globalNotification, "The image was removed from the auto-part description.", "info");
 									}}
 								/>
 							</div>
