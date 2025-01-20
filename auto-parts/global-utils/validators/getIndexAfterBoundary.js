@@ -1,4 +1,7 @@
-export default function getIndexAfterBoundary(source, boundary) {
+export default function getIndexAfterBoundary(startIndex, source, boundary) {
+	if(startIndex < 0 || startIndex >= source.length) {
+		throw new TypeError("The starting index must be greator than zero and less than the source's length.");
+	}
 	if(!(source instanceof Uint8Array) || !(boundary instanceof Uint8Array)) {
 		throw new TypeError("Both inputs must be UInt8Array typed arrays.");
 	}
