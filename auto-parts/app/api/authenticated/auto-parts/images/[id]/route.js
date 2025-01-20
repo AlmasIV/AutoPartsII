@@ -6,28 +6,29 @@ export async function GET(request, { params }) {
 	if(canBeCastedToPositiveInteger(params.id)) {
 		try {
 			const token = request.cookies.get("jwt");
-			const result = await fetch(`${process.env.API_URL}/auto-parts/${params.id}`, {
+			const response = await fetch(`${process.env.API_URL}/auto-parts/${params.id}`, {
 				method: "GET",
 				cache: "no-cache",
 				headers: {
 					"Authorization": `Bearer ${token.value}`
 				}
 			});
-			if(!result.ok) {
+			if(!response.ok) {
 				return getResponse("Couldn't get the data.", 500, "Internal Server Error");
 			}
 			else {
-				if(result.status === 204) {
+				if(response.status === 204) {
 					return new Response(null, {
 						status: 204,
 						statusText: "No Content"
 					});
 				}
-				return new NextResponse(result.body, {
-					status: result.status,
-					statusText: result.statusText,
+
+				return new NextResponse(response.body, {
+					status: response.status,
+					statusText: response.statusText,
 					headers: {
-						"Content-Type": "application/octet-stream"
+						"Content-Type": response.headers.get("Content-Type")
 					}
 				});
 			}
