@@ -9,7 +9,7 @@ export default function getIndexAfterBoundary(startIndex, source, boundary) {
 		throw new TypeError("The source array is smaller than the boundary array.");
 	}
 	let j = 0, i;
-	for(i = 0; i < source.length; i++) {
+	for(i = startIndex; i < source.length; i++) {
 		if(source[i] === boundary[j]) {
 			j++;
 			if(j === boundary.length) {

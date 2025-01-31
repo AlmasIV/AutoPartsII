@@ -51,18 +51,32 @@ public class AutoPartsController : ControllerBase {
 			return;
 		}
 
-		Response.ContentType = "application/octet-stream";
-
 		IAsyncEnumerable<Image> images = _appDbContext.Images
 			.AsNoTracking()
 			.Where(i => i.AutoPartId == id)
 			.AsAsyncEnumerable();
 
-		await foreach (Image image in images) {
-			byte[] headerBytes = Encoding.UTF8.GetBytes($"{image.Title + "-" + image.Id}\n");
+		string multipartBoundary = "auto-part-images-boundary";
+
+		Response.ContentType = $"multipart/mixed; boundary={multipartBoundary}";
+
+		byte[] headerBytes;
+		byte[] endBoundary = Encoding.UTF8.GetBytes($"\r\n--{multipartBoundary}--\r\n");
+
+		await foreach(Image image in images) {
+			headerBytes = Encoding.UTF8.GetBytes(
+				$"--{multipartBoundary}\r\n" +
+				$"Content-Type: {image.ContentType}\r\n" +
+				$"X-Title: {image.Title}\r\n" +
+				$"X-Id: {image.Id}\r\n" +
+				$"X-Image-Length: {image.Data.Length}\r\n\r\n"
+			);
+
 			await Response.Body.WriteAsync(headerBytes, 0, headerBytes.Length);
+
 			await Response.Body.WriteAsync(image.Data, 0, image.Data.Length);
 		}
+		await Response.Body.WriteAsync(endBoundary, 0, endBoundary.Length);
 	}
 
 	[HttpPost()]
@@ -91,10 +105,10 @@ public class AutoPartsController : ControllerBase {
 	[HttpPut()]
 	[Route("update/{id:int:min(1)}")]
 	[TypeFilter(typeof(AutoPartUpdateValidationAttribute))]
-	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
-
+	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart) {
 		throw new NotImplementedException();
 	}
+
 	[HttpDelete()]
 	[Route("images/delete/{id:int:min(1)}")]
 	public async Task<IActionResult> DeleteImage(int id) {

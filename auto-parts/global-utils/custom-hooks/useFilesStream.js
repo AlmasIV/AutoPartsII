@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
+import getIndexAfterBoundary from "@/global-utils/validators/getIndexAfterBoundary.js";
+
+const emptyResult = {
+	files: [],
+	isPending: false
+};
 
 export default function useFilesStream(url, type) {
 	if(!url) {
-		return {
-			files: [],
-			isPending: false
-		};
+		return emptyResult;
 	}
 
 	const [files, setFiles] = useState([]);
@@ -41,62 +44,73 @@ export default function useFilesStream(url, type) {
 					setStreamError(new Error(errorMessage));
 					return;
 				}
+				if(response.status === 204) {
+					return emptyResult;
+				}
 				const reader = response.body.getReader();
-				const decoder = new TextDecoder("utf-8");
-				const imageObjs = [];
-				let imageChunks = [];
-				let titleBuffer = "", title = "", imageId = "";
-				let isReadingTitle = true;
-
+				const streamChunks = [];
+				let streamedBytesLength = 0;
 				while(true) {
 					const { value, done } = await reader.read();
+					if(value) {
+						streamChunks.push(value);
+						streamedBytesLength += value.length;
+					}
 					if(done) {
 						break;
 					}
-					for(let i = 0; i < value.length; i++) {
-						const byte = value[i];
-						if(isReadingTitle) {
-							if(byte === 10) {
-								imageId = titleBuffer.substring(titleBuffer.lastIndexOf("-") + 1);
-								title = titleBuffer.substring(0, titleBuffer.lastIndexOf("-"));
-								titleBuffer = "";
-								isReadingTitle = false;
-								if(imageChunks.length > 0) {
-									imageObjs.push({
-										file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
-											type: type
-										}),
-										id: imageId,
-										isStreamed: true
-									});
-									imageChunks = [];
-								}
-							}
-							else {
-								titleBuffer += decoder.decode(new Uint8Array([byte]), { stream: true });
-							}
-						}
-						else {
-							imageChunks.push(byte);
-						}
-					}
 				}
+				let offset = 0;
+				const streamAsUint8Array = new Uint8Array(streamedBytesLength);
+				streamChunks.forEach((subArray) => {
+					streamAsUint8Array.set(subArray, offset);
+					offset += subArray.length;
+				});
 
-				if(imageChunks.length > 0) {
-					imageObjs.push({
-						file: new File([new Blob([new Uint8Array(imageChunks)], { type: type })], title, {
-							type: type
-						}),
-						id: imageId,
+				const encoder = new TextEncoder();
+				const decoder = new TextDecoder("utf-8");
+
+				const contentType = response.headers.get("Content-Type");
+				const boundary = contentType.slice(contentType.lastIndexOf("boundary=") + 9);
+
+				const headerStartingBoundaryBytes = encoder.encode(`--${boundary}\r\n`);
+				const imageStartingBoundaryBytes = encoder.encode("\r\n\r\n");
+				const streamEndingBoundaryBytes = encoder.encode(`\r\n--${boundary}--\r\n`);
+
+				let headerStartIndex, imageStartIndex, imageEndIndex;
+
+				let headerKeyValuePair;
+
+				const imageHeaders = new Map();
+				const imageObjects = [];
+
+				offset = 0;
+				while(offset + streamEndingBoundaryBytes.length < streamAsUint8Array.length) {
+					headerStartIndex = getIndexAfterBoundary(offset, streamAsUint8Array, headerStartingBoundaryBytes);
+					imageStartIndex = getIndexAfterBoundary(headerStartIndex, streamAsUint8Array, imageStartingBoundaryBytes);
+
+					decoder.decode(streamAsUint8Array.slice(headerStartIndex, imageStartIndex - imageStartingBoundaryBytes.length)).split("\r\n").forEach((headerAsText) => {
+						headerKeyValuePair = headerAsText.split(": ");
+						imageHeaders.set(headerKeyValuePair[0], headerKeyValuePair[1]);
+					});
+
+					imageEndIndex = imageStartIndex + Number(imageHeaders.get("X-Image-Length"));
+
+					imageObjects.push({
+						file: new File([streamAsUint8Array.slice(imageStartIndex, imageEndIndex)], imageHeaders.get("X-Title"), { type: imageHeaders.get("Content-Type") }),
+						id: imageHeaders.get("X-Id"),
 						isStreamed: true
 					});
+
+					offset = imageEndIndex;
 				}
 
-				setFiles(imageObjs);
+				setFiles(imageObjects);
 			}
 			catch(streamError) {
 				if(streamError.name !== "AbortError") {
 					setStreamError(new Error("Something unexpected happened while streaming data."));
+					setFiles([]);
 				}
 			}
 			finally {

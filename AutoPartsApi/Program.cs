@@ -43,7 +43,7 @@ public class Program {
 		builder.Services.AddDbContext<AppDbContext>(options => {
 			options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions => {
 				sqlOptions.EnableRetryOnFailure();
-			});
+			}).LogTo(Console.WriteLine, LogLevel.Error);
 		});
 
 		builder.Services.AddDbContext<AuthDbContext>(options => {

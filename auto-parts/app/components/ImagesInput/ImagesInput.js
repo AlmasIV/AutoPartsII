@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState, useContext } from "react";
-import { Button } from "@/app/components/Index.js";
+import { Button, Modal } from "@/app/components/Index.js";
 import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
@@ -87,7 +87,18 @@ export default function ImagesInput(
 									className="width-full margin-top-05rem"
 									alt={fileObj.file.name}
 								/>
-								<Button
+								<Modal
+									openButtonTitle={fileObj.isStreamed ? "Delete" : "Remove"}
+									closeButtonTitle="Back"
+									openButtonClass="width-full secondary-btn text-center"
+									closeButtonClass="width-full secondary-btn text-center"
+									dialogType="adaptive-modal"
+								>
+									<p
+										className="text-center"
+									></p>
+								</Modal>
+								{/* <Button
 									title="Remove"
 									className="width-full secondary-btn text-center"
 									type="button"
@@ -113,7 +124,7 @@ export default function ImagesInput(
 											setFiles(files.filter((f) => f.id !== fileObj.id));
 										}
 									}}
-								/>
+								/> */}
 							</div>
 						);
 					})
