@@ -9,6 +9,8 @@ import styles from "./table-of-auto-parts.module.css";
 import { Modal, AutoPartForm } from "@/app/components/Index.js";
 import notify from "@/global-utils/notifications/notify.js";
 
+let isDescriptionOpen = false;
+
 export default function TableOfAutoParts(
     {
         autoPartsState,
@@ -18,7 +20,6 @@ export default function TableOfAutoParts(
 ) {
     const globalNotification = useContext(NotificationBoxContext);
     const tableConfigs = autoPartConfigs.filter((config) => config["inTable"]);
-    let isDescriptionOpen = false;
     return (
         <Fragment>
             <table
@@ -78,13 +79,12 @@ export default function TableOfAutoParts(
                                                         openButtonClass=""
                                                         closeButtonClass="secondary-btn width-full margin-top-05rem"
                                                         dialogType="form-modal"
-                                                        onOpenButtonClick={(e) => {
-                                                            isDescriptionOpen = true;
-                                                            e.stopPropagation();
-                                                        }}
-                                                        onClose={(e) => {
+                                                        onCloseButtonClick={(e) => {
                                                             isDescriptionOpen = false;
                                                             e.stopPropagation();
+                                                        }}
+                                                        onOpenButtonClick={(e) => {
+                                                            isDescriptionOpen = true;
                                                         }}
                                                     >
                                                         <AutoPartForm

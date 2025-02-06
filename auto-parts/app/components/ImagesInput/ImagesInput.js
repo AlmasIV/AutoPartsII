@@ -6,7 +6,7 @@ import useFilesStream from "@/global-utils/custom-hooks/useFilesStream.js";
 import generateGUID from "@/global-utils/GUID/generateGUID.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import notify from "@/global-utils/notifications/notify.js";
-import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan.js";
+import onImageDelete from "@/global-utils/component-event-handlers/onImageDelete.js";
 
 export default function ImagesInput(
 	{
@@ -20,25 +20,25 @@ export default function ImagesInput(
 		autoPartId = 0
 	}
 ) {
-	const [files, setFiles] = useState([]);
+	const [images, setImages] = useState([]);
 	const globalNotification = useContext(NotificationBoxContext);
 	function handleFilesChange(filesArray) {
-		const validFiles = filesArray.filter((file) => accept.includes(file.type)).map((fileObj) => {
-			notify(globalNotification, `The file '${fileObj.name}' was added successfully.`, "success");
+		const validImages = filesArray.filter((file) => accept.includes(file.type)).map((imageObj) => {
+			notify(globalNotification, `The file '${imageObj.name}' was added successfully.`, "success");
 			return {
-				file: fileObj,
+				file: imageObj,
 				id: generateGUID(),
 				isStreamed: false
 			};
 		});
-		if(validFiles.length > 0) {
-			setFiles([...files, ...validFiles]);
+		if(validImages.length > 0) {
+			setImages([...images, ...validImages]);
 		}
 	}
 
 	const {
 		files: streamedImages,
-		setFiles: setStreamedFiles,
+		setFiles: setStreamedImages,
 		isPending: isStreamingImagesPending,
 		streamError: streamError
 	} = useFilesStream(autoPartId ? `/api/authenticated/auto-parts/images/${autoPartId}` : "", "image/jpeg");
@@ -77,54 +77,37 @@ export default function ImagesInput(
 				className="flex-container flex-wrap overflow-auto small-text"
 			>
 				{
-					Array.from([...files, ...(streamError ? [] : streamedImages)]).map((fileObj) => {
+					Array.from([...images, ...(streamError ? [] : streamedImages)]).map((imageObj) => {
 						return (
 							<div
-								key={fileObj.id}
+								key={imageObj.id}
 							>
 								<img
-									src={URL.createObjectURL(fileObj.file)}
+									src={URL.createObjectURL(imageObj.file)}
 									className="width-full margin-top-05rem"
-									alt={fileObj.file.name}
+									alt={imageObj.file.name}
 								/>
 								<Modal
-									openButtonTitle={fileObj.isStreamed ? "Delete" : "Remove"}
+									openButtonTitle={imageObj.isStreamed ? "Delete" : "Remove"}
 									closeButtonTitle="Back"
 									openButtonClass="width-full secondary-btn text-center"
-									closeButtonClass="width-full secondary-btn text-center"
+									closeButtonClass="width-full secondary-btn text-center margin-top-05rem"
 									dialogType="adaptive-modal"
 								>
 									<p
 										className="text-center"
-									></p>
+									>
+										Are you sure you want to {imageObj.isStreamed ? "delete" : "remove"} this file?
+									</p>
+									<Button
+										title={imageObj.isStreamed ? "Delete" : "Remove"}
+										className="width-full secondary-btn text-center margin-top-05rem"
+										type="button"
+										onClick={imageObj.isStreamed ? async (e) => {
+											await onImageDelete(imageObj, globalNotification, { streamedImages, setStreamedImages });
+										} : null}
+									/>
 								</Modal>
-								{/* <Button
-									title="Remove"
-									className="width-full secondary-btn text-center"
-									type="button"
-									onClick={async () => {
-										if(fileObj.isStreamed) {
-											try {
-												const response = await fetch(`/api/authenticated/auto-parts/images/delete/${fileObj.id}`, {
-													method: "DELETE"
-												});
-												redirectIfCan(response);
-												if(!response.ok) {
-													notify(globalNotification, "Something went wrong. The deletion request was unsuccessful.", "danger");
-													return;
-												}
-												setStreamedFiles(streamedImages.filter((f) => f.id !== fileObj.id));
-												notify(globalNotification, `The image was successfully deleted from the database.`, "warning");
-											}
-											catch {
-												notify(globalNotification, "Something went wrong with the deletion request.", "danger");
-											}
-										}
-										else {
-											setFiles(files.filter((f) => f.id !== fileObj.id));
-										}
-									}}
-								/> */}
 							</div>
 						);
 					})
