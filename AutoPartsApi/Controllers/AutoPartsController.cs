@@ -110,24 +110,23 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpDelete()]
-	[Route("images/delete/{imageId:int:min(1)}")]
-	public async Task<IActionResult> DeleteImage(int imageId) {
-
-		// bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
-		// if (!doesExist) {
-		// 	return BadRequest(
-		// 		new ProblemDetails() {
-		// 			Status = StatusCodes.Status400BadRequest,
-		// 			Title = "The image doesn't exist.",
-		// 			Detail = "The requested resource wasn't found. Contact the devs.",
-		// 			Instance = null,
-		// 			Type = null
-		// 		}
-		// 	);
-		// }
-		// Image image = new Image() { Id = id };
-		// _appDbContext.Entry(image).State = EntityState.Deleted;
-		// await _appDbContext.SaveChangesAsync();
+	[Route("images/delete/{id:int:min(1)}")]
+	public async Task<IActionResult> DeleteImage(int id) {
+		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
+		if (!doesExist) {
+			return BadRequest(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "The image doesn't exist.",
+					Detail = "The requested resource wasn't found. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+		}
+		Image image = new Image() { Id = id };
+		_appDbContext.Entry(image).State = EntityState.Deleted;
+		await _appDbContext.SaveChangesAsync();
 		return Ok();
 	}
 
