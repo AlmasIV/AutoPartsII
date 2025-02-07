@@ -104,9 +104,9 @@ public class AutoPartsController : ControllerBase {
 
 	[HttpPut()]
 	[Route("update/{id:int:min(1)}")]
-	[TypeFilter(typeof(AutoPartUpdateValidationAttribute))]
-	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart) {
-		throw new NotImplementedException();
+	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
+		
+		return Ok();
 	}
 
 	[HttpDelete()]

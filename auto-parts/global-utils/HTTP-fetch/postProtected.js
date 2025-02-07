@@ -1,17 +1,9 @@
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
+import makeFetchWithBody from "@/global-utils/HTTP-fetch/makeFetchWithBody.js";
 
 export default async function postProtected(url, request, isFormData = false, isReturnResult = false) {
     try {
-        const token = request.cookies.get("jwt");
-        const body = isFormData ? (await request.formData()) : (await request.json());
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token.value}`,
-                ...(isFormData ? {} : { "Content-Type": "application/json" })
-            },
-            body: isFormData ? body : JSON.stringify(body)
-        });
+        const response = makeFetchWithBody(url, request, "POST", isFormData);
         if(!response.ok) {
             return getResponse("Couldn't post the data.", 500, "Internal Server Error");
         }
