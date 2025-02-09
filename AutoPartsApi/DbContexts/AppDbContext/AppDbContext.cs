@@ -13,7 +13,6 @@ public class AppDbContext : DbContext {
 		modelBuilder.Entity<Order>()
 			.Property(p => p.CreatedOn)
 			.HasDefaultValueSql("SYSUTCDATETIME()");
-
 		
 	}
 }

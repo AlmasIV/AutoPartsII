@@ -13,7 +13,7 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 		_appDbContext = appDbContext;
 	}
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
-		int autoPartId = (int)(context.ActionArguments["id"] ?? 0);
+		int autoPartId = (int)context.ActionArguments["id"]!;
 		AutoPart? autoPart = context.ActionArguments["updatedAutoPart"] as AutoPart;
 		List<IFormFile>? images = context.ActionArguments["images"] as List<IFormFile>;
 
@@ -30,7 +30,21 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		
+		bool isAny = _appDbContext.AutoParts
+			.AsNoTracking()
+			.Any(ap => ap.Id == autoPartId);
+
+		if(!isAny) {
+			context.Result = new ObjectResult(
+				new ProblemDetails() {
+					Status = StatusCodes.Status400BadRequest,
+					Title = "The id of the auto-part is not correct.",
+					Detail = "An auto-part with the provided id doesn't exist. Data modification is possible. Contact the devs.",
+					Instance = null,
+					Type = null
+				}
+			);
+		}
 
 		await next();
 	}
