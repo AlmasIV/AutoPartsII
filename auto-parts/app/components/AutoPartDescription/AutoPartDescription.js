@@ -8,6 +8,8 @@ export default function AutoPartDescription(
 		autoPart
 	}
 ) {
+	console.log(`AutoPartDescription Component: `);
+	console.log(autoPart);
 	const validConfigs = autoPartConfigs.filter((config) => config["inTable"]);
 	return (
 		validConfigs.map((config) => {

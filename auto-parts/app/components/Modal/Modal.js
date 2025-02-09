@@ -14,6 +14,7 @@ export default function Modal(
         dialogType,
         onOpenButtonClick = null,
         onCloseButtonClick = null,
+        onModalClose = null,
         isDisabled = false,
         containerClass = ""
     }
@@ -26,6 +27,9 @@ export default function Modal(
             <dialog
                 ref={modalRef}
                 className={`${styles[dialogType]}`}
+                onClose={(e) => {
+                    onModalClose && onModalClose(e);
+                }}
             >
                 {children}
                 <Button

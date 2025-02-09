@@ -86,6 +86,11 @@ export default function TableOfAutoParts(
                                                         onOpenButtonClick={(e) => {
                                                             isDescriptionOpen = true;
                                                         }}
+                                                        onModalClose={(e) => {
+                                                            if(e.target.querySelector("dialog") !== null) {
+                                                                isDescriptionOpen = false;
+                                                            }
+                                                        }}
                                                     >
                                                         <AutoPartForm
                                                             formTitle="Current Info"
