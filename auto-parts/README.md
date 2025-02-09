@@ -1,1 +1,0 @@
-This project has a primary goal of teaching me React.
