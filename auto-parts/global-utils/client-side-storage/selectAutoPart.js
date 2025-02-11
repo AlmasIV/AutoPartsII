@@ -9,6 +9,6 @@ export default function selectAutoPart(autoPart, selectedState, globalNotificati
 		discount: 0
 	};
 	saveAutoPart(autoPart);
-	selectedState.setSelectedAutoParts((prevSelectedAutoParts) => [...prevSelectedAutoParts, autoPart].sort((a, b) => a.id - b.id));
+	selectedState.setSelectedAutoParts((prevSelectedAutoParts) => [...prevSelectedAutoParts, autoPart]);
 	notify(globalNotification, `Added to shopping cart: ${autoPart.name}.`);
 }
