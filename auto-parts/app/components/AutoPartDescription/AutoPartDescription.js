@@ -1,33 +1,33 @@
 "use client";
 
-import { KZTFormatter, RUBFormatter } from "@/global-utils/number-formatters/index.js";
-import autoPartConfigs from "@/configurations/auto-part-configuration.json";
+import { KZTFormatter } from "@/global-utils/number-formatters/index.js";
+
+let isAmount, isCurrency;
 
 export default function AutoPartDescription(
 	{
 		autoPart
 	}
 ) {
-	console.log(`AutoPartDescription Component: `);
-	console.log(autoPart);
-	const validConfigs = autoPartConfigs.filter((config) => config["inTable"]);
+	const validConfigs = Object.entries(autoPart)
+		.filter((keyValuePair) => keyValuePair[0] !== "notes");
 	return (
-		validConfigs.map((config) => {
-			let isAmount = config.labelName === "Amount";
-			let isCurrency = config.name === "priceInKzt" || config.name === "priceInRub";
+		validConfigs.map((keyValuePair) => {
+			isAmount = keyValuePair[0] === "amount";
+			isCurrency = keyValuePair[0] === "priceInKzt";
 			return (
 				<p
-					key={config.labelName}
+					key={keyValuePair[0]}
 				>
 					<span
 						className="opacity-08"
 					>
 						{
-							isAmount ? "In Stock: " : config.labelName + ": "
+							isAmount ? "In Stock: " : keyValuePair[0] + ": "
 						}
 					</span>
 					{
-						isCurrency ? config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : RUBFormatter.format(autoPart[config.name]) : autoPart[config.name]
+						isCurrency ? KZTFormatter.format(keyValuePair[1]) : keyValuePair[1]
 					}
 				</p>
 			);
