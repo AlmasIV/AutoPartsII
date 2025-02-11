@@ -5,14 +5,13 @@ import notify from "@/global-utils/notifications/notify.js";
 
 export default async function onAuthenticationSubmit(
     bodyObject,
-    isSending,
-    setIsSending,
+    sendingState,
     setError,
     globalNotification,
     url
 ) {
-    if(!isSending) {
-        setIsSending(true);
+    if(!sendingState.isSending) {
+        sendingState.setIsSending(true);
         setError(null);
         try {
             const response = await fetch(`/api/${url}`, {
@@ -37,7 +36,7 @@ export default async function onAuthenticationSubmit(
             notify(globalNotification, "Something went wrong.", "danger");
         }
         finally {
-            setIsSending(false);
+            sendingState.setIsSending(false);
             setTimeout(() => setError(null), 7000);
         }
     }

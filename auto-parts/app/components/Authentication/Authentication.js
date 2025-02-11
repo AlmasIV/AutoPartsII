@@ -53,8 +53,7 @@ export default function Authentication() {
                             };
                             await onAuthenticationSubmit(
                                 credentials,
-                                isSending,
-                                setIsSending,
+                                { isSending, setIsSending },
                                 setSignUpError,
                                 globalNotification,
                                 "sign-up"
@@ -124,8 +123,7 @@ export default function Authentication() {
                             };
                             await onAuthenticationSubmit(
                                 credentials,
-                                isSending,
-                                setIsSending,
+                                {isSending, setIsSending },
                                 setLogInError,
                                 globalNotification,
                                 "log-in"
