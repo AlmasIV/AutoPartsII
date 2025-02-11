@@ -1,4 +1,4 @@
-import saveAutoPart from "@/global-utils/client-side-storage/saveAutoPart.js";
+import saveAutoPart from "@/global-utils/shopping-cart-manipulation/saveAutoPart.js";
 import notify from "@/global-utils/notifications/notify.js";
 
 export default function selectAutoPart(autoPart, selectedState, globalNotification) {

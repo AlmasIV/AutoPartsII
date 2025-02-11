@@ -1,5 +1,5 @@
 import { NumberController } from "@/app/components/Index.js";
-import saveAutoPart from "@/global-utils/client-side-storage/saveAutoPart.js";
+import saveAutoPart from "@/global-utils/shopping-cart-manipulation/saveAutoPart.js";
 
 export default function DiscountApplier(
 	{

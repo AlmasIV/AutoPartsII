@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { AmountChanger, Button, AutoPartDescription, DiscountApplier } from "@/app/components/Index.js";
-import deSelectAutoPart from "@/global-utils/client-side-storage/deSelectAutoPart.js";
+import deSelectAutoPart from "@/global-utils/shopping-cart-manipulation/deSelectAutoPart.js";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
 import { KZTFormatter } from "@/global-utils/number-formatters/index.js";
 import styles from "./product-box.module.css";
