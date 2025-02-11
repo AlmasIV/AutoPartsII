@@ -2,12 +2,8 @@ import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
 import notify from "@/global-utils/notifications/notify.js";
 
 export default async function onAutoPartCreate(event, globalNotification, autoPartsState) {
-    const formData = new FormData(event.target);
-    await submitAutoPart(formData, globalNotification, autoPartsState);
-}
-
-async function submitAutoPart(formData, globalNotification, autoPartsState) {
     try {
+        const formData = new FormData(event.target);
         const response = await fetch("/api/authenticated/auto-parts/create", {
             method: "POST",
             body: formData
