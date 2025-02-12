@@ -1,22 +1,23 @@
 import redirectIfCan from "@/global-utils/redirect-helpers/redirectIfCan";
 import notify from "@/global-utils/notifications/notify.js";
 
-export default async function onAutoPartsSell(globalNotification, selectedAutoParts, setSelectedAutoParts, autoPartsState, historyPageState) {
+export default async function onAutoPartsSell(globalNotification, selectedAutoPartsState, autoPartsState, ordersState) {
+    let price;
     const orderSummary = {
         totalPriceInKzt: 0,
         orderedParts: []
     };
-    selectedAutoParts.forEach((ap) => {
+    selectedAutoPartsState.selectedAutoParts.forEach((ap) => {
         const { selectedAmount, ...autoPart } = ap;
-        let price = selectedAmount * autoPart.priceInKzt - ap.discount;
+        price = selectedAmount * autoPart.priceInKzt - ap.discount;
         orderSummary.totalPriceInKzt += price;
         autoPart.amount = selectedAmount;
         orderSummary.orderedParts.push(autoPart);
     });
-    await orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState, historyPageState);
+    await orderAutoParts(orderSummary, globalNotification, selectedAutoPartsState.setSelectedAutoParts, autoPartsState, ordersState);
 }
 
-async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState, historyPageState) {
+async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoParts, autoPartsState, ordersState) {
     try {
         const response = await fetch("/api/authenticated/auto-parts/sell", {
             method: "POST",
@@ -50,14 +51,13 @@ async function orderAutoParts(orderSummary, globalNotification, setSelectedAutoP
             autoPartsState.setAutoParts(updatedAutoParts);
             setSelectedAutoParts([]);
 
-            // Update the history page data.
-            historyPageState.setTotalOrdersCount(historyPageState.totalOrdersCount + 1);
-            if(historyPageState.orders.length < 100) {
+            ordersState.setTotalOrdersCount(ordersState.totalOrdersCount + 1);
+            if(ordersState.orders.length < 100) {
                 const order = await response.json();
-                historyPageState.setOrders(
+                ordersState.setOrders(
                     [
                         order.data,
-                        ...historyPageState.orders
+                        ...ordersState.orders
                     ]
                 );
             }

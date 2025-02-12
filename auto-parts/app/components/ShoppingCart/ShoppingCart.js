@@ -33,7 +33,7 @@ export default function ShoppingCart(
     async function handleOnSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
-        await onAutoPartsSell(globalNotification, selectedAutoParts, setSelectedAutoParts, { autoParts, setAutoParts }, { orders, setOrders, totalOrdersCount, setTotalOrdersCount });
+        await onAutoPartsSell(globalNotification, { selectedAutoParts, setSelectedAutoParts }, { autoParts, setAutoParts }, { orders, setOrders, totalOrdersCount, setTotalOrdersCount });
         setIsSubmitting(false);
     }
     return selectedAutoParts.length > 0 ? (
