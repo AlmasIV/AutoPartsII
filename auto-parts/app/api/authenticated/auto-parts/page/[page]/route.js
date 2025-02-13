@@ -2,10 +2,6 @@ import getProtected from "@/global-utils/HTTP-fetch/getProtected.js";
 import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
-/*
-    1) Added lower bound for checking the "page". What about the upper bound.
-*/
-
 export async function GET(request, { params }) {
     if(canBeCastedToPositiveInteger(params.page)) {
         return await getProtected(`${process.env.API_URL}/auto-parts/page/${params.page}`, request);
