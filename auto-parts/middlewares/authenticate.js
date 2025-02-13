@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-
 import redirectToLogIn from "@/global-utils/redirect-helpers/redirectToLogIn.js";
 
-/*
-	1) Suppose a "token" is a random string, then you get a loop, the server will be dead.
-	2) Implement refresh-tokens. ANSWER: I will implement it at the client-side. DONE!!!
-	3) Need to extract a lot of code into other functions. Is that so?
-	4) Validate the request.url? What are the best practices? Seems like I need to sanitize it.
-*/
 export default async function authenticate(request) {
 	const token = request.cookies.get("jwt");
 	if(!token && request.nextUrl.pathname !== "/") {
@@ -38,8 +31,6 @@ export default async function authenticate(request) {
 			}
 		}
 		catch(error) {
-			// Add logging.
-			// Most of the time exception will just mean that the JWT token was expired.
 			const response = redirectToLogIn();
 			response.cookies.delete("jwt");
 			return response;
