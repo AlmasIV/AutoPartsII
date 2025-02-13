@@ -146,10 +146,6 @@ public class Program {
 
 		app.UseAuthorization();
 
-		app.Map("throw", (handler) => {
-			throw new Exception("OOPPPS");
-		});
-
 		app.MapControllers();
 
 		app.Run();
