@@ -15,10 +15,6 @@ export default async function authenticate(user, url, isLogIn = false) {
             const problem = await result.json();
             return getResponse(isLogIn ? problem.title : problem["errors"].map((error) => error.description).join(", "), 400, "Bad Request");
         }
-        /*
-            1) Do I need to check the cookieHeader's existence?
-            2) Maybe extract the logic into another function?
-        */
         const cookieHeader = result.headers.get("Set-Cookie");
         if(cookieHeader) {
             const response = NextResponse.redirect(`${process.env.BASE_URL}/main/home`, 303);
