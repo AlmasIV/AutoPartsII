@@ -3,7 +3,7 @@
 import { Fragment, useContext } from "react";
 import autoPartConfigs from "@/configurations/auto-part-configuration.json";
 import { NotificationBoxContext } from "@/app/components/NotificationBox/NotificationBoxContext.js";
-import { KZTFormatter, RUBFormatter } from "@/global-utils/number-formatters/index.js";
+import { KZTFormatter } from "@/global-utils/number-formatters/index.js";
 import onAutoPartSelect from "@/global-utils/component-event-handlers/onAutoPartSelect.js";
 import styles from "./table-of-auto-parts.module.css";
 import { Modal, AutoPartForm } from "@/app/components/Index.js";
@@ -72,7 +72,7 @@ export default function TableOfAutoParts(
                                             className={`${config.name === "amount" && autoPart.amount <= 0 ? "color-danger" : config.name === "name" ? "" : ""} text-center`}
                                         >
                                             {
-                                                config.name === "priceInRub" ? RUBFormatter.format(autoPart[config.name]) : config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : config.name === "name" ?
+                                                config.name === "priceInKzt" ? KZTFormatter.format(autoPart[config.name]) : config.name === "name" ?
                                                     <Modal
                                                         openButtonTitle={autoPart[config.name]}
                                                         closeButtonTitle="Back"
