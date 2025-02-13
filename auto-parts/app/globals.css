@@ -32,7 +32,6 @@ body {
 }
 
 a {
-    /* The links are indistinguishable from the normal text. */
     text-decoration: none;
     color: var(--main-darkish);
 }
@@ -150,7 +149,6 @@ main {
     }
 }
 
-/* Helper small classes. */
 .margin-top-2rem {
     margin-top: 2rem;
 }
@@ -218,10 +216,6 @@ main {
 
 .flex-grow-1 {
     flex-grow: 1;
-}
-
-.flex-grow-2 {
-    flex-grow: 2;
 }
 
 .overflow-auto {
