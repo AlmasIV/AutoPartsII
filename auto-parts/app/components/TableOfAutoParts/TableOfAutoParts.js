@@ -79,6 +79,7 @@ export default function TableOfAutoParts(
                                                         openButtonClass=""
                                                         closeButtonClass="secondary-btn width-full margin-top-05rem"
                                                         dialogType="form-modal"
+                                                        dataModalId={autoPart[config.key]}
                                                         onCloseButtonClick={(e) => {
                                                             isDescriptionOpen = false;
                                                             e.stopPropagation();
@@ -87,7 +88,8 @@ export default function TableOfAutoParts(
                                                             isDescriptionOpen = true;
                                                         }}
                                                         onModalClose={(e) => {
-                                                            if(e.target.querySelector("dialog") !== null) {
+                                                            if(document.querySelector("table tr td div > dialog") === e.target) {
+                                                                console.log("PLEASE WORK!");
                                                                 isDescriptionOpen = false;
                                                             }
                                                         }}

@@ -12,6 +12,7 @@ export default function Modal(
         openButtonClass,
         closeButtonClass,
         dialogType,
+        dataModalId = null,
         onOpenButtonClick = null,
         onCloseButtonClick = null,
         onModalClose = null,
@@ -30,6 +31,7 @@ export default function Modal(
                 onClose={(e) => {
                     onModalClose && onModalClose(e);
                 }}
+                data-modal-id
             >
                 {children}
                 <Button
