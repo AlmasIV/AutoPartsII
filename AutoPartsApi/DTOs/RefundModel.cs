@@ -4,10 +4,10 @@ namespace AutoPartsApi.DTOs;
 
 public class RefundModel {
 	[Required()]
-	public int OrderId { get; set; }
+	public Guid OrderId { get; set; }
 
 	[Required()]
-	public int AutoPartId { get; set; }
+	public Guid AutoPartId { get; set; }
 
 	[Required()]
 	[Range(1, ushort.MaxValue)]

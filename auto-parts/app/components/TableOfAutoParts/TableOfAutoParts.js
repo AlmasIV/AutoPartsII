@@ -48,7 +48,7 @@ export default function TableOfAutoParts(
                             const autoPartRow = e.target.closest("tr");
                             const autoPartId = autoPartRow?.querySelector("td")?.textContent;
                             if(autoPartId) {
-                                const autoPart = autoPartsState.autoParts.find((ap) => ap.id === Number(autoPartId));
+                                const autoPart = autoPartsState.autoParts.find((ap) => ap.id === autoPartId);
                                 if(autoPart.amount > 0) {
                                     onAutoPartSelect({ selectedAutoParts, setSelectedAutoParts }, globalNotification, autoPart);
                                 }

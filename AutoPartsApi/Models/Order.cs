@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace AutoPartsApi.Models;
 
 public class Order {
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 
 	[Required()]
 	[Column(TypeName = "decimal(10, 2)")]

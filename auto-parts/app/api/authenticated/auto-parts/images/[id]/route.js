@@ -1,9 +1,9 @@
-import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedToPositiveInteger.js";
+import isValidGuid from "@/global-utils/validators/isValidGuid.js";
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
-	if(canBeCastedToPositiveInteger(params.id)) {
+	if(isValidGuid(params.id)) {
 		try {
 			const token = request.cookies.get("jwt");
 			const response = await fetch(`${process.env.API_URL}/auto-parts/${params.id}`, {

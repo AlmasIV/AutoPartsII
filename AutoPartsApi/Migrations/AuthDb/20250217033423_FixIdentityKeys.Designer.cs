@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPartsApi.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20240712164400_refresh_tokens_extension")]
-    partial class refresh_tokens_extension
+    [Migration("20250217033423_FixIdentityKeys")]
+    partial class FixIdentityKeys
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,10 @@ namespace AutoPartsApi.Migrations.AuthDb
 
             modelBuilder.Entity("AutoPartsApi.Models.RefreshToken", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime>("ExpirationDateTime")
                         .HasColumnType("datetime2");

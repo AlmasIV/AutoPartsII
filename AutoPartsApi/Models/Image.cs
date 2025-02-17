@@ -4,14 +4,14 @@ using System.Text.Json.Serialization;
 namespace AutoPartsApi.Models;
 
 public class Image {
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 	public string Title { get; set; } = null!;
 	public byte[] Data { get; set; } = null!;
 	public string ContentType { get; set; } = null!;
 
 	[Required()]
 	[JsonIgnore()]
-	public int AutoPartId { get; set; }
+	public Guid AutoPartId { get; set; }
 
 	[Required()]
 	[JsonIgnore()]

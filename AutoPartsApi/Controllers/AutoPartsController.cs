@@ -40,8 +40,8 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("{id:int:min(1)}")]
-	public async Task GetAutoPartImages(int id) {
+	[Route("{id:guid}")]
+	public async Task GetAutoPartImages(Guid id) {
 		bool isAnyImage = await _appDbContext.Images
 			.Where(i => i.AutoPartId == id)
 			.AnyAsync();
@@ -110,8 +110,8 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpDelete()]
-	[Route("images/delete/{id:int:min(1)}")]
-	public async Task<IActionResult> DeleteImage(int id) {
+	[Route("images/delete/{id:guid}")]
+	public async Task<IActionResult> DeleteImage(Guid id) {
 		bool doesExist = await _appDbContext.Images.AnyAsync(image => image.Id == id);
 		if (!doesExist) {
 			return BadRequest(

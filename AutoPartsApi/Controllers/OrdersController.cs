@@ -40,8 +40,8 @@ public class OrdersController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("{id:int:min(1)}")]
-	public async Task<Object> GetOrder(int id) {
+	[Route("{id:guid}")]
+	public async Task<Object> GetOrder(Guid id) {
 		var result = await _appDbContext.Orders
 			.Where(order => order.Id == id)
 			.Include(order => order.AutoPartsSoldAmounts)

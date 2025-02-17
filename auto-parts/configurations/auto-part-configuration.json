@@ -2,7 +2,7 @@
     {
         "labelName": "ID",
         "name": "id",
-        "type": "number",
+        "type": "text",
         "readOnly": true,
         "inTable": true
     },

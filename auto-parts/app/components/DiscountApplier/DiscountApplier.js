@@ -22,7 +22,7 @@ export default function DiscountApplier(
 		saveAutoPart(autoPart);
 		setSelectedAutoParts(
 			[
-				...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.id - b.id)
+				...[...selectedAutoParts.filter((ap) => ap.id !== autoPart.id), autoPart].sort((a, b) => a.name.localeCompare(b.name))
 			]
 		);
 	}

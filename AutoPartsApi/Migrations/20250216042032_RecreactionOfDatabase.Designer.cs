@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPartsApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240808144257_NullableDiscountsAgain")]
-    partial class NullableDiscountsAgain
+    [Migration("20250216042032_RecreactionOfDatabase")]
+    partial class RecreactionOfDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,28 +24,12 @@ namespace AutoPartsApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AutoPartOrder", b =>
-                {
-                    b.Property<int>("AutoPartsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AutoPartsId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("AutoPartOrder");
-                });
-
             modelBuilder.Entity("AutoPartsApi.Models.AutoPart", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -57,8 +41,8 @@ namespace AutoPartsApi.Migrations
                     b.Property<string>("Company")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte?>("DiscountPercentage")
-                        .HasColumnType("tinyint");
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -70,9 +54,6 @@ namespace AutoPartsApi.Migrations
                     b.Property<decimal>("PriceInKzt")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<decimal?>("PriceInRub")
-                        .HasColumnType("decimal(10, 2)");
-
                     b.HasKey("Id");
 
                     b.ToTable("AutoParts");
@@ -80,20 +61,19 @@ namespace AutoPartsApi.Migrations
 
             modelBuilder.Entity("AutoPartsApi.Models.AutoPartSoldAmount", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("AutoPartId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AutoPartId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(10, 2)");
 
-                    b.Property<byte?>("DiscountPercentage")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
@@ -112,14 +92,13 @@ namespace AutoPartsApi.Migrations
 
             modelBuilder.Entity("AutoPartsApi.Models.Image", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AutoPartId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AutoPartId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -142,11 +121,10 @@ namespace AutoPartsApi.Migrations
 
             modelBuilder.Entity("AutoPartsApi.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
@@ -161,21 +139,6 @@ namespace AutoPartsApi.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("AutoPartOrder", b =>
-                {
-                    b.HasOne("AutoPartsApi.Models.AutoPart", null)
-                        .WithMany()
-                        .HasForeignKey("AutoPartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AutoPartsApi.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AutoPartsApi.Models.AutoPartSoldAmount", b =>
                 {
                     b.HasOne("AutoPartsApi.Models.AutoPart", "AutoPart")
@@ -184,11 +147,15 @@ namespace AutoPartsApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AutoPartsApi.Models.Order", null)
+                    b.HasOne("AutoPartsApi.Models.Order", "Order")
                         .WithMany("AutoPartsSoldAmounts")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AutoPart");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("AutoPartsApi.Models.Image", b =>

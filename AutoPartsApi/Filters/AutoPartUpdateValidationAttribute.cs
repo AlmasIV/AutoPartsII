@@ -13,7 +13,7 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 		_appDbContext = appDbContext;
 	}
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
-		int autoPartId = (int)context.ActionArguments["id"]!;
+		Guid autoPartId = Guid.Parse(context.ActionArguments["id"]!.ToString()!);
 		AutoPart? autoPart = context.ActionArguments["updatedAutoPart"] as AutoPart;
 		List<IFormFile>? images = context.ActionArguments["images"] as List<IFormFile>;
 

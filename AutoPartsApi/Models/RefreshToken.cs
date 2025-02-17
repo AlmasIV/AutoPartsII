@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 namespace AutoPartsApi.Models;
 public class RefreshToken {
 	[JsonIgnore()]
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 
 	[Required()]
 	public Guid Token { get; set; }

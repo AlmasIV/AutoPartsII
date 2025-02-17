@@ -110,7 +110,7 @@ export default function RefundOrder(
 								...ordersState.orders.find((o) => o.id === orderedParts.id),
 								totalPriceInKzt: orderedParts.totalPriceInKzt - computedRefundMoney
 							}
-						].sort((o1, o2) => o2.id - o1.id)
+						].sort((o1, o2) => o2.createdOn - o1.createdOn)
 					);
 				}
 			}

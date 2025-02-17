@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AutoPartsApi.Models;
 public class AutoPart : IEquatable<AutoPart> {
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 
 	[Required()]
 	[MinLength(3)]

@@ -8,17 +8,17 @@ namespace AutoPartsApi.Models;
 	1) Maybe I should remove serialization attributes, cause I think that this entity is not used in serialization and deserialization?
 */
 public class AutoPartSoldAmount {
-	public int Id { get; set; }
+	public Guid Id { get; set; }
 
 	[Required()]
-	public int AutoPartId { get; set; }
+	public Guid AutoPartId { get; set; }
 
 	[Required()]
 	[JsonIgnore()]
 	public AutoPart AutoPart { get; set; } = null!;
 
 	[Required()]
-	public int OrderId { get; set; }
+	public Guid OrderId { get; set; }
 
 	[Required()]
 	[JsonIgnore()]

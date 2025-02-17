@@ -31,7 +31,7 @@ export default function Modal(
                 onClose={(e) => {
                     onModalClose && onModalClose(e);
                 }}
-                data-modal-id
+                data-modal-id={dataModalId}
             >
                 {children}
                 <Button
