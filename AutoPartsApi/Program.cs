@@ -1,26 +1,13 @@
-using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
-
-using AutoPartsApi.Services;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+using AutoPartsApi.Services;
+
 namespace AutoPartsApi;
-/*
-	1) Improve exception handling on the global level, and also improve it at the individual level like controller's action methods.
-	2) Remember to encrypt your database!
-	3) Keep secrets in a safe place!
-	4) Add two-factor authentication, password reset and so on...
-	5) Data protection: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction?view=aspnetcore-8.0.
-	6) Maybe document all your custom types?
-*/
 public class Program {
 	public static void Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
@@ -30,8 +17,6 @@ public class Program {
 		});
 
 		builder.Services.AddControllers();
-
-		builder.Services.AddHttpLogging(options => { });
 
 		builder.Services.AddCors(options => {
 			options.AddDefaultPolicy(policy => {
@@ -92,50 +77,9 @@ public class Program {
 
 		var app = builder.Build();
 
-		app.UseExceptionHandler(errorApp => {
-			errorApp.Run(async context => {
-				ILogger logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-				Exception? exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-
-				ProblemDetails problemDetails = new ProblemDetails() {
-					Title = "An unexpected error occurred.",
-					Status = StatusCodes.Status500InternalServerError,
-					Detail = "This was an unexpected error, please contact the developers.",
-					Instance = context.Request.Path
-				};
-
-				string traceId = Activity.Current?.TraceId.ToString() ?? context.TraceIdentifier ?? "No Trace Identifier";
-
-				logger.LogError(exception, "Something went wrong. Trace Identifier:  {traceId}.", traceId);
-
-				context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-				context.Response.ContentType = "application/problem+json";
-
-				await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
-			});
-		});
-
-		app.UseStatusCodePages(async context => {
-			ILogger logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-			HttpResponse response = context.HttpContext.Response;
-			ProblemDetails problemDetails = new ProblemDetails() {
-				Status = response.StatusCode,
-				Title = response.StatusCode.ToString(),
-				Instance = context.HttpContext.Request.Path
-			};
-			string traceId = Activity.Current?.TraceId.ToString() ?? context.HttpContext.TraceIdentifier ?? "No Trace Identifier";
-			problemDetails.Extensions["traceId"] = traceId;
-
-			response.ContentType = "application/problem+json";
-
-			await response.WriteAsync(JsonSerializer.Serialize(problemDetails));
-		});
+		app.UseExceptionHandler();
 
 		//app.UseHttpLogging();
-
-		if (app.Environment.IsDevelopment()) {
-			app.UseDeveloperExceptionPage();
-		}
 
 		//app.UseHttpsRedirection();
 
