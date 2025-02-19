@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.Json;
 
 using AutoPartsApi.Services;
-using AutoPartsApi.Utils;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -121,7 +120,7 @@ public class Program {
 			HttpResponse response = context.HttpContext.Response;
 			ProblemDetails problemDetails = new ProblemDetails() {
 				Status = response.StatusCode,
-				Title = HttpStatusTextProvider.GetHttpStatusText(response.StatusCode),
+				Title = response.StatusCode.ToString(),
 				Instance = context.HttpContext.Request.Path
 			};
 			string traceId = Activity.Current?.TraceId.ToString() ?? context.HttpContext.TraceIdentifier ?? "No Trace Identifier";
