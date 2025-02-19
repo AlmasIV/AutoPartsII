@@ -8,6 +8,7 @@ public class Image {
 	public string Title { get; set; } = null!;
 	public byte[] Data { get; set; } = null!;
 	public string ContentType { get; set; } = null!;
+	public string Hash { get; set; } = null!;
 
 	[Required()]
 	[JsonIgnore()]

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 
 using AutoPartsApi.DTOs;
@@ -63,7 +64,7 @@ public class AutoPartsController : ControllerBase {
 		byte[] headerBytes;
 		byte[] endBoundary = Encoding.UTF8.GetBytes($"\r\n--{multipartBoundary}--\r\n");
 
-		await foreach(Image image in images) {
+		await foreach (Image image in images) {
 			headerBytes = Encoding.UTF8.GetBytes(
 				$"--{multipartBoundary}\r\n" +
 				$"Content-Type: {image.ContentType}\r\n" +
@@ -85,13 +86,24 @@ public class AutoPartsController : ControllerBase {
 		// Implement a hash comparison to compare files. Should I forbid duplicates?
 		List<Image> autoPartImages = new List<Image>();
 		Image? image = null;
+		byte[] hashBytes;
+		string hash = String.Empty;
 		foreach (IFormFile file in images) {
 			using (MemoryStream memoryStream = new MemoryStream()) {
 				await file.CopyToAsync(memoryStream);
+				using (SHA256 sha256 = SHA256.Create()) {
+					hashBytes = await sha256.ComputeHashAsync(memoryStream);
+					StringBuilder builder = new StringBuilder();
+					for (int i = 0; i < hashBytes.Length; i++) {
+						builder.Append(hashBytes[i].ToString("x2"));
+					}
+					hash = builder.ToString();
+				}
 				image = new Image() {
 					Title = Path.GetFileName(file.FileName),
 					Data = memoryStream.ToArray(),
-					ContentType = file.ContentType
+					ContentType = file.ContentType,
+					Hash = hash
 				};
 				autoPartImages.Add(image);
 			}
@@ -105,7 +117,7 @@ public class AutoPartsController : ControllerBase {
 	[HttpPut()]
 	[Route("update/{id:int:min(1)}")]
 	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
-		
+
 		return Ok();
 	}
 
