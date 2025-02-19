@@ -1,9 +1,9 @@
-using System.Security.Cryptography;
 using System.Text;
 
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Filters;
 using AutoPartsApi.Models;
+using AutoPartsApi.Utils;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,31 +83,7 @@ public class AutoPartsController : ControllerBase {
 	[HttpPost()]
 	[Route("create")]
 	public async Task<IActionResult> Create([FromForm] AutoPart autoPart, [FromForm] List<IFormFile> images) {
-		// Implement a hash comparison to compare files. Should I forbid duplicates?
-		List<Image> autoPartImages = new List<Image>();
-		Image? image = null;
-		byte[] hashBytes;
-		string hash = String.Empty;
-		foreach (IFormFile file in images) {
-			using (MemoryStream memoryStream = new MemoryStream()) {
-				await file.CopyToAsync(memoryStream);
-				using (SHA256 sha256 = SHA256.Create()) {
-					hashBytes = await sha256.ComputeHashAsync(memoryStream);
-					StringBuilder builder = new StringBuilder();
-					for (int i = 0; i < hashBytes.Length; i++) {
-						builder.Append(hashBytes[i].ToString("x2"));
-					}
-					hash = builder.ToString();
-				}
-				image = new Image() {
-					Title = Path.GetFileName(file.FileName),
-					Data = memoryStream.ToArray(),
-					ContentType = file.ContentType,
-					Hash = hash
-				};
-				autoPartImages.Add(image);
-			}
-		}
+		List<Image> autoPartImages = await FormFilesToImagesConverter.ConvertAsync(images);
 		autoPart.Images = autoPartImages;
 		await _appDbContext.AutoParts.AddAsync(autoPart);
 		await _appDbContext.SaveChangesAsync();
@@ -115,9 +91,17 @@ public class AutoPartsController : ControllerBase {
 	}
 
 	[HttpPut()]
-	[Route("update/{id:int:min(1)}")]
-	public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
+	[Route("update/{id:guid}")]
+	public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] AutoPart updatedAutoPart, [FromForm] List<IFormFile> images) {
+		string[] hashes = await _appDbContext.Images
+			.Where(im => im.AutoPartId == id)
+			.Select(im => im.Hash)
+			.ToArrayAsync();
 
+		List<Image> autoPartImages = (await FormFilesToImagesConverter.ConvertAsync(images))
+			.Where(im => !hashes.Any(hash => hash == im.Hash))
+			.Select(im => im)
+			.ToList();
 		return Ok();
 	}
 
