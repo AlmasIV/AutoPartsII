@@ -25,15 +25,14 @@ public class Program {
 		});
 
 		builder.Services.AddDbContext<AppDbContext>(options => {
-			options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new NullReferenceException("AutoParts connection string wasn't found."), sqlOptions => {
+			options.UseSqlServer(builder.Configuration.GetConnectionString("AutoParts") ?? throw new InvalidOperationException("AutoParts connection string wasn't found."), sqlOptions => {
 				sqlOptions.EnableRetryOnFailure();
 			}).LogTo(Console.WriteLine, LogLevel.Error);
 		});
 
 		builder.Services.AddDbContext<AuthDbContext>(options => {
 			options.UseSqlServer(
-				builder.Configuration["ConnectionStrings:Identity"],
-				options => options.MigrationsAssembly("AutoPartsApi")
+				builder.Configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Identity connection string wasn't found.")
 			);
 		});
 
@@ -54,11 +53,11 @@ public class Program {
 		}).AddJwtBearer(options => {
 			options.TokenValidationParameters = new TokenValidationParameters() {
 				ValidateIssuer = true,
-				ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"],
+				ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"] ?? throw new InvalidOperationException("Issuer field is missing. Configuration of identity system failed."),
 				ValidateAudience = true,
-				ValidAudience = builder.Configuration["AuthenticationOptions:Audience"],
+				ValidAudience = builder.Configuration["AuthenticationOptions:Audience"] ?? throw new InvalidOperationException("Audience field is missing. Configuration of identity system failed."),
 				ValidateLifetime = true,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"]!)),
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"] ?? throw new InvalidOperationException("Signing key is missing. Configuration of identity system failed."))),
 				ValidateIssuerSigningKey = true
 			};
 		});
@@ -76,12 +75,6 @@ public class Program {
 		builder.Services.AddSingleton<AbstractTokenGenerator, TokenGenerator>();
 
 		var app = builder.Build();
-
-		app.UseExceptionHandler();
-
-		//app.UseHttpLogging();
-
-		//app.UseHttpsRedirection();
 
 		app.UseCors();
 
