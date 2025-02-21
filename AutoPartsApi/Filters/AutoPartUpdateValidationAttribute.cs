@@ -14,21 +14,8 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 	}
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
 		Guid autoPartId = Guid.Parse(context.ActionArguments["id"]!.ToString()!);
-		AutoPart? autoPart = context.ActionArguments["updatedAutoPart"] as AutoPart;
-		List<IFormFile>? images = context.ActionArguments["images"] as List<IFormFile>;
-
-		if (autoPart is null || images is null) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Status = StatusCodes.Status400BadRequest,
-					Title = "The required data wasn't present.",
-					Detail = "Data for the update wasn't present. Contact the devs.",
-					Instance = null,
-					Type = null
-				}
-			);
-			return;
-		}
+		AutoPart autoPart = (context.ActionArguments["updatedAutoPart"] as AutoPart)!;
+		List<IFormFile> images = (context.ActionArguments["images"] as List<IFormFile>)!;
 
 		bool isAny = _appDbContext.AutoParts
 			.AsNoTracking()
