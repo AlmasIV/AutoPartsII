@@ -14,22 +14,8 @@ public class OrderSummaryValidationAttribute : Attribute, IAsyncActionFilter {
 		_appDbContext = appDbContext;
 	}
 
-	// Requesting users must respect the API's various errors. Need to implement it.
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
-		OrderSummaryModel? orderSummary = context.ActionArguments["orderSummary"] as OrderSummaryModel;
-
-		if (orderSummary is null) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Status = StatusCodes.Status400BadRequest,
-					Title = "Required data wasn't present.",
-					Detail = "Information about the order wasn't present. Contact the devs.",
-					Instance = null,
-					Type = null
-				}
-			);
-			return;
-		}
+		OrderSummaryModel orderSummary = (context.ActionArguments["orderSummary"] as OrderSummaryModel)!;
 
 		List<AutoPart>? originalInfo = await _appDbContext.AutoParts
 			.Where(ap => orderSummary.OrderedParts.Select(x => x.Id).Contains(ap.Id))
