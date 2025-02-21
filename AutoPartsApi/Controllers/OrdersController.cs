@@ -14,7 +14,7 @@ namespace AutoPartsApi.Controllers;
 [Authorize("Bearer")]
 public class OrdersController : ControllerBase {
 	private readonly AppDbContext _appDbContext;
-	public OrdersController(AppDbContext appDbContext, ProblemDetailsFactory problemDetailsFactory) {
+	public OrdersController(AppDbContext appDbContext) {
 		_appDbContext = appDbContext;
 	}
 
