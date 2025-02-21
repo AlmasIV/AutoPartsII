@@ -149,8 +149,7 @@ public class AutoPartsController : ControllerBase {
 			.ToArrayAsync();
 		foreach (AutoPart autoPart in parts) {
 			autoPart.Amount -= orderSummary.OrderedParts
-				.Where(ap => ap.Id == autoPart.Id)
-				.First().Amount;
+				.First(ap => ap.Id == autoPart.Id).Amount;
 		}
 
 		await _appDbContext.Orders.AddAsync(order);
