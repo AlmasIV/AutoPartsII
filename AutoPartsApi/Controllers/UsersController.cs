@@ -22,11 +22,11 @@ namespace AutoPartsApi.Controllers;
 [ApiController()]
 public class UsersController : ControllerBase {
 	private readonly UserManager<IdentityUser> _userManager;
-	private readonly AbstractTokenGenerator _TokenGenerator;
+	private readonly AbstractTokenGenerator _tokenGenerator;
 	private readonly AuthDbContext _authDbContext;
 	public UsersController(UserManager<IdentityUser> userManager, AbstractTokenGenerator TokenGenerator, AuthDbContext authDbContext) {
 		_userManager = userManager;
-		_TokenGenerator = TokenGenerator;
+		_tokenGenerator = TokenGenerator;
 		_authDbContext = authDbContext;
 	}
 
@@ -93,7 +93,7 @@ public class UsersController : ControllerBase {
 			.Include(rt => rt.User)
 			.SingleOrDefaultAsync(rt => rt.Token == refreshToken);
 
-		if(savedToken is not null) {
+		if (savedToken is not null) {
 			_authDbContext.RefreshTokens.Remove(savedToken);
 		}
 
@@ -116,14 +116,14 @@ public class UsersController : ControllerBase {
 
 	[NonAction()]
 	private async Task SetTokens(IdentityUser user, HttpResponse response) {
-		response.Cookies.Append("jwt", _TokenGenerator.GenerateToken(user), new CookieOptions() {
+		response.Cookies.Append("jwt", _tokenGenerator.GenerateToken(user), new CookieOptions() {
 			HttpOnly = true,
 			Secure = true,
 			SameSite = SameSiteMode.None,
 			MaxAge = TimeSpan.FromMinutes(30)
 		});
 
-		Guid refreshToken = _TokenGenerator.GenerateRefreshToken();
+		Guid refreshToken = _tokenGenerator.GenerateRefreshToken();
 		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken() {
 			Token = refreshToken,
 			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6)),
@@ -136,7 +136,7 @@ public class UsersController : ControllerBase {
 			HttpOnly = true,
 			Secure = true,
 			SameSite = SameSiteMode.None,
-			MaxAge = TimeSpan.FromHours(6)
+			MaxAge = TimeSpan.FromHours(3)
 		});
 	}
 }
