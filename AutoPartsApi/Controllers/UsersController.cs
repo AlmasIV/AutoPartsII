@@ -57,7 +57,7 @@ public class UsersController : ControllerBase {
 			return BadRequest(problemDetails);
 		}
 
-		await _SetTokens(user, Response);
+		await SetTokens(user, Response);
 
 		return Ok();
 	}
@@ -80,7 +80,7 @@ public class UsersController : ControllerBase {
 			);
 		}
 
-		await _SetTokens(user, Response);
+		await SetTokens(user, Response);
 
 		return Ok();
 	}
@@ -124,13 +124,13 @@ public class UsersController : ControllerBase {
 			);
 		}
 
-		await _SetTokens(savedToken.User, Response);
+		await SetTokens(savedToken.User, Response);
 
 		return Ok();
 	}
 
 	[NonAction()]
-	private async Task _SetTokens(IdentityUser user, HttpResponse response) {
+	private async Task SetTokens(IdentityUser user, HttpResponse response) {
 		response.Cookies.Append("jwt", _TokenGenerator.GenerateToken(user), new CookieOptions() {
 			HttpOnly = true,
 			Secure = true,
