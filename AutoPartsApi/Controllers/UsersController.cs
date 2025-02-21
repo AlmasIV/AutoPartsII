@@ -93,9 +93,8 @@ public class UsersController : ControllerBase {
 			.Include(rt => rt.User)
 			.SingleOrDefaultAsync(rt => rt.Token == refreshToken);
 
-		if (savedToken is not null) {
+		if(savedToken is not null) {
 			_authDbContext.RefreshTokens.Remove(savedToken);
-			await _authDbContext.SaveChangesAsync();
 		}
 
 		if (savedToken is null || DateTime.Now >= savedToken.ExpirationDateTime) {
@@ -110,8 +109,8 @@ public class UsersController : ControllerBase {
 			);
 		}
 
+		await _authDbContext.SaveChangesAsync();
 		await SetTokens(savedToken.User, Response);
-
 		return Ok();
 	}
 
