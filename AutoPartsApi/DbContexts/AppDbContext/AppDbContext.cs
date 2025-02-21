@@ -10,7 +10,6 @@ public class AppDbContext : DbContext {
 	public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions) { }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
-
 		modelBuilder.Entity<Order>()
 			.Property(p => p.CreatedOn)
 			.HasDefaultValueSql("SYSUTCDATETIME()");
