@@ -1,4 +1,3 @@
-
 using AutoPartsApi.DTOs;
 using AutoPartsApi.Models;
 
@@ -15,21 +14,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 		_appDbContext = appDbContext;
 	}
 	public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
-		// Improve validation more.
-		RefundModel? refund = context.ActionArguments["refundModel"] as RefundModel;
-
-		if (refund is null) {
-			context.Result = new ObjectResult(
-				new ProblemDetails() {
-					Status = StatusCodes.Status400BadRequest,
-					Title = "Required data wasn't provided.",
-					Detail = "Required data wasn't provided. Contact the devs.",
-					Instance = null,
-					Type = null
-				}
-			);
-			return;
-		}
+		RefundModel refund = (context.ActionArguments["refundModel"] as RefundModel)!;
 
 		Order? order = await _appDbContext.Orders
 			.Include(o => o.AutoPartsSoldAmounts
