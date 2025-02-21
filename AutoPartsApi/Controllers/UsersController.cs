@@ -86,20 +86,6 @@ public class UsersController : ControllerBase {
 	}
 
 	[HttpGet()]
-	[Route("info")]
-	[Authorize("Bearer")]
-	public IActionResult UserInfo() {
-		string currentEmail = User.Claims.Single(cu => cu.Type == ClaimTypes.Email).Value;
-		IdentityUser currentUser = _userManager.Users
-			.AsNoTracking()
-			.Single(u => u.Email == currentEmail);
-		return Ok(new UserModel() {
-			Email = currentUser.Email!,
-			UserName = currentUser.UserName!
-		});
-	}
-
-	[HttpGet()]
 	[AllowAnonymous()]
 	[Route("refresh-token/{refrestToken:guid}")]
 	public async Task<IActionResult> RefreshToken(Guid refreshToken) {
