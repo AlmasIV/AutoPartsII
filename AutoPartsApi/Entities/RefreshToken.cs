@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AutoPartsApi.Models;
 public class RefreshToken {
-	[JsonIgnore()]
 	public Guid Id { get; set; }
 
 	[Required()]
@@ -15,10 +14,8 @@ public class RefreshToken {
 	public DateTime ExpirationDateTime { get; set; }
 
 	[Required()]
-	[JsonIgnore()]
 	public string UserId { get; set; } = null!;
 
 	[Required()]
-	[JsonIgnore()]
 	public IdentityUser User { get; set; } = null!;
 }
