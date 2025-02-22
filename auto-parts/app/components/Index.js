@@ -16,7 +16,6 @@ import ErrorBox from "./ErrorBox/ErrorBox.js";
 import OrderDetails from "./OrderDetails/OrderDetails.js";
 import Authentication from "./Authentication/Authentication.js";
 import Loading from "./Loading/Loading.js";
-import AccountSettings from "./AccountSettings/AccountSettings.js";
 import PageSelector from "./PageSelector/PageSelector.js";
 import ImagesInput from "./ImagesInput/ImagesInput.js";
 import AutoPartDescription from "./AutoPartDescription/AutoPartDescription.js";
@@ -44,7 +43,6 @@ export {
     OrderDetails,
     Authentication,
     Loading,
-    AccountSettings,
     PageSelector,
     ImagesInput,
     AutoPartDescription,

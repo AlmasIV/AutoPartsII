@@ -11,7 +11,6 @@ export const config = {
     matcher: [
         "/main/:path*",
         "/",
-        "/api/authenticated/:path*",
-        "/settings"
+        "/api/authenticated/:path*"
     ]
 };

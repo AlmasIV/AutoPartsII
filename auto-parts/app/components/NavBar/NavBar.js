@@ -23,14 +23,6 @@ export default function NavBar() {
                         History
                     </Link>
                 </li>
-                <li>
-                    <Link
-                        href="/settings"
-                        className="underline-link-animation"
-                    >
-                        Settings
-                    </Link>
-                </li>
             </ul>
         </nav>
     );
