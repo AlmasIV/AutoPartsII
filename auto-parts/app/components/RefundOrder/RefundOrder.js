@@ -8,10 +8,6 @@ import { OrdersStateContext } from "@/app/components/Orders/OrdersStateContext.j
 import { KZTFormatter, roundNumberToTwoDecimalPoints } from "@/global-utils/number-formatters/index.js";
 import notify from "@/global-utils/notifications/notify.js";
 
-/*
-	This is a headache. Now, I get it. I understand why tests matter. Thank God that the only person that works with this mess is just me. I hope it will be me forever, because I wish no struggle to others.
-*/
-
 export default function RefundOrder(
 	{
 		soldPartDetails,
