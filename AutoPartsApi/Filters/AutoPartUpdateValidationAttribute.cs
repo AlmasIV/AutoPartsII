@@ -31,6 +31,7 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 					Type = null
 				}
 			);
+			return;
 		}
 
 		await next();
