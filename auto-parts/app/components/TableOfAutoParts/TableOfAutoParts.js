@@ -89,7 +89,6 @@ export default function TableOfAutoParts(
                                                         }}
                                                         onModalClose={(e) => {
                                                             if(document.querySelector("table tr td div > dialog") === e.target) {
-                                                                console.log("PLEASE WORK!");
                                                                 isDescriptionOpen = false;
                                                             }
                                                         }}
