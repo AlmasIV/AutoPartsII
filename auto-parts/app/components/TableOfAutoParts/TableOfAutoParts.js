@@ -8,6 +8,7 @@ import onAutoPartSelect from "@/global-utils/component-event-handlers/onAutoPart
 import styles from "./table-of-auto-parts.module.css";
 import { Modal, AutoPartForm } from "@/app/components/Index.js";
 import notify from "@/global-utils/notifications/notify.js";
+import onAutoPartUpdate from "@/global-utils/component-event-handlers/onAutoPartUpdate.js";
 
 let isDescriptionOpen = false;
 
@@ -96,7 +97,9 @@ export default function TableOfAutoParts(
                                                         <AutoPartForm
                                                             formTitle="Current Info"
                                                             submitButtonTitle="Update"
-                                                            onSubmit={() => {}}
+                                                            onSubmit={async (e) => {
+                                                                await onAutoPartUpdate(e, globalNotification, autoPartsState, autoPart.id);
+                                                            }}
                                                             autoPartsState={autoPartsState}
                                                             autoPart={autoPart}
                                                         />

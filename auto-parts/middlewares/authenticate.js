@@ -26,9 +26,9 @@ export default async function authenticate(request) {
 	else if(token) {
 		try {
 			await jwtVerify(
-				jwt = token.value,
-				key = new TextEncoder().encode(process.env.JWT_KEY),
-				options = { issuer: process.env.JWT_ISSUER, audience: process.env.JWT_AUDIENCE }
+				token.value,
+				new TextEncoder().encode(process.env.JWT_KEY),
+				{ issuer: process.env.JWT_ISSUER, audience: process.env.JWT_AUDIENCE }
 			);
 			if(request.nextUrl.pathname === "/") {
 				return NextResponse.redirect(new URL("/main/home", process.env.BASE_URL));

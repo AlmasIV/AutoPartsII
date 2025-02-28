@@ -102,7 +102,12 @@ public class AutoPartsController : ControllerBase {
 			.Where(im => !hashes.Any(hash => hash == im.Hash))
 			.Select(im => im)
 			.ToList();
-		return Ok();
+
+		await _appDbContext.Images.AddRangeAsync(autoPartImages);
+		updatedAutoPart.Id = id;
+		_appDbContext.Entry(updatedAutoPart).State = EntityState.Modified;
+		await _appDbContext.SaveChangesAsync();
+		return Ok(updatedAutoPart);
 	}
 
 	[HttpDelete()]
