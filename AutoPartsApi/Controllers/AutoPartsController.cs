@@ -100,7 +100,10 @@ public class AutoPartsController : ControllerBase {
 
 		List<Image> autoPartImages = (await FormFilesToImagesConverter.ConvertAsync(images))
 			.Where(im => !hashes.Any(hash => hash == im.Hash))
-			.Select(im => im)
+			.Select(im => {
+				im.AutoPartId = id;
+				return im;
+			})
 			.ToList();
 
 		await _appDbContext.Images.AddRangeAsync(autoPartImages);
