@@ -9,7 +9,7 @@ export default async function authenticate(request) {
 		if(!refreshToken) {
 			return getLogInRedirectionResponse();
 		}
-		const response = await fetch(`${process.env.API_URL}/users/refresh-token/${refreshToken}`);
+		const response = await fetch(`${process.env.API_URL}/users/refresh-token/${refreshToken.value}`);
 		if(response.ok) {
 			const cookie = response.headers.get("Set-Cookie");
 			if(cookie) {

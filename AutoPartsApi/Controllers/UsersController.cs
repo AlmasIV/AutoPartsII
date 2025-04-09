@@ -78,7 +78,7 @@ public class UsersController : ControllerBase {
 
 	[HttpGet()]
 	[AllowAnonymous()]
-	[Route("refresh-token/{refrestToken:guid}")]
+	[Route("refresh-token/{refreshToken:guid}")]
 	public async Task<IActionResult> RefreshToken(Guid refreshToken) {
 		RefreshToken? savedToken = await _authDbContext.RefreshTokens
 			.Include(rt => rt.User)
@@ -88,7 +88,7 @@ public class UsersController : ControllerBase {
 			_authDbContext.RefreshTokens.Remove(savedToken);
 		}
 
-		if (savedToken is null || DateTime.Now >= savedToken.ExpirationDateTime) {
+		if (savedToken is null || DateTime.UtcNow >= savedToken.ExpirationDateTime) {
 			return BadRequest(
 				new ProblemDetails() {
 					Title = "Refresh token invalid.",
@@ -99,7 +99,6 @@ public class UsersController : ControllerBase {
 				}
 			);
 		}
-
 		await _authDbContext.SaveChangesAsync();
 		await SetTokens(savedToken.User, Response);
 		return Ok();
