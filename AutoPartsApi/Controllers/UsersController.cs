@@ -127,7 +127,7 @@ public class UsersController : ControllerBase {
 			HttpOnly = true,
 			Secure = true,
 			SameSite = SameSiteMode.None,
-			MaxAge = TimeSpan.FromHours(3)
+			MaxAge = TimeSpan.FromHours(2)
 		});
 	}
 }
