@@ -117,7 +117,7 @@ public class UsersController : ControllerBase {
 		Guid refreshToken = _tokenGenerator.GenerateRefreshToken();
 		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken() {
 			Token = refreshToken,
-			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(6)),
+			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(2)),
 			User = user
 		});
 
