@@ -114,10 +114,16 @@ public class UsersController : ControllerBase {
 			MaxAge = TimeSpan.FromMinutes(30)
 		});
 
+		List<RefreshToken> expiredTokens = await _authDbContext.RefreshTokens
+			.Where(rt => rt.ExpirationDateTime < DateTime.UtcNow)
+			.ToListAsync();
+
+		_authDbContext.RefreshTokens.RemoveRange(expiredTokens);
+
 		Guid refreshToken = _tokenGenerator.GenerateRefreshToken();
 		await _authDbContext.RefreshTokens.AddAsync(new RefreshToken() {
 			Token = refreshToken,
-			ExpirationDateTime = DateTime.Now.Add(TimeSpan.FromHours(2)),
+			ExpirationDateTime = DateTime.UtcNow.AddHours(2),
 			User = user
 		});
 
