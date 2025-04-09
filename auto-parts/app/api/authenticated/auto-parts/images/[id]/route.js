@@ -3,10 +3,11 @@ import getResponse from "@/global-utils/response-initializer/getResponse.js";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
-	if(isValidGuid(params.id)) {
+	const { id } = await params;
+	if(isValidGuid(id)) {
 		try {
 			const token = request.cookies.get("jwt");
-			const response = await fetch(`${process.env.API_URL}/auto-parts/${params.id}`, {
+			const response = await fetch(`${process.env.API_URL}/auto-parts/${id}`, {
 				method: "GET",
 				cache: "no-cache",
 				headers: {
