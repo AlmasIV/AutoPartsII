@@ -40,7 +40,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 
 		AutoPart? autoPart = autoPartOrderInfo.AutoPart;
 
-		if(autoPart is null) {
+		if (autoPart is null) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -53,7 +53,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RefundAmount > autoPartOrderInfo.SoldAmount) {
+		if (refund.RefundAmount > autoPartOrderInfo.SoldAmount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -66,7 +66,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RetainedDiscount > autoPartOrderInfo.Discount) {
+		if (refund.RetainedDiscount > autoPartOrderInfo.Discount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -79,7 +79,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RefundAmount == autoPartOrderInfo.SoldAmount && refund.RetainedDiscount != autoPartOrderInfo.Discount) {
+		if (refund.RefundAmount == autoPartOrderInfo.SoldAmount && refund.RetainedDiscount != autoPartOrderInfo.Discount) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -92,7 +92,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(refund.RefundMoney > autoPartOrderInfo.Price) {
+		if (refund.RefundMoney > autoPartOrderInfo.Price) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -107,7 +107,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 
 		decimal calculatedRefundMoney = autoPart.PriceInKzt * refund.RefundAmount - refund.RetainedDiscount;
 
-		if(refund.RefundMoney != Math.Round(calculatedRefundMoney, 2)) {
+		if (refund.RefundMoney != Math.Round(calculatedRefundMoney, 2)) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,
@@ -120,7 +120,7 @@ public class RefundValidationAttribute : Attribute, IAsyncActionFilter {
 			return;
 		}
 
-		if(calculatedRefundMoney < 0) {
+		if (calculatedRefundMoney < 0) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,

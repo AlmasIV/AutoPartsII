@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 import getLogInRedirectionResponse from "@/global-utils/redirect-helpers/getLogInRedirectionResponse.js";
+import getProtected from "@/global-utils/HTTP-fetch/getProtected.js";
 
 export default async function authenticate(request) {
 	const token = request.cookies.get("jwt");
@@ -25,13 +25,17 @@ export default async function authenticate(request) {
 	}
 	else if(token) {
 		try {
-			await jwtVerify(
-				token.value,
-				new TextEncoder().encode(process.env.JWT_KEY),
-				{ issuer: process.env.JWT_ISSUER, audience: process.env.JWT_AUDIENCE }
-			);
-			if(request.nextUrl.pathname === "/") {
-				return NextResponse.redirect(new URL("/main/home", process.env.BASE_URL));
+			const response = await getProtected(process.env.API_URL + "/jwt/validate", request);
+			if(response.ok) {
+				if(request.nextUrl.pathname === "/") {
+					return NextResponse.redirect(new URL("/main/home", process.env.BASE_URL));
+				}
+			}
+			else {
+				const response = getLogInRedirectionResponse();
+				response.cookies.delete("jwt");
+				response.cookies.delete("refreshToken");
+				return response;
 			}
 		}
 		catch(error) {

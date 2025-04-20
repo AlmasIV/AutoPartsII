@@ -21,7 +21,7 @@ public class AutoPartUpdateValidationAttribute : Attribute, IAsyncActionFilter {
 			.AsNoTracking()
 			.Any(ap => ap.Id == autoPartId);
 
-		if(!isAny) {
+		if (!isAny) {
 			context.Result = new ObjectResult(
 				new ProblemDetails() {
 					Status = StatusCodes.Status400BadRequest,

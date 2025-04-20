@@ -15,10 +15,12 @@ public class UsersController : ControllerBase {
 	private readonly UserManager<IdentityUser> _userManager;
 	private readonly AbstractTokenGenerator _tokenGenerator;
 	private readonly AuthDbContext _authDbContext;
-	public UsersController(UserManager<IdentityUser> userManager, AbstractTokenGenerator TokenGenerator, AuthDbContext authDbContext) {
+	private readonly ILogger<UsersController> _logger;
+	public UsersController(UserManager<IdentityUser> userManager, AbstractTokenGenerator TokenGenerator, AuthDbContext authDbContext, ILogger<UsersController> logger) {
 		_userManager = userManager;
 		_tokenGenerator = TokenGenerator;
 		_authDbContext = authDbContext;
+		_logger = logger;
 	}
 
 	[HttpPost()]
@@ -57,9 +59,11 @@ public class UsersController : ControllerBase {
 	[Route("log-in")]
 	[AllowAnonymous()]
 	public async Task<IActionResult> LogIn([FromBody] LogInModel logInModel) {
+		_logger.LogInformation($"Trying to log in the user: {logInModel.Email}.");
 		IdentityUser? user = await _userManager.FindByEmailAsync(logInModel.Email);
 
 		if (user is null || !(await _userManager.CheckPasswordAsync(user, logInModel.Password))) {
+			_logger.LogWarning("Log in failed.");
 			return BadRequest(
 				new ProblemDetails() {
 					Title = "User log in failed.",
@@ -80,6 +84,7 @@ public class UsersController : ControllerBase {
 	[AllowAnonymous()]
 	[Route("refresh-token/{refreshToken:guid}")]
 	public async Task<IActionResult> RefreshToken(Guid refreshToken) {
+		_logger.LogInformation($"Trying to refresh token: {refreshToken}.");
 		RefreshToken? savedToken = await _authDbContext.RefreshTokens
 			.Include(rt => rt.User)
 			.SingleOrDefaultAsync(rt => rt.Token == refreshToken);
@@ -89,6 +94,7 @@ public class UsersController : ControllerBase {
 		}
 
 		if (savedToken is null || DateTime.UtcNow >= savedToken.ExpirationDateTime) {
+			_logger.LogWarning($"Refresh token is invalid: {refreshToken}.");
 			return BadRequest(
 				new ProblemDetails() {
 					Title = "Refresh token invalid.",
@@ -101,11 +107,13 @@ public class UsersController : ControllerBase {
 		}
 		await _authDbContext.SaveChangesAsync();
 		await SetTokens(savedToken.User, Response);
+		_logger.LogInformation($"Refresh token was called successfully: {refreshToken}.");
 		return Ok();
 	}
 
 	[NonAction()]
 	private async Task SetTokens(IdentityUser user, HttpResponse response) {
+		_logger.LogInformation($"Trying to set tokens for the {user.Email}.");
 		response.Cookies.Append("jwt", _tokenGenerator.GenerateToken(user), new CookieOptions() {
 			HttpOnly = true,
 			Secure = true,

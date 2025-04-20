@@ -1,11 +1,19 @@
-using System.Text;
+using AutoPartsApi.Services;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-using AutoPartsApi.Services;
+/*
+	Things to do:
+		1) Clean up the program.cs file.
+		2) Introduce caching.
+		3) Get familiar with user secrets in production.
+		4) Find a way to generate private / public keys at runtime during app startup?
+*/
 
 namespace AutoPartsApi;
 public class Program {
@@ -15,6 +23,10 @@ public class Program {
 		builder.WebHost.ConfigureKestrel(options => {
 			options.Limits.MaxRequestBodySize = 15 * 1024 * 1024;
 		});
+
+		builder.Services.AddSingleton<JwtRsaKeys>();
+
+		builder.Services.AddHostedService<RsaKeyGeneratorService>();
 
 		builder.Services.AddControllers();
 
@@ -53,11 +65,10 @@ public class Program {
 		}).AddJwtBearer(options => {
 			options.TokenValidationParameters = new TokenValidationParameters() {
 				ValidateIssuer = true,
-				ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"] ?? throw new InvalidOperationException("Issuer field is missing. Configuration of identity system failed."),
+				ValidIssuer = builder.Configuration["AuthenticationOptions:Issuer"]!,
 				ValidateAudience = true,
-				ValidAudience = builder.Configuration["AuthenticationOptions:Audience"] ?? throw new InvalidOperationException("Audience field is missing. Configuration of identity system failed."),
+				ValidAudience = builder.Configuration["AuthenticationOptions:Audience"]!,
 				ValidateLifetime = true,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationOptions:Key"] ?? throw new InvalidOperationException("Signing key is missing. Configuration of identity system failed."))),
 				ValidateIssuerSigningKey = true
 			};
 		});
@@ -73,6 +84,7 @@ public class Program {
 		);
 
 		builder.Services.AddSingleton<AbstractTokenGenerator, TokenGenerator>();
+		builder.Services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, JwtPostConfigurations>();
 
 		var app = builder.Build();
 

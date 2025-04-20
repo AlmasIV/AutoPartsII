@@ -4,7 +4,7 @@ import { NotificationBox } from "@/app/components/Index.js";
 
 export const metadata = {
 	title: "Auto-Parts",
-	description: "Get good quality auto-parts",
+	description: "Get good quality auto-parts"
 };
 
 export default function RootLayout(
