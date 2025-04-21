@@ -26,11 +26,8 @@ public class TokenGenerator : AbstractTokenGenerator {
 			};
 			RSA rsa = RSA.Create();
 			JwtRsaKeys.RsaKey rsaKey = _jwtRsaKeys.ValidKeys.First();
-			_logger.LogInformation("RSA object was created successfully.");
 			rsa.ImportParameters(rsaKey.Parameters);
-			_logger.LogInformation("Private key import has happened.");
 			SigningCredentials signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa) { KeyId = rsaKey.KeyId }, SecurityAlgorithms.RsaSha256);
-			_logger.LogInformation("Signing credentials object was created.");
 			return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
 				issuer: _configuration["AuthenticationOptions:Issuer"],
 				audience: _configuration["AuthenticationOptions:Audience"],
