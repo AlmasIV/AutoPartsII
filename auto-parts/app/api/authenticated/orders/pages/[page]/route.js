@@ -5,7 +5,7 @@ import canBeCastedToPositiveInteger from "@/global-utils/validators/canBeCastedT
 export async function GET(request, { params }) {
     const { page } = await params;
     if(canBeCastedToPositiveInteger(page)) {
-        return await getProtected(`${process.env.API_URL}/orders/pages/${page}`, request);
+        return await getProtected(`${process.env.API_URL}/orders/pages/${page}`, request, { cache: "force-cache", next: { tags: ["orders"] } });
     }
     else {
         return getResponse("Provide a valid page number.", 400, "Bad Request");

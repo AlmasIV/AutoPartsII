@@ -9,7 +9,10 @@ export async function GET(request, { params }) {
 			const token = request.cookies.get("jwt");
 			const response = await fetch(`${process.env.API_URL}/auto-parts/${id}`, {
 				method: "GET",
-				cache: "no-cache",
+				cache: "force-cache",
+				next: {
+					tags: [`auto-part-image-${id}`]
+				},
 				headers: {
 					"Authorization": `Bearer ${token.value}`
 				}

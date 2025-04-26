@@ -1,11 +1,11 @@
 import getResponse from "@/global-utils/response-initializer/getResponse.js";
 
-export default async function getProtected(url, request) {
+export default async function getProtected(url, request, cachingParameters) {
     try {
         const token = request.cookies.get("jwt");
         const result = await fetch(url, {
             method: "GET",
-            cache: "no-cache",
+            ...cachingParameters,
             headers: {
                 "Authorization": `Bearer ${token.value}`
             }

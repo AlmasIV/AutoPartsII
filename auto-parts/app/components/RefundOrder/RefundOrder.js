@@ -52,7 +52,7 @@ export default function RefundOrder(
 			setIsSending(true);
 			setError(null);
 			const computedRefundMoney = (refundMoney - retainedDiscount) < 0 ? 0 : (refundMoney - retainedDiscount);
-			const response = await fetch("/api/authenticated/orders/refund", {
+			const response = await fetch(`/api/authenticated/orders/refund/${orderedParts.id}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
