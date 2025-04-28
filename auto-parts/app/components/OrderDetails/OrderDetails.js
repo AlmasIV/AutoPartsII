@@ -57,7 +57,7 @@ export default function OrderDetails(
                                         className="opacity-08"
                                     >
                                         Discount:
-                                    </span> {`${KZTFormatter.format(sp.discount)}`}
+                                    </span> {KZTFormatter.format(sp.discount)}
                                 </p>
                                 <RefundOrder
                                     soldPartDetails={sp}

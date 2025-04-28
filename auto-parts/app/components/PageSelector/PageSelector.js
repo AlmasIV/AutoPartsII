@@ -31,25 +31,25 @@ export default function PageSelector(
         >
             <Button
                 title="first"
-                className={`${selected === 1 ? "disabled-btn" : "secondary-btn"}`}
+                className={selected === 1 ? "disabled-btn" : "secondary-btn"}
                 type="button"
                 onClick={() => changePage(1)}
                 isDisabled={selected === 1}
             />
             <Button
                 title="prev"
-                className={`${selected === 1 ? "disabled-btn" : "secondary-btn"}`}
+                className={selected === 1 ? "disabled-btn" : "secondary-btn"}
                 type="button"
                 onClick={() => changePage(selected - 1)}
                 isDisabled={selected === 1}
             />
             <Modal
-                openButtonTitle="select"
+                openButtonTitle={count < 100 ? "all products are listed" : "select page"}
                 closeButtonTitle="cancel"
-                openButtonClass="secondary-btn"
+                openButtonClass={count < 100 ? "disabled-btn" : "secondary-btn"}
                 closeButtonClass="secondary-btn width-full margin-top-05rem"
                 dialogType="shopping-cart-modal"
-                isDisabled={count % 100 === 0}
+                isDisabled={count < 100}
             >
                 <div
                     className="flex-container space-around flex-wrap"
@@ -60,7 +60,7 @@ export default function PageSelector(
                                 <Button
                                     key={generateGUID()}
                                     title={index + 1}
-                                    className={`${selected === index + 1 ? "disabled-btn" : "secondary-btn"}`}
+                                    className={selected === index + 1 ? "disabled-btn" : "secondary-btn"}
                                     type="button"
                                     onClick={() => changePage(index + 1)}
                                     isDisabled={selected === index + 1}
@@ -72,14 +72,14 @@ export default function PageSelector(
             </Modal>
             <Button
                 title="next"
-                className={`${selected === totalPages ? "disabled-btn" : "secondary-btn"}`}
+                className={selected === totalPages ? "disabled-btn" : "secondary-btn"}
                 type="button"
                 onClick={() => changePage(selected + 1)}
                 isDisabled={selected === totalPages}
             />
             <Button
                 title="last"
-                className={`${selected === totalPages ? "disabled-btn" : "secondary-btn"}`}
+                className={selected === totalPages ? "disabled-btn" : "secondary-btn"}
                 type="button"
                 onClick={() => changePage(totalPages)}
                 isDisabled={selected === totalPages}

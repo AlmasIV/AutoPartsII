@@ -27,7 +27,7 @@ export default function Modal(
         >
             <dialog
                 ref={modalRef}
-                className={`${styles[dialogType]}`}
+                className={styles[dialogType]}
                 onClose={(e) => {
                     onModalClose && onModalClose(e);
                 }}

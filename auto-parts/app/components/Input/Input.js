@@ -35,7 +35,7 @@ export default function Input(
         }
     }, [value, config.required]);
     return (
-        <label className={`${styles["input-label"]}`}>
+        <label className={styles["input-label"]}>
             {config.labelName}
             <input
                 name={config.name}

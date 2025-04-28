@@ -26,7 +26,7 @@ export default function Authentication() {
                     openButtonClass="width-half primary-btn"
                     closeButtonClass="width-full secondary-btn margin-top-05rem margin-bottom-05rem"
                     dialogType="adaptive-modal"
-                    containerClass={`${styles["modal-wrapper"]}`}
+                    containerClass={styles["modal-wrapper"]}
                 >
                     <h2
                         className="margin-top-05rem"
