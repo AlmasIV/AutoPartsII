@@ -48,7 +48,7 @@ export default function PageSelector(
                 closeButtonTitle="cancel"
                 openButtonClass={count < 100 ? "disabled-btn" : "secondary-btn"}
                 closeButtonClass="secondary-btn width-full margin-top-05rem"
-                dialogType="shopping-cart-modal"
+                dialogType="fixed-modal"
                 isDisabled={count < 100}
             >
                 <div

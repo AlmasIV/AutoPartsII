@@ -1,5 +1,5 @@
 .form-modal,
-.shopping-cart-modal,
+.fixed-modal,
 .adaptive-modal {
     position: fixed;
     top: 50%;
@@ -24,7 +24,7 @@
     }
 }
 
-.shopping-cart-modal {
+.fixed-modal {
     width: 90vw;
     max-height: 90vh;
 }
