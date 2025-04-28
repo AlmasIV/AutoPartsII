@@ -37,6 +37,11 @@ export default function Input(
     return (
         <label className={styles["input-label"]}>
             {config.labelName}
+            <span
+                className="small-text color-warning"
+            >
+                {warning?.padStart(warning.length + 1)}
+            </span>
             <input
                 name={config.name}
                 type={config.type}
@@ -44,11 +49,6 @@ export default function Input(
                 value={value}
                 onChange={handleOnChange}
             />
-            <span
-                className="color-warning small-text"
-            >
-                {warning}
-            </span>
         </label>
     );
 }
