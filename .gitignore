@@ -1,6 +1,7 @@
 # .NET ignore
 **/obj
 **/bin
+**/publish
 
 # VS Code
 **/.vscode
