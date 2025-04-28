@@ -49,7 +49,7 @@ export default function HomePage() {
                     closeButtonTitle="Close"
                     openButtonClass={`${(error || isPending) ? "disabled-btn" : "primary-btn"} width-full margin-bottom-05rem`}
                     closeButtonClass="secondary-btn width-full margin-top-05rem"
-                    dialogType="form-modal"
+                    dialogType="shopping-cart-modal"
                     isDisabled={error || isPending}
                     containerClass="flex-grow-1"
                 >
