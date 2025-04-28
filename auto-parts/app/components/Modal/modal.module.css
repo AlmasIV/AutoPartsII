@@ -1,4 +1,3 @@
-.form-modal,
 .fixed-modal,
 .adaptive-modal {
     position: fixed;
@@ -12,15 +11,6 @@
     &::backdrop {
         background-color: var(--main-darkish);
         opacity: 0.5;
-    }
-}
-
-.form-modal {
-    width: 35vw;
-    min-height: 70vh;
-
-    @media screen and (max-width: 1080px) {
-        width: 65vw;
     }
 }
 

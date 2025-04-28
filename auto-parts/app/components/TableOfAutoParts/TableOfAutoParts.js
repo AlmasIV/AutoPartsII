@@ -79,7 +79,7 @@ export default function TableOfAutoParts(
                                                         closeButtonTitle="Back"
                                                         openButtonClass=""
                                                         closeButtonClass="secondary-btn width-full margin-top-05rem"
-                                                        dialogType="form-modal"
+                                                        dialogType="fixed-modal"
                                                         dataModalId={autoPart[config.key]}
                                                         onCloseButtonClick={(e) => {
                                                             isDescriptionOpen = false;

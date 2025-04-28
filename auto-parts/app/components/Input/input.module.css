@@ -2,6 +2,7 @@
     margin: 1.5rem auto 0;
     width: 100%;
     color: var(--main-darkish);
+    text-align: left;
 
     & input {
         width: 100%;
